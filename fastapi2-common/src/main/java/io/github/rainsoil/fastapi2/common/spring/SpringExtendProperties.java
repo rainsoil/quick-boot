@@ -1,0 +1,41 @@
+package io.github.rainsoil.fastapi2.common.spring;
+
+import io.github.rainsoil.fastapi2.common.spring.restful.RestFulProperties;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+/**
+ * spring的扩展配置
+ *
+ * @author luyanan
+ * @since 2023/09/09
+ **/
+@Data
+@ConfigurationProperties("spring.extend")
+public class SpringExtendProperties {
+
+    /**
+     * 前缀
+     *
+     * @since 2023/09/09
+     */
+
+    public static final String PREFIX = "spring.extend";
+
+
+    /**
+     * 是否开启
+     *
+     * @since 2023/09/10
+     */
+
+    private Boolean enable;
+    /**
+     * 统一返回
+     *
+     * @since 2023/09/10
+     */
+
+    private RestFulProperties restFul;
+
+}
