@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * 分页返回
  *
+ * @param <T> 分页返回泛型
  * @author luyanan
  * @since 2023/09/09
  **/

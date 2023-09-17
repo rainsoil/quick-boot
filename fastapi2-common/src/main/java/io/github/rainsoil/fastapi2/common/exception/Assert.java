@@ -20,7 +20,7 @@ public class Assert extends cn.hutool.core.lang.Assert {
      */
     public void isTrue(boolean expression, Integer code) {
 
-        if (false == expression) {
+        if (!expression) {
             throw new WarningException(code);
         }
     }
@@ -68,6 +68,7 @@ public class Assert extends cn.hutool.core.lang.Assert {
     /**
      * 断言集合是否不为空,如果为空则抛出异常
      *
+     * @param <T>        集合类
      * @param collection 集合
      * @param code       异常码
      * @since 2023/09/09

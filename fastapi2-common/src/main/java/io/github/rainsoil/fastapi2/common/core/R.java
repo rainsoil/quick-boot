@@ -6,6 +6,7 @@ import lombok.Data;
 /**
  * 统一返回
  *
+ * @param <T> 返回泛型
  * @author luyanan
  * @since 2023/09/09
  **/
@@ -57,6 +58,7 @@ public class R<T> {
     /**
      * 成功的返回
      *
+     * @param <T>  返回泛型
      * @param data 数据
      * @return R对象
      * @since 2023/09/09
@@ -68,6 +70,7 @@ public class R<T> {
     /**
      * 成功的返回
      *
+     * @param <T> 返回泛型
      * @return R对象
      * @since 2023/09/09
      */
@@ -113,6 +116,7 @@ public class R<T> {
     /**
      * 设置R对象
      *
+     * @param <T>    返回泛型
      * @param status 状态码
      * @param msg    提示消息
      * @param data   数据

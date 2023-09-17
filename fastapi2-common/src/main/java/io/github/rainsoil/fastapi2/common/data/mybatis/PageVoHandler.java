@@ -2,7 +2,7 @@ package io.github.rainsoil.fastapi2.common.data.mybatis;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.github.rainsoil.fastapi2.common.bean.BeanConvertUtils;
 import io.github.rainsoil.fastapi2.common.bean.ConvertCallBack;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
@@ -13,6 +13,8 @@ import java.util.List;
 /**
  * 分页vo类处理
  *
+ * @param <V> vo类泛型
+ * @param <T> 实体类泛型
  * @author luyanan
  * @since 2023/09/13
  **/
@@ -39,7 +41,7 @@ public interface PageVoHandler<T, V> {
      * @return 分页对象
      * @since 2023/09/13
      */
-    default PageInfo<V> getPageInfo(Page<T> page, Class<V> voClazz) {
+    default PageInfo<V> getPageInfo(IPage<T> page, Class<V> voClazz) {
         PageInfo<V> pageInfo = new PageInfo<>();
         pageInfo.setCurrent(page.getCurrent());
         pageInfo.setSize(page.getSize());

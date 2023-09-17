@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * 分页处理类
  *
+ * @param <T>  分页返回泛型
  * @author luyanan
  * @since 2023/09/13
  **/

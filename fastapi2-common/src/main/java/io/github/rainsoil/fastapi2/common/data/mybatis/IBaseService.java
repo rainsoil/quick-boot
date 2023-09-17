@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.base.MPJBaseService;
-import com.github.yulichang.base.service.MPJJoinService;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 
@@ -16,6 +15,7 @@ import java.util.List;
 /**
  * 基础Service
  *
+ * @param <T> 实体类泛型
  * @author luyanan
  * @since 2023/09/13
  **/
@@ -47,6 +47,7 @@ public interface IBaseService<T> extends MPJBaseService<T> {
     /**
      * vo分页
      *
+     * @param <V>           vo类泛型
      * @param pageRequest   分页参数
      * @param voClass       vo类
      * @param pageVoHandler 分页处理器
@@ -58,6 +59,7 @@ public interface IBaseService<T> extends MPJBaseService<T> {
     /**
      * vo分页
      *
+     * @param <V>         vo类泛型
      * @param pageRequest 分页参数
      * @param voClass     vo类
      * @return 分页结果
