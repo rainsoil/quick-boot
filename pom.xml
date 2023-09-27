@@ -11,6 +11,8 @@
     <description>java快速开发平台</description>
     <modules>
         <module>fastapi2-common</module>
+        <module>fastapi2-core</module>
+        <module>fastapi2-system</module>
     </modules>
 
     <properties>
@@ -28,11 +30,42 @@
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <mybatis-plus-join.version>1.2.4</mybatis-plus-join.version>
         <yitter-idgenerator.version>1.0.6</yitter-idgenerator.version>
+        <flyway-core.version>8.0.5</flyway-core.version>
+        <freemarker.version>2.3.31</freemarker.version>
+        <mybatis-plus-generator.version>3.5.3</mybatis-plus-generator.version>
+        <knife4j.version>4.3.0</knife4j.version>
+        <mysql-connector-java.version>8.0.29</mysql-connector-java.version>
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway-core.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.github.yitter</groupId>
                 <artifactId>yitter-idgenerator</artifactId>
