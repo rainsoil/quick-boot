@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @since 2023/09/09
  **/
 @Data
-@ConfigurationProperties("spring.extend")
+@ConfigurationProperties(prefix = SpringExtendProperties.PREFIX)
 public class SpringExtendProperties {
 
     /**
@@ -20,7 +20,7 @@ public class SpringExtendProperties {
      * @since 2023/09/09
      */
 
-    public static final String PREFIX = "spring.extend";
+    public static final String PREFIX = "spring.extends";
 
 
     /**

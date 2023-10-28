@@ -6,7 +6,6 @@ server:
     threads:
       worker: 8000
       io: 1000
-
 spring:
   profiles:
     active: dev
@@ -17,6 +16,8 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+    serialization: true
+
   flyway:
     ## 如果启动的时候需要flyway管理sql脚本的话，将enabled设置为true
     enabled: true
@@ -25,6 +26,10 @@ spring:
     # 验证错误时 是否自动清除数据库 高危操作
     clean-on-validation-error: false
     encoding: utf-8
+  extends:
+    enable: true
+    restful:
+      enable: true
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
@@ -49,7 +54,7 @@ springdoc:
   group-configs:
     - group: 'default'
       paths-to-match: '/**'
-      packages-to-scan: com.xiaominfo.knife4j.demo.web
+      packages-to-scan: io.github.rainsoil.fastapi2.system
 # knife4j的增强配置，不需要增强可以不配
 knife4j:
   setting:

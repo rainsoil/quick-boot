@@ -22,7 +22,7 @@ public class RestFulProperties {
      *
      * @since 2023/09/09
      */
-    private Boolean enable = Boolean.FALSE;
+    private Boolean enable;
 
 
     /**

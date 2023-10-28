@@ -1,14 +1,12 @@
 package io.github.rainsoil.fastapi2.core.mybatisplus;
 
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
-import com.baomidou.mybatisplus.generator.fill.Column;
 import io.github.rainsoil.fastapi2.common.data.mybatis.BaseBaseMapper;
 import io.github.rainsoil.fastapi2.common.data.mybatis.BaseServiceImpl;
 import io.github.rainsoil.fastapi2.common.data.mybatis.IBaseService;

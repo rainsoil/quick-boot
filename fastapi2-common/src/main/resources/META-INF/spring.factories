@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.github.rainsoil.fastapi2.common.spring.SpringExtendAutoConfiguration
+
+
+
