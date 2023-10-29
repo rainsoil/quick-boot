@@ -16,7 +16,6 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-    serialization: true
 
   flyway:
     ## 如果启动的时候需要flyway管理sql脚本的话，将enabled设置为true
