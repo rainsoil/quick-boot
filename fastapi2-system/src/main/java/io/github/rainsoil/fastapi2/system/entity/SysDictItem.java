@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 /**
 * <p>
-    * 字典表
+    * 字典项表
  * </p>
  *
  * @author luyanan
@@ -21,9 +21,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("sys_dict")
-@Schema(name = "SysDict", description = "$!{table.comment}")
-public class SysDict extends BaseEntity {
+@TableName("sys_dict_item")
+@Schema(name = "SysDictItem", description = "$!{table.comment}")
+public class SysDictItem extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -33,6 +33,27 @@ public class SysDict extends BaseEntity {
     @Schema(description = "id")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
+    /**
+    * 字典表id
+    */
+
+    @Schema(description = "字典表id")
+    @TableField("dict_id")
+    private Long dictId;
+    /**
+    * 字典值
+    */
+
+    @Schema(description = "字典值")
+    @TableField("value")
+    private String value;
+    /**
+    * 字典标签
+    */
+
+    @Schema(description = "字典标签")
+    @TableField("label")
+    private String label;
     /**
     * 字典类型
     */
@@ -47,4 +68,18 @@ public class SysDict extends BaseEntity {
     @Schema(description = "字典描述")
     @TableField("description")
     private String description;
+    /**
+    * 排序
+    */
+
+    @Schema(description = "排序")
+    @TableField("sort")
+    private Integer sort;
+    /**
+    * 样式
+    */
+
+    @Schema(description = "样式")
+    @TableField("style")
+    private String style;
 }

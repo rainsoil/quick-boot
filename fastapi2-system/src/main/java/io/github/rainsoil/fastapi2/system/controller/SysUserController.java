@@ -4,8 +4,8 @@ import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.core.R;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
-import io.github.rainsoil.fastapi2.system.entity.SysDict;
-import io.github.rainsoil.fastapi2.system.service.ISysDictService;
+import io.github.rainsoil.fastapi2.system.entity.SysUser;
+import io.github.rainsoil.fastapi2.system.service.ISysUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,19 +13,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 字典表 前端控制器
+ * 系统用户表 前端控制器
  *
  * @author luyanan
  * @since 2023-11-27
  */
-@Tag(name = "字典表", description = "字典表")
+@Tag(name = "系统用户表", description = "系统用户表")
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/system/sysDict")
-public class SysDictController {
+@RequestMapping("/system/sysUser")
+public class SysUserController {
 
-    private final ISysDictService iSysDictService;
+    private final ISysUserService iSysUserService;
 
     /**
      * 分页
@@ -36,8 +36,8 @@ public class SysDictController {
      */
     @Operation(summary = "分页")
     @PostMapping("page")
-    public PageInfo<SysDict> page(@RequestBody PageRequest<SysDict> pageRequest) {
-        PageInfo<SysDict> pageInfo = iSysDictService.page(pageRequest, new PageHandler<SysDict>() {
+    public PageInfo<SysUser> page(@RequestBody PageRequest<SysUser> pageRequest) {
+        PageInfo<SysUser> pageInfo = iSysUserService.page(pageRequest, new PageHandler<SysUser>() {
         });
         return pageInfo;
     }
@@ -45,27 +45,28 @@ public class SysDictController {
     /**
      * 保存
      *
-     * @param sysDict 实体类
+     * @param sysUser 实体类
      * @return 是否成功
      * @since 2023-11-27
      */
     @PostMapping("")
     @Operation(summary = "保存")
-    public Boolean save(@RequestBody SysDict sysDict) {
-        return this.iSysDictService.save(sysDict);
+    public Boolean save(@RequestBody SysUser sysUser) {
+
+        return this.iSysUserService.save(sysUser);
     }
 
     /**
      * 修改
      *
-     * @param sysDict 实体类
+     * @param sysUser 实体类
      * @return 是否成功
      * @since 2023-11-27
      */
     @Operation(summary = "修改")
     @PutMapping("")
-    public Boolean update(@RequestBody SysDict sysDict) {
-        return this.iSysDictService.updateById(sysDict);
+    public Boolean update(@RequestBody SysUser sysUser) {
+        return this.iSysUserService.updateById(sysUser);
 
     }
 
@@ -79,7 +80,7 @@ public class SysDictController {
     @DeleteMapping()
     @Operation(summary = "根据id删除")
     public Boolean remove(@RequestParam(value = "id", required = true) Long id) {
-        return this.iSysDictService.removeById(id);
+        return this.iSysUserService.removeById(id);
     }
 
 }

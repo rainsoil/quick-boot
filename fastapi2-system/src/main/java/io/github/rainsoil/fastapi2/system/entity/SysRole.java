@@ -12,7 +12,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 /**
 * <p>
-    * 字典表
+    * 系统角色表
  * </p>
  *
  * @author luyanan
@@ -21,9 +21,9 @@ import lombok.experimental.Accessors;
 @Getter
 @Setter
 @Accessors(chain = true)
-@TableName("sys_dict")
-@Schema(name = "SysDict", description = "$!{table.comment}")
-public class SysDict extends BaseEntity {
+@TableName("sys_role")
+@Schema(name = "SysRole", description = "$!{table.comment}")
+public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
     /**
@@ -34,17 +34,24 @@ public class SysDict extends BaseEntity {
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
     /**
-    * 字典类型
+    * 角色名称
     */
 
-    @Schema(description = "字典类型")
-    @TableField("type")
-    private String type;
+    @Schema(description = "角色名称")
+    @TableField("role_name")
+    private String roleName;
     /**
-    * 字典描述
+    * 角色编码
     */
 
-    @Schema(description = "字典描述")
-    @TableField("description")
-    private String description;
+    @Schema(description = "角色编码")
+    @TableField("role_code")
+    private String roleCode;
+    /**
+    * 备注
+    */
+
+    @Schema(description = "备注")
+    @TableField("remark")
+    private String remark;
 }
