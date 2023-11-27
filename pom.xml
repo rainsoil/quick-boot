@@ -13,6 +13,7 @@
         <module>fastapi2-common</module>
         <module>fastapi2-core</module>
         <module>fastapi2-system</module>
+        <module>fastapi2-web</module>
     </modules>
 
     <properties>

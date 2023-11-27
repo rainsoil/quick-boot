@@ -2,7 +2,6 @@ package io.github.rainsoil.fastapi2.system.controller;
 
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
-import io.github.rainsoil.fastapi2.common.core.R;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
 import io.github.rainsoil.fastapi2.system.entity.SysDict;
 import io.github.rainsoil.fastapi2.system.service.ISysDictService;

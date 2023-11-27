@@ -1,6 +1,5 @@
 package io.github.rainsoil.fastapi2.common.logger;
 
-import cn.hutool.core.lang.Opt;
 import cn.hutool.extra.spring.SpringUtil;
 import io.github.rainsoil.fastapi2.common.logger.annotation.IgnoreLogger;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +7,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.Method;
 
