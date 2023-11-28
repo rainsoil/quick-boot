@@ -28,7 +28,7 @@
         <hutool-all.version>5.8.15</hutool-all.version>
         <lombok.version>1.18.24</lombok.version>
         <spring.boot.version>2.5.14</spring.boot.version>
-        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <mybatis-plus.version>3.5.3</mybatis-plus.version>
         <mybatis-plus-join.version>1.2.4</mybatis-plus-join.version>
         <yitter-idgenerator.version>1.0.6</yitter-idgenerator.version>
         <flyway-core.version>8.0.5</flyway-core.version>

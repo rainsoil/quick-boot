@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.autoconfigure.MybatisPlusAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * mybatis plus 扩展类配置类
@@ -21,6 +22,7 @@ public class MybatisPlusExtendAutoConfiguration {
      * @since 2023/09/16
      */
     @Bean
+    @Primary
     public MySqlInjector mySqlInjector() {
         return new MySqlInjector();
     }
