@@ -3,6 +3,9 @@ package io.github.rainsoil.fastapi2.common.security.config;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 安全配置类
  *
@@ -16,6 +19,14 @@ public class SpringSecurityProperties {
 
     public static final String PREFIX = "spring.security";
 
+
+    /**
+     * 忽略授权登录的url
+     *
+     * @since 2023/11/28
+     */
+
+    private List<String> ignoreUrls = new ArrayList<>();
 
     /**
      * token配置
