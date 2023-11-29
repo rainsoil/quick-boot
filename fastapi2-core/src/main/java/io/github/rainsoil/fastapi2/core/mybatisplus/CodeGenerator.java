@@ -35,7 +35,7 @@ public class CodeGenerator {
     public static void main(String[] args) {
 
         String filePath = "E:/fastapi";
-        String configPath = System.getProperty("user.dir") + "/fastapi2-system/src/main/resources/application-dev.yml";
+        String configPath = System.getProperty("user.dir") + "/fastapi2-web/src/main/resources/application-dev.yml";
         Map<String, String> configs = YmlUtils.getYmlByFileName(configPath);
 
         String url = configs.get("spring.datasource.url");
@@ -76,8 +76,8 @@ public class CodeGenerator {
                 })
                 .globalConfig(builder -> {
                     builder.author("luyanan") // 设置作者
-                            .enableSpringdoc()
-//                            .enableSwagger() // 开启 swagger 模式
+//                            .enableSpringdoc()
+                            .enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
 
                             .outputDir(filePath); // 指定输出目录

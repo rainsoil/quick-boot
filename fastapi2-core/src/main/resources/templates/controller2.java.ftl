@@ -45,7 +45,7 @@ class ${table.controllerName}<#if superControllerClass??> : ${superControllerCla
 * @return 分页返回
 * @since ${date}
 */
-@Operation(summary = "分页")
+@ApiOperation(value = "分页")
 @PostMapping("page")
 public PageInfo<${entity}> page(@RequestBody PageRequest<${entity}> pageRequest) {
     PageInfo<${entity}> pageInfo = ${table.serviceName?uncap_first}.page(pageRequest, new PageHandler<${entity}>() {
@@ -61,11 +61,10 @@ public PageInfo<${entity}> page(@RequestBody PageRequest<${entity}> pageRequest)
         * @since ${date}
         */
         @PostMapping("")
-       @Operation(summary  = "保存")
+       @ApiOperation(value  = "保存")
         public Boolean save(@RequestBody ${entity} ${entity?uncap_first}) {
 
-        this.${table.serviceName?uncap_first}.save(${entity?uncap_first});
-        return R.ok();
+        return this.${table.serviceName?uncap_first}.save(${entity?uncap_first});
         }
 
         /**
@@ -75,7 +74,7 @@ public PageInfo<${entity}> page(@RequestBody PageRequest<${entity}> pageRequest)
         * @return 是否成功
         * @since ${date}
         */
-        @Operation(summary  = "修改")
+        @ApiOperation(value  = "修改")
         @PutMapping("")
         public Boolean update(@RequestBody ${entity} ${entity?uncap_first}) {
         return   this.${table.serviceName?uncap_first}.updateById(${entity?uncap_first});
@@ -90,7 +89,7 @@ public PageInfo<${entity}> page(@RequestBody PageRequest<${entity}> pageRequest)
         * @since ${date}
         */
         @DeleteMapping()
-        @Operation(summary  = "根据id删除")
+        @ApiOperation(value  = "根据id删除")
         public Boolean remove(@RequestParam(value = "id", required = true) Long id) {
         return this.${table.serviceName?uncap_first}.removeById(id);
         }

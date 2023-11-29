@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import io.github.rainsoil.fastapi2.core.BaseEntity;
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
@@ -15,13 +16,13 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author luyanan
- * @since 2023-11-27
+ * @since 2023-11-29
  */
 @Getter
 @Setter
 @Accessors(chain = true)
 @TableName("sys_role_menu")
-@Schema(name = "SysRoleMenu", description = "$!{table.comment}")
+@ApiModel(value = "SysRoleMenu对象", description = "系统角色菜单关联表")
 public class SysRoleMenu extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
@@ -29,21 +30,21 @@ public class SysRoleMenu extends BaseEntity {
     * id
     */
 
-    @Schema(description = "id")
+    @ApiModelProperty("id")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
     /**
     * 角色id
     */
 
-    @Schema(description = "角色id")
+    @ApiModelProperty("角色id")
     @TableField("role_id")
     private Long roleId;
     /**
     * 菜单id
     */
 
-    @Schema(description = "菜单id")
+    @ApiModelProperty("菜单id")
     @TableField("menu_Id")
     private Long menuId;
 }

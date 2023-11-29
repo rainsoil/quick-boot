@@ -29,6 +29,13 @@ spring:
     enable: true
     restful:
       enable: true
+  security:
+    ignore-urls:
+      - doc.html
+      - /v3/api-docs/swagger-config
+      - /v3/api-docs
+      - /v3/api-docs/**
+      - /swagger-ui/index.html
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:
@@ -43,24 +50,21 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 # springdoc-openapi项目配置
-springdoc:
-  swagger-ui:
-    path: /swagger-ui.html
-    tags-sorter: alpha
-    operations-sorter: alpha
-  api-docs:
-    path: /v3/api-docs
-  group-configs:
-    - group: 'default'
-      paths-to-match: '/**'
-      packages-to-scan: io.github.rainsoil.fastapi2.system
-# knife4j的增强配置，不需要增强可以不配
 knife4j:
-  setting:
-    language: zh_cn
-    enable-version: true
-  basic:
-    enable: true
-    username: fastapi
-    password: fastapi
-  cors: true
+  enable: true
+  openapi:
+    title: 快速开发平台
+    description: 快速开发平台
+
+    concat: luyanan
+    url: https://docs.xiaominfo.com
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      test1:
+        group-name: 分组名称
+        api-rule: package
+        api-rule-resources:
+          - io.github.rainsoil.fastapi2.system
