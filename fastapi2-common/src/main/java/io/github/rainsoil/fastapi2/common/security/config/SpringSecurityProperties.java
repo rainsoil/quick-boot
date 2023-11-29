@@ -70,7 +70,10 @@ public class SpringSecurityProperties {
 		 * @since 2023/11/28
 		 */
 
-		private String headerKey = "token";
+		private String headerKey = "Authorization";
+
+
+		private String tokenType = "Bearer";
 	}
 
 }

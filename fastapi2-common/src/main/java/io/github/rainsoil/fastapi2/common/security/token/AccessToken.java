@@ -25,6 +25,8 @@ public class AccessToken implements Serializable {
 	private String accessToken;
 
 
+	@JsonProperty("token_type")
+	private String tokenType;
 	/**
 	 * 过期时间
 	 *

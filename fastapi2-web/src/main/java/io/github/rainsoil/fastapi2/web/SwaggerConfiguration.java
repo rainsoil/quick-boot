@@ -66,7 +66,7 @@ public class SwaggerConfiguration {
 		aParameterBuilder.name("source").description("来源(WEB/MINI)").modelRef(new ModelRef("string")).parameterType("header")
 				.defaultValue("WEB")
 				.required(true).build();
-		List<Parameter> aParameters = Arrays.asList();
+		List<Parameter> aParameters = Lists.newArrayList();
 		aParameters.add(aParameterBuilder.build());
 		SecurityReference securityReference = new SecurityReference("oauth2",
 				scopes.toArray(new AuthorizationScope[]{}));

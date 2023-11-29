@@ -68,3 +68,6 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - io.github.rainsoil.fastapi2.system
+
+sm4:
+  key: 0123456789abcdeffedcba9876543210

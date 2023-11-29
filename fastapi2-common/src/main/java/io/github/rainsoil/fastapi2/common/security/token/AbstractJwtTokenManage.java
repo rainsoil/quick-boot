@@ -37,6 +37,7 @@ public class AbstractJwtTokenManage implements TokenManage {
 		AccessToken accessToken = new AccessToken();
 		accessToken.setAccessToken(token);
 		accessToken.setUser(userDetails);
+		accessToken.setTokenType(tokenProperties.getTokenType());
 		accessToken.setExpireTime(tokenProperties.getExpireTime());
 		return accessToken;
 	}
@@ -46,6 +47,10 @@ public class AbstractJwtTokenManage implements TokenManage {
 		if (StrUtil.isBlank(token)) {
 			return null;
 		}
+		if (!token.startsWith(securityProperties.getToken().getTokenType())) {
+			return null;
+		}
+		token = token.replace(securityProperties.getToken().getTokenType(), "").trim();
 		Object user = null;
 		try {
 			SpringSecurityProperties.TokenProperties tokenProperties = securityProperties.getToken();
