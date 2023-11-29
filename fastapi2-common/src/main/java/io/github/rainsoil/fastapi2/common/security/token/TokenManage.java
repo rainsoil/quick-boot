@@ -1,6 +1,5 @@
 package io.github.rainsoil.fastapi2.common.security.token;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpServletRequest;

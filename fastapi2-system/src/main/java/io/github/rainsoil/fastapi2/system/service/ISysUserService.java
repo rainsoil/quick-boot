@@ -13,4 +13,12 @@ import io.github.rainsoil.fastapi2.common.data.mybatis.IBaseService;
  */
 public interface ISysUserService extends IBaseService<SysUser> {
 
+	/**
+	 * 根据用户名获取用户
+	 *
+	 * @param username 用户名
+	 * @return 用户
+	 * @since 2023/11/29
+	 */
+	SysUser findByUserName(String username);
 }

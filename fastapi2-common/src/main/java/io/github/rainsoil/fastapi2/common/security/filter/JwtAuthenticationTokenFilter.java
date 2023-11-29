@@ -2,6 +2,7 @@ package io.github.rainsoil.fastapi2.common.security.filter;
 
 import io.github.rainsoil.fastapi2.common.security.token.TokenManage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,24 +24,24 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
+	@Autowired
+	private TokenManage tokenManage;
 
-    private TokenManage tokenManage;
+	@Override
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        try {
-            UserDetails userDetails = tokenManage.getUserDetails(request);
-            if (null != userDetails && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                logger.debug(String.format("Authenticated userDetail %s, setting security context", userDetails.getUsername()));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (Exception e) {
+		try {
+			UserDetails userDetails = tokenManage.getUserDetails(request);
+			if (null != userDetails && SecurityContextHolder.getContext().getAuthentication() == null) {
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+				logger.debug(String.format("Authenticated userDetail %s, setting security context", userDetails.getUsername()));
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		} catch (Exception e) {
 //            e.printStackTrace();
-            throw e;
-        }
-        filterChain.doFilter(request, response);
-    }
+			throw e;
+		}
+		filterChain.doFilter(request, response);
+	}
 }

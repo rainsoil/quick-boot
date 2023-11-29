@@ -1,11 +1,14 @@
 package io.github.rainsoil.fastapi2.system.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.rainsoil.fastapi2.system.entity.SysUser;
 import io.github.rainsoil.fastapi2.system.mapper.SysUserMapper;
 import io.github.rainsoil.fastapi2.system.service.ISysUserService;
 import io.github.rainsoil.fastapi2.common.data.mybatis.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+
 /**
  * <p>
  * 系统用户表 服务实现类
@@ -18,4 +21,13 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser> implements ISysUserService {
 
+	@Override
+	public SysUser findByUserName(String username) {
+
+		if (StrUtil.isBlank(username)) {
+			return null;
+		}
+		SysUser sysUser = this.getOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUsername, username));
+		return sysUser;
+	}
 }

@@ -1,97 +1,97 @@
 package io.github.rainsoil.fastapi2.common.exception;
 
 /**
- * 全局异常码
+ * 全局错误异常码
  *
  * @author luyanan
- * @since 2023/09/09
+ * @since 2023/09/08
  **/
 public interface GlobalMsgCode {
 
-    /**
-     * 成功
-     *
-     * @since 2023/09/09
-     */
 
-    int SUCCESS = 200;
+	/**
+	 * 成功
+	 *
+	 * @since 2023/09/08
+	 */
 
-
-    /**
-     * 内部服务器错误
-     *
-     * @since 2023/09/09
-     */
-    int INTERNAL_SERVER_ERROR = 500;
+	int SUCCESS = 200;
 
 
-    /**
-     * 错误请求
-     *
-     * @since 2023/09/09
-     */
+	/**
+	 * 内部服务器错误
+	 *
+	 * @since 2023/09/08
+	 */
+	int INTERNAL_SERVER_ERROR = 500;
 
 
-    int BAD_REQUEST = 400;
+	/**
+	 * 错误请求
+	 *
+	 * @since 2023/09/08
+	 */
 
 
-    /**
-     * 未授权
-     *
-     * @since 2023/09/09
-     */
-
-    int UNAUTHORIZED = 401;
+	int BAD_REQUEST = 400;
 
 
-    /**
-     * 禁止
-     *
-     * @since 2023/09/09
-     */
+	/**
+	 * 未授权
+	 *
+	 * @since 2023/09/08
+	 */
 
-    int FORBIDDEN = 403;
-
-    /**
-     * 未找到
-     *
-     * @since 2023/09/09
-     */
-
-    int NOT_FOUND = 404;
-
-    /**
-     * 方法未允许
-     *
-     * @since 2023/09/09
-     */
-
-    int METHOD_NOT_ALLOWED = 405;
-
-    /**
-     * 添加失败
-     *
-     * @since 2023/09/09
-     */
-
-    int SAVE_FAIR = 600;
+	int UNAUTHORIZED = 401;
 
 
-    /**
-     * 修改失败
-     *
-     * @since 2023/09/09
-     */
+	/**
+	 * 禁止
+	 *
+	 * @since 2023/09/08
+	 */
+
+	int FORBIDDEN = 403;
+
+	/**
+	 * 未找到
+	 *
+	 * @since 2023/09/08
+	 */
+
+	int NOT_FOUND = 404;
+
+	/**
+	 * 方法未允许
+	 *
+	 * @since 2023/09/08
+	 */
+
+	int METHOD_NOT_ALLOWED = 405;
+
+	/**
+	 * 添加失败
+	 *
+	 * @since 2023/09/08
+	 */
+
+	int SAVE_FAIR = 600;
 
 
-    int UPDATE_FAIL = 601;
+	/**
+	 * 修改失败
+	 *
+	 * @since 2023/09/08
+	 */
 
 
-    /**
-     * 删除失败
-     *
-     * @since 2023/09/09
-     */
+	int UPDATE_FAIL = 601;
 
-    int DELETE_FAIL = 602;
+
+	/**
+	 * 删除失败
+	 *
+	 * @since 2023/09/08
+	 */
+	int DELETE_FAIL = 602;
 }

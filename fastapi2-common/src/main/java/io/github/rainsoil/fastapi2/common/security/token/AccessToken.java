@@ -1,5 +1,6 @@
 package io.github.rainsoil.fastapi2.common.security.token;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,55 +16,55 @@ import java.util.List;
 @Data
 public class AccessToken implements Serializable {
 
-    /**
-     * 刷新token
-     *
-     * @since 2023/11/28
-     */
-
-    private String accessToken;
-
-
-    /**
-     * 过期时间
-     *
-     * @since 2023/11/28
-     */
-
-    private Long expireTime;
-
-    /**
-     * 用户信息
-     *
-     * @since 2023/11/28
-     */
-
-    private UserDetails user;
+	/**
+	 * 刷新token
+	 *
+	 * @since 2023/11/28
+	 */
+	@JsonProperty("access_token")
+	private String accessToken;
 
 
-    /**
-     * 用户角色编码
-     *
-     * @since 2023/11/28
-     */
+	/**
+	 * 过期时间
+	 *
+	 * @since 2023/11/28
+	 */
 
-    private List<String> roleCodes;
+	private Long expireTime;
+
+	/**
+	 * 用户信息
+	 *
+	 * @since 2023/11/28
+	 */
+
+	private UserDetails user;
 
 
-    /**
-     * 角色id
-     *
-     * @since 2023/11/28
-     */
+	/**
+	 * 用户角色编码
+	 *
+	 * @since 2023/11/28
+	 */
 
-    private List<Long> roles;
+	private List<String> roleCodes;
 
 
-    /**
-     * 授权
-     *
-     * @since 2023/11/28
-     */
+	/**
+	 * 角色id
+	 *
+	 * @since 2023/11/28
+	 */
 
-    private List<String> auths;
+	private List<Long> roles;
+
+
+	/**
+	 * 授权
+	 *
+	 * @since 2023/11/28
+	 */
+
+	private List<String> auths;
 }
