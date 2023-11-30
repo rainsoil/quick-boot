@@ -30,7 +30,7 @@ public interface TokenManage {
      * @return 用户信息
      * @since 2023/11/28
      */
-    UserDetails getUserDetails(String token);
+    String getUserDetails(String token);
 
 
     /**
@@ -40,5 +40,5 @@ public interface TokenManage {
      * @return
      * @since 2023/11/28
      */
-    UserDetails getUserDetails(HttpServletRequest request);
+	String getUserDetails(HttpServletRequest request);
 }

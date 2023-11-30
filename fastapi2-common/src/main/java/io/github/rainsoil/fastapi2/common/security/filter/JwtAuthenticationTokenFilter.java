@@ -31,7 +31,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 		try {
-			UserDetails userDetails = tokenManage.getUserDetails(request);
+			String userDetails = tokenManage.getUserDetails(request);
+
 			if (null != userDetails && SecurityContextHolder.getContext().getAuthentication() == null) {
 				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

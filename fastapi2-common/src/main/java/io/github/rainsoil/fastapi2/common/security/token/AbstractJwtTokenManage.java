@@ -43,7 +43,7 @@ public class AbstractJwtTokenManage implements TokenManage {
 	}
 
 	@Override
-	public UserDetails getUserDetails(String token) {
+	public String getUserDetails(String token) {
 		if (StrUtil.isBlank(token)) {
 			return null;
 		}
@@ -56,14 +56,14 @@ public class AbstractJwtTokenManage implements TokenManage {
 			SpringSecurityProperties.TokenProperties tokenProperties = securityProperties.getToken();
 			Jws<Claims> jws = Jwts.parser().setSigningKey(tokenProperties.getSignKey()).parseClaimsJws(token);
 			user = jws.getBody().get("user");
-			return JSON.parseObject(user.toString(), UserDetails.class);
+			return user.toString();
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	@Override
-	public UserDetails getUserDetails(HttpServletRequest request) {
+	public String getUserDetails(HttpServletRequest request) {
 		if (null == request) {
 			return null;
 		}
