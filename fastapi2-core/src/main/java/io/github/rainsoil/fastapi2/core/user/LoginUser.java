@@ -48,6 +48,13 @@ public class LoginUser implements UserDetails {
 
 
 	/**
+	 * 姓名
+	 *
+	 * @since 2023/11/30
+	 */
+
+	private String nickName;
+	/**
 	 * 角色编码
 	 *
 	 * @since 2023/11/29
@@ -72,6 +79,15 @@ public class LoginUser implements UserDetails {
 	 */
 
 	private List<String> auths;
+
+
+	/**
+	 * 客户端id
+	 *
+	 * @since 2023/11/30
+	 */
+
+	private String clientId;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

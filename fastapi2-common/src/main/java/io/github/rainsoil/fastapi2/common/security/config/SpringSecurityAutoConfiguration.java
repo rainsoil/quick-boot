@@ -1,5 +1,7 @@
 package io.github.rainsoil.fastapi2.common.security.config;
 
+import io.github.rainsoil.fastapi2.common.security.ClientProperties;
+import io.github.rainsoil.fastapi2.common.security.ClientUtils;
 import io.github.rainsoil.fastapi2.common.security.SmPasswordEncoder;
 import io.github.rainsoil.fastapi2.common.security.filter.JwtAuthenticationTokenFilter;
 import io.github.rainsoil.fastapi2.common.security.handler.JwtAuthenticationEntryPoint;
@@ -21,9 +23,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @since 2023/11/29
  **/
 @Configuration
-@EnableConfigurationProperties(SpringSecurityProperties.class)
+@EnableConfigurationProperties({SpringSecurityProperties.class, ClientProperties.class})
 @Import(WebSecurityConfig.class)
 public class SpringSecurityAutoConfiguration {
+
+	@Bean
+	public ClientUtils clientUtils() {
+		return new ClientUtils();
+	}
+
 	/**
 	 * 装载BCrypt密码编码器
 	 *
@@ -33,6 +41,7 @@ public class SpringSecurityAutoConfiguration {
 	public PasswordEncoder passwordEncoder() {
 		return new SmPasswordEncoder();
 	}
+
 	/**
 	 * token管理
 	 *

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Import;
  **/
 @Configuration
 @ConditionalOnProperty(prefix = SpringExtendProperties.PREFIX, value = "enable", matchIfMissing = false, havingValue = "true")
-@Import(RestFulAutoConfiguration.class)
+@Import({RestFulAutoConfiguration.class, SpringContextHolder.class})
 @EnableConfigurationProperties({SpringExtendProperties.class})
 public class SpringExtendAutoConfiguration {
 

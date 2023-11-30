@@ -36,6 +36,18 @@ spring:
       - /v3/api-docs
       - /v3/api-docs/**
       - /swagger-ui/index.html
+    client:
+      clients:
+        - name: web
+          secret: web
+          encryption: true
+          verificationcode: false
+
+        - name: swagger
+          secret: swagger
+          encryption: false
+          verificationcode: false
+
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
   global-config:

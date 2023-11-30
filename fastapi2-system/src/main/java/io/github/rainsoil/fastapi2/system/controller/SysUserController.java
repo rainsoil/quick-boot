@@ -1,15 +1,22 @@
 package io.github.rainsoil.fastapi2.system.controller;
 
+import cn.hutool.core.lang.Opt;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
+import io.github.rainsoil.fastapi2.core.user.LoginUser;
+import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
 import io.github.rainsoil.fastapi2.system.entity.SysUser;
 import io.github.rainsoil.fastapi2.system.service.ISysUserService;
+import io.github.rainsoil.fastapi2.system.vo.UserInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * 系统用户表 前端控制器
@@ -25,6 +32,27 @@ import org.springframework.web.bind.annotation.*;
 public class SysUserController {
 
 	private final ISysUserService iSysUserService;
+
+
+	/**
+	 * 获取登录用户信息
+	 *
+	 * @return
+	 * @since 2023/11/30
+	 */
+	@GetMapping("getUserInfo")
+	public UserInfoVo getUserInfo() {
+		LoginUser user = LoginUserUtils.getUser();
+
+		return new UserInfoVo()
+				.setUserInfo(new SysUser()
+						.setId(user.getUserId())
+						.setUsername(user.getUsername())
+						.setName(user.getNickName()))
+				.setPermission(Opt.ofEmptyAble(user.getAuths()).orElse(new ArrayList<>()))
+				.
+						setRoles(Opt.ofEmptyAble(user.getRoleCodes()).map(a -> a.stream().collect(Collectors.joining(","))).orElse(null));
+	}
 
 	/**
 	 * 分页

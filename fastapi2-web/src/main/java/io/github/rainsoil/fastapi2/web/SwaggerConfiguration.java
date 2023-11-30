@@ -1,4 +1,5 @@
 package io.github.rainsoil.fastapi2.web;
+
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
 import io.swagger.annotations.ApiOperation;
@@ -16,7 +17,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -52,8 +52,11 @@ public class SwaggerConfiguration {
 				"http://localhost:" + port + (StrUtil.isBlank(contextPath) || contextPath.equals("''") ? "" : contextPath) + "/login";
 		ResourceOwnerPasswordCredentialsGrant resourceOwnerPasswordCredentialsGrant = new ResourceOwnerPasswordCredentialsGrant(
 				passwordTokenUrl);
+
 		grantTypes.add(resourceOwnerPasswordCredentialsGrant);
+
 		OAuth oAuth = new OAuthBuilder().name("oauth2").grantTypes(grantTypes).build();
+
 
 		//context
 		//scope方位
@@ -71,7 +74,7 @@ public class SwaggerConfiguration {
 		SecurityReference securityReference = new SecurityReference("oauth2",
 				scopes.toArray(new AuthorizationScope[]{}));
 		SecurityContext securityContext = new SecurityContext(Lists.newArrayList(securityReference),
-				PathSelectors.ant("/api/**"));
+				PathSelectors.ant("/**"));
 		//schemas
 		List<SecurityScheme> securitySchemes = Lists.newArrayList(oAuth);
 		//securyContext
