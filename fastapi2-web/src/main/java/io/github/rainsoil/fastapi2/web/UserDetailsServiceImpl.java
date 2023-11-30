@@ -1,6 +1,7 @@
 package io.github.rainsoil.fastapi2.web;
 
 import cn.hutool.core.util.StrUtil;
+import io.github.rainsoil.fastapi2.common.security.ClientProperties;
 import io.github.rainsoil.fastapi2.common.security.ClientUtils;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
@@ -43,6 +44,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		username = clientUtils.paramHandler(username);
+		ClientProperties.Client client = clientUtils.getClientId();
 		SysUser sysUser = sysUserService.findByUserName(username);
 		if (null == sysUser) {
 			throw new UsernameNotFoundException("用户不存在");
@@ -56,6 +58,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		loginUser.setPassword(sysUser.getPassword());
 		loginUser.setUsername(sysUser.getUsername());
 		loginUser.setNickName(sysUser.getName());
+		loginUser.setClientId(client.getName());
 		loginUser.setRoles(sysRoles.stream().map(a -> a.getId()).distinct().collect(Collectors.toList()));
 		loginUser.setRoleCodes(sysRoles.stream().map(a -> a.getRoleCode()).distinct().collect(Collectors.toList()));
 		loginUser.setAuths(menuList.stream().filter(a -> StrUtil.isNotBlank(a.getPermission())).map(a -> a.getPermission()).distinct().collect(Collectors.toList()));

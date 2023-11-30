@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
  * @since 2023/11/29
  **/
 @Data
-public class LoginUser implements UserDetails {
-
+public class LoginUser implements UserDetails, Serializable {
+	private static final long serialVersionUID = 1L;
 	/**
 	 * 用户id
 	 *

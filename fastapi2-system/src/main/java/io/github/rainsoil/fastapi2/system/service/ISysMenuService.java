@@ -1,5 +1,6 @@
 package io.github.rainsoil.fastapi2.system.service;
 
+import cn.hutool.core.lang.tree.Tree;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
 import io.github.rainsoil.fastapi2.common.data.mybatis.IBaseService;
 
@@ -24,4 +25,14 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
 	 */
 	List<SysMenu> listByRoleId(List<Long> roleIds);
 
+	/**
+	 * 获取用户的菜单
+	 *
+	 * @param type     类型
+	 * @param userId   用户id
+	 * @param parentId 父id
+	 * @return
+	 * @since 2023/11/30
+	 */
+	List<Tree<Long>> getMenu(String type, Long userId, Long parentId);
 }

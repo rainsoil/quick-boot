@@ -1,8 +1,11 @@
 package io.github.rainsoil.fastapi2.system.controller;
 
+import cn.hutool.core.lang.tree.Tree;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
+import io.github.rainsoil.fastapi2.core.user.LoginUser;
+import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
 import io.github.rainsoil.fastapi2.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
@@ -10,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 系统菜单表 前端控制器
@@ -80,6 +85,20 @@ public class SysMenuController {
 	@ApiOperation(value = "根据id删除")
 	public Boolean remove(@RequestParam(value = "id", required = true) Long id) {
 		return this.iSysMenuService.removeById(id);
+	}
+
+
+	/**
+	 * 获取当前用户菜单
+	 *
+	 * @param type
+	 * @return
+	 * @since 2023/11/30
+	 */
+	@GetMapping("getMenu")
+	public List<Tree<Long>> getMenu(String type) {
+
+		return this.iSysMenuService.getMenu(type, LoginUserUtils.getUser().getUserId());
 	}
 
 }

@@ -1,5 +1,6 @@
 package io.github.rainsoil.fastapi2.common.security.filter;
 
+import com.alibaba.fastjson.JSON;
 import io.github.rainsoil.fastapi2.common.security.token.TokenManage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +35,10 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 			String userDetails = tokenManage.getUserDetails(request);
 
 			if (null != userDetails && SecurityContextHolder.getContext().getAuthentication() == null) {
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				UserDetails details = JSON.parseObject(userDetails, UserDetails.class);
+				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, details.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				logger.debug(String.format("Authenticated userDetail %s, setting security context", userDetails.getUsername()));
+				logger.debug(String.format("Authenticated userDetail %s, setting security context", details.getUsername()));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		} catch (Exception e) {

@@ -35,7 +35,7 @@ public class LoginUserUtils {
 		if (null == details) {
 			return null;
 		}
-		return JSON.parseObject(JSON.toJSONString(details), LoginUser.class);
+		return JSON.parseObject(details.toString(), LoginUser.class);
 
 	}
 }
