@@ -2,6 +2,8 @@ package io.github.rainsoil.fastapi2.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.lang.tree.Tree;
+import cn.hutool.core.lang.tree.TreeNode;
+import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
@@ -16,7 +18,10 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -57,7 +62,9 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 		List<Long> roleIds = user.getRoles();
 		List<SysMenu> sysMenus = this.listByRoleId(roleIds);
 
-		sysMenus.stream().filter(menuTypePredicate(type)).map());
+		List<TreeNode<Long>> list = sysMenus.stream().filter(menuTypePredicate(type)).map(getNodeFunction()).collect(Collectors.toList());
+		Long parent = parentId == null ? -1L : parentId;
+		return TreeUtil.build(list, parent);
 	}
 
 
@@ -71,14 +78,38 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 		};
 	}
 
-	private  function<SysMenu, Tree<Long>> mapToTree() {
+	private Function<SysMenu, TreeNode<Long>> getNodeFunction() {
 		return vo -> {
-			Tree<Long> tree = new Tree<>();
-			tree.setId(vo.getId());
-			tree.setParentId(vo.getParentId());
-			tree.setName(vo.getMenuName());
-			tree.setWeight(vo.getSort());
-			return tree;
+			TreeNode<Long> node = new TreeNode<>();
+			node.setId(vo.getId());
+			node.setParentId(vo.getParentId());
+			node.setName(vo.getMenuName());
+			node.setWeight(vo.getSort());
+			Map<String, Object> ext = new HashMap<>();
+
+
+			ext.put("icon", vo.getIcon());
+			ext.put("path", vo.getPath());
+			if (vo.getBlank().equals("1")) {
+				// 不是外链
+				ext.put("meta", new HashMap<String, Object>() {{
+
+					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
+				}});
+
+				ext.put("component", vo.getPath());
+			} else {
+				ext.put("href", vo.getPath());
+				ext.put("meta", new HashMap<String, Object>() {{
+					put("target", "_blank");
+					put("title", vo.getMenuName());
+					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
+				}});
+			}
+
+			node.setExtra(ext);
+
+			return node;
 		};
 	}
 }

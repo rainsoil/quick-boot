@@ -52,17 +52,21 @@ public class ClientUtils {
 	 */
 	public String paramHandler(String param, HttpServletRequest request) {
 
-		ClientProperties.Client client = getClientId(request);
-		String sm4Key = SpringUtil.getProperty("sm4.key");
-		param = URLUtil.decode(param);
-		if (client.getEncryption()) {
-			// 解密
-			if (StrUtil.isBlank(sm4Key)) {
-				throw new RuntimeException("sm4Key 不能为空");
+		try {
+			ClientProperties.Client client = getClientId(request);
+			String sm4Key = SpringUtil.getProperty("sm4.key");
+			param = URLUtil.decode(param);
+			if (client.getEncryption()) {
+				// 解密
+				if (StrUtil.isBlank(sm4Key)) {
+					throw new RuntimeException("sm4Key 不能为空");
+				}
+				// 解密
+				SM4 sm4 = new SM4(HexUtil.decodeHex(sm4Key));
+				param = sm4.decryptStr(param);
 			}
-			// 解密
-			SM4 sm4 = new SM4(HexUtil.decodeHex(sm4Key));
-			param = sm4.decryptStr(param);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
 		}
 		return param;
 

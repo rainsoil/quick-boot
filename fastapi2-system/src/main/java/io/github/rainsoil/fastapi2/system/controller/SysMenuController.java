@@ -7,6 +7,7 @@ import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
+import io.github.rainsoil.fastapi2.system.enums.MenuTypeEnum;
 import io.github.rainsoil.fastapi2.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -95,10 +96,22 @@ public class SysMenuController {
 	 * @return
 	 * @since 2023/11/30
 	 */
+	@ApiOperation(value = "获取当前用户菜单")
 	@GetMapping("getMenu")
-	public List<Tree<Long>> getMenu(String type) {
+	public List<Tree<Long>> getMenu(String type, @RequestParam(value = "parentId", required = false) Long parentId) {
+		return this.iSysMenuService.getMenu(type, LoginUserUtils.getUser().getUserId(), parentId);
+	}
 
-		return this.iSysMenuService.getMenu(type, LoginUserUtils.getUser().getUserId());
+	/**
+	 * 获取顶部菜单
+	 *
+	 * @return
+	 * @since 2023/11/30
+	 */
+	@ApiOperation(value = "获取顶部菜单")
+	@GetMapping("getTopMenu")
+	public List<Tree<Long>> getTopMenu(@RequestParam(value = "parentId", required = false) Long parentId) {
+		return this.iSysMenuService.getMenu(MenuTypeEnum.TOP_MENU.getType(), LoginUserUtils.getUser().getUserId(), parentId);
 	}
 
 }
