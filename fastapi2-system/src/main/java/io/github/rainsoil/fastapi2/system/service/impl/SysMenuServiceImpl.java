@@ -90,6 +90,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
 			ext.put("icon", vo.getIcon());
 			ext.put("path", vo.getPath());
+			ext.put("component", vo.getComponent());
 			if (vo.getBlank().equals("1")) {
 				// 不是外链
 				ext.put("meta", new HashMap<String, Object>() {{
@@ -97,7 +98,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
 				}});
 
-				ext.put("component", vo.getPath());
+
 			} else {
 				ext.put("href", vo.getPath());
 				ext.put("meta", new HashMap<String, Object>() {{

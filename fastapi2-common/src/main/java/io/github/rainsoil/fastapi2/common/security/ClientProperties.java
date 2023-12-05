@@ -3,7 +3,6 @@ package io.github.rainsoil.fastapi2.common.security;
 import io.github.rainsoil.fastapi2.common.security.config.SpringSecurityProperties;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;

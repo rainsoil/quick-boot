@@ -9,7 +9,6 @@ import cn.hutool.crypto.symmetric.SM4;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson.JSON;
 import io.github.rainsoil.fastapi2.common.spring.SpringContextHolder;
-import lombok.experimental.UtilityClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
