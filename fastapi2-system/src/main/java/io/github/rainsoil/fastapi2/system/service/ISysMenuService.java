@@ -35,4 +35,14 @@ public interface ISysMenuService extends IBaseService<SysMenu> {
 	 * @since 2023/11/30
 	 */
 	List<Tree<Long>> getMenu(String type, Long userId, Long parentId);
+
+	/**
+	 * 树形菜单
+	 *
+	 * @param lazy     是否懒加载
+	 * @param parentId 父id
+	 * @return
+	 * @since 2023/12/10
+	 */
+	List<Tree<Long>> treeMenu(boolean lazy, Long parentId);
 }

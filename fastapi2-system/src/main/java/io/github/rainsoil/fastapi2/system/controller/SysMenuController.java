@@ -3,6 +3,7 @@ package io.github.rainsoil.fastapi2.system.controller;
 import cn.hutool.core.lang.tree.Tree;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
+import io.github.rainsoil.fastapi2.common.core.R;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
@@ -114,4 +115,19 @@ public class SysMenuController {
 		return this.iSysMenuService.getMenu(MenuTypeEnum.TOP_MENU.getType(), LoginUserUtils.getUser().getUserId(), parentId);
 	}
 
+
+	/**
+	 * 属性表菜单
+	 *
+	 * @param lazy     是否 懒加载
+	 * @param parentId 父id
+	 * @return
+	 * @since 2023/12/10
+	 */
+	@ApiOperation(value = "属性表菜单")
+	public List<Tree<Long>> tree(boolean lazy, Long parentId) {
+
+
+		return iSysMenuService.treeMenu(lazy, parentId);
+	}
 }
