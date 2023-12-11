@@ -8,7 +8,7 @@ import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
-import io.github.rainsoil.fastapi2.system.enums.MenuTypeEnum;
+import io.github.rainsoil.fastapi2.system.enums.SysMenuEnums;
 import io.github.rainsoil.fastapi2.system.service.ISysMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -112,7 +112,7 @@ public class SysMenuController {
 	@ApiOperation(value = "获取顶部菜单")
 	@GetMapping("getTopMenu")
 	public List<Tree<Long>> getTopMenu(@RequestParam(value = "parentId", required = false) Long parentId) {
-		return this.iSysMenuService.getMenu(MenuTypeEnum.TOP_MENU.getType(), LoginUserUtils.getUser().getUserId(), parentId);
+		return this.iSysMenuService.getMenu(SysMenuEnums.MENU_TYPE_TOP_MENU.getValue(), LoginUserUtils.getUser().getUserId(), parentId);
 	}
 
 

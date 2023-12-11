@@ -5,11 +5,13 @@ import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.lang.tree.TreeNode;
 import cn.hutool.core.lang.tree.TreeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import io.github.rainsoil.fastapi2.core.user.LoginUser;
 import io.github.rainsoil.fastapi2.core.user.LoginUserUtils;
+import io.github.rainsoil.fastapi2.system.constants.Constants;
 import io.github.rainsoil.fastapi2.system.entity.SysMenu;
 import io.github.rainsoil.fastapi2.system.entity.SysRoleMenu;
-import io.github.rainsoil.fastapi2.system.enums.MenuTypeEnum;
+import io.github.rainsoil.fastapi2.system.enums.SysMenuEnums;
 import io.github.rainsoil.fastapi2.system.mapper.SysMenuMapper;
 import io.github.rainsoil.fastapi2.system.service.ISysMenuService;
 import io.github.rainsoil.fastapi2.common.data.mybatis.BaseServiceImpl;
@@ -63,18 +65,47 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 		List<SysMenu> sysMenus = this.listByRoleId(roleIds);
 
 		List<TreeNode<Long>> list = sysMenus.stream().filter(menuTypePredicate(type)).map(getNodeFunction()).collect(Collectors.toList());
-		Long parent = parentId == null ? -1L : parentId;
+		Long parent = parentId == null ? Constants.MENU_ROOT_ID : parentId;
 		return TreeUtil.build(list, parent);
+	}
+
+	@Override
+	public List<Tree<Long>> treeMenu(boolean lazy, Long parentId) {
+		LoginUser user = LoginUserUtils.getUser();
+		List<Long> roles = user.getRoles();
+		if (CollectionUtil.isEmpty(roles)) {
+			return new ArrayList<>();
+		}
+		List<SysMenu> sysMenus = this.listByRoleId(roles);
+
+		if (!lazy) {
+			List<TreeNode<Long>> collect = sysMenus.stream()
+					.map(getNodeFunction()).collect(Collectors.toList());
+
+			return TreeUtil.build(collect, Constants.MENU_ROOT_ID);
+		}
+
+		Long parent = parentId == null ? Constants.MENU_ROOT_ID : parentId;
+		List<TreeNode<Long>> collect = baseMapper
+				.selectList(
+						Wrappers.<SysMenu>lambdaQuery().eq(SysMenu::getParentId, parent)
+
+								.in(SysMenu::getId,
+										sysMenus.stream().map(a -> a.getId()).collect(Collectors.toList())
+								).orderByAsc(SysMenu::getSort))
+				.stream().map(getNodeFunction()).collect(Collectors.toList());
+
+		return TreeUtil.build(collect, parent);
 	}
 
 
 	public Predicate<SysMenu> menuTypePredicate(String type) {
 		return vo -> {
-			if (MenuTypeEnum.TOP_MENU.getDescription().equals(type)) {
-				return MenuTypeEnum.TOP_MENU.getType().equals(vo.getType());
+			if (SysMenuEnums.MENU_TYPE_TOP_MENU.getValue().equals(type)) {
+				return SysMenuEnums.MENU_TYPE_TOP_MENU.getType().equals(vo.getType());
 			}
 			// 其他查询 左侧 + 顶部
-			return !MenuTypeEnum.BUTTON.getType().equals(vo.getType());
+			return !SysMenuEnums.MENU_TYPE_BUTTON.getValue().equals(vo.getType());
 		};
 	}
 
