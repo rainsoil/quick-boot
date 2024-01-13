@@ -25,7 +25,10 @@ public class SmPasswordEncoder implements PasswordEncoder {
 	@Override
 	public String encode(CharSequence rawPassword) {
 		try {
-			rawPassword = clientUtils.paramHandler(rawPassword.toString());
+			if(null != clientUtils){
+				rawPassword = clientUtils.paramHandler(rawPassword.toString());
+			}
+
 
 			// 1. 将 密码 sm3 加密
 			String s = SmUtil.sm3(rawPassword.toString());

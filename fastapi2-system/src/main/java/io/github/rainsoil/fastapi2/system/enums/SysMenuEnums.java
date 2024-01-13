@@ -17,19 +17,23 @@ public enum SysMenuEnums implements IDictEnums {
 
 
 	/**
-	 * 左侧菜单
+	 * 左侧目录
 	 */
-	MENU_TYPE_LEFT_MENU(DictType.MENU_TYPE, "0", "left"),
+	MENU_TYPE_LEFT_MENU(DictType.MENU_TYPE, "left", "0"),
 
 	/**
-	 * 顶部菜单
+	 * 顶部目录
 	 */
-	MENU_TYPE_TOP_MENU(DictType.MENU_TYPE, "2", "top"),
+	MENU_TYPE_TOP_MENU(DictType.MENU_TYPE, "top", "1"),
 
+	/**
+	 * 菜单
+	 */
+	MENU(DictType.MENU_TYPE, "menu", "2"),
 	/**
 	 * 按钮
 	 */
-	MENU_TYPE_BUTTON(DictType.MENU_TYPE, "1", "button");;
+	MENU_TYPE_BUTTON(DictType.MENU_TYPE, "button", "3");;
 
 	private DictType type;
 

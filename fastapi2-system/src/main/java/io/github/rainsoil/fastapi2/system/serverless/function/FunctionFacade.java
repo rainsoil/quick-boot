@@ -3,6 +3,8 @@ package io.github.rainsoil.fastapi2.system.serverless.function;
 import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
+import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.data.mybatis.IBaseService;
@@ -10,6 +12,7 @@ import io.github.rainsoil.fastapi2.common.exception.WarningException;
 import io.github.rainsoil.fastapi2.common.spring.SpringContextHolder;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -33,7 +36,6 @@ public class FunctionFacade {
 			return null;
 		}
 		IBaseService baseService = (IBaseService) bean;
-
 		// 方法
 		String functionMethod = request.getFunctionMethod();
 		// 参数
@@ -81,8 +83,8 @@ public class FunctionFacade {
 			if (CollectionUtil.isEmpty(functionParams)) {
 				throw new WarningException("参数不能为空");
 			}
-			String paramStr = functionParams.get(0);
-			List<String> ids = JSON.parseArray(paramStr, String.class);
+			TableInfo tableInfo = TableInfoHelper.getTableInfo(baseService.getEntityClass());
+			List<?> ids = JSON.parseArray(JSON.toJSONString(functionParams), tableInfo.getKeyType());
 			boolean b = baseService.removeByIds(ids, true);
 			return b;
 		}

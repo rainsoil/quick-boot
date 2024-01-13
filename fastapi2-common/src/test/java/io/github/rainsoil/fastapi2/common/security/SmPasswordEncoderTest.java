@@ -19,7 +19,7 @@ public class SmPasswordEncoderTest {
 	@Test
 	public void encode() {
 
-		String str = "123456";
+		String str = "fastBoot123#";
 		PasswordEncoder passwordEncoder = new SmPasswordEncoder();
 		String encode = passwordEncoder.encode(str);
 		System.out.println(encode);

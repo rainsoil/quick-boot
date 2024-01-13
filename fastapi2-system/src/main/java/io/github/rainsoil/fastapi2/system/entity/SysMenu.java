@@ -40,7 +40,7 @@ public class SysMenu extends BaseEntity {
 
 	@ApiModelProperty("菜单名称")
 	@TableField("menu_name")
-	private String menuName;
+	private String name;
 	/**
 	 * 权限
 	 */

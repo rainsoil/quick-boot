@@ -112,7 +112,7 @@ public class ClientUtils {
 			if (null == details) {
 				return null;
 			}
-			String clientId = JSON.parseObject(JSON.toJSONString(details)).getString("clientId");
+			String clientId = JSON.parseObject(details.toString()).getString("clientId");
 			return Opt.ofBlankAble(clientId).map(a -> client.get(clientId)).orElse(null);
 		}
 		authorization = authorization.replace("Basic", "").trim();

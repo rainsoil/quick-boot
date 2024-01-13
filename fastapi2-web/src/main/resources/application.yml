@@ -16,7 +16,6 @@ spring:
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-
   flyway:
     ## 如果启动的时候需要flyway管理sql脚本的话，将enabled设置为true
     enabled: false
@@ -47,6 +46,18 @@ spring:
           secret: swagger
           encryption: false
           verificationcode: false
+  datasource:
+    hikari:
+      connection-timeout: 60000
+      validation-timeout: 3000
+      idle-timeout: 60000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      read-only: false
+  messages:
+    basename: i18n/message
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml

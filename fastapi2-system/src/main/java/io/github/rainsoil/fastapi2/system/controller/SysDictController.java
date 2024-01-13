@@ -4,12 +4,15 @@ import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
 import io.github.rainsoil.fastapi2.system.entity.SysDict;
+import io.github.rainsoil.fastapi2.system.entity.SysDictItem;
 import io.github.rainsoil.fastapi2.system.service.ISysDictService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 字典表 前端控制器
@@ -82,4 +85,20 @@ public class SysDictController {
 		return this.iSysDictService.removeById(id);
 	}
 
+
+	/**
+	 * 根据字典类型查询
+	 *
+	 * @param type  字典类型
+	 * @param style 是否携带样式
+	 * @return
+	 * @since 2024/01/04
+	 */
+	@GetMapping("dict/{type}")
+	@ApiOperation(value = "根据字典类型查询")
+	public List<SysDictItem> getByType(@PathVariable("type") String type, @RequestParam(value = "style", required = false, defaultValue = "false") Boolean style) {
+
+		return iSysDictService.getByType(type, style);
+
+	}
 }

@@ -1,5 +1,7 @@
 package io.github.rainsoil.fastapi2.system.controller;
 
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.rainsoil.fastapi2.common.core.PageInfo;
 import io.github.rainsoil.fastapi2.common.core.PageRequest;
 import io.github.rainsoil.fastapi2.common.data.mybatis.PageHandler;
@@ -10,6 +12,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 系统角色表 前端控制器
@@ -82,4 +86,18 @@ public class SysRoleController {
 		return this.iSysRoleService.removeById(id);
 	}
 
+
+	/**
+	 * 查询所有的角色
+	 *
+	 * @param roleName 角色名称
+	 * @return
+	 * @since 2024/01/06
+	 */
+	@GetMapping("choose/role")
+	@ApiOperation(value = "查询所有的角色")
+	public List<SysRole> list(String roleName) {
+
+		return iSysRoleService.list(new LambdaQueryWrapper<SysRole>().like(StrUtil.isNotBlank(roleName), SysRole::getRoleName, roleName));
+	}
 }

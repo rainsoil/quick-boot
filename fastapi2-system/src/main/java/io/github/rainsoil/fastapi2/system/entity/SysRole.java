@@ -1,18 +1,18 @@
 package io.github.rainsoil.fastapi2.system.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import io.github.rainsoil.fastapi2.core.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+
+import java.util.List;
+
 /**
-* <p>
-    * 系统角色表
+ * <p>
+ * 系统角色表
  * </p>
  *
  * @author luyanan
@@ -25,33 +25,43 @@ import lombok.experimental.Accessors;
 @ApiModel(value = "SysRole对象", description = "系统角色表")
 public class SysRole extends BaseEntity {
 
-    private static final long serialVersionUID = 1L;
-    /**
-    * id
-    */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * id
+	 */
 
-    @ApiModelProperty("id")
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
-    /**
-    * 角色名称
-    */
+	@ApiModelProperty("id")
+	@TableId(value = "id", type = IdType.ASSIGN_ID)
+	private Long id;
+	/**
+	 * 角色名称
+	 */
 
-    @ApiModelProperty("角色名称")
-    @TableField("role_name")
-    private String roleName;
-    /**
-    * 角色编码
-    */
+	@ApiModelProperty("角色名称")
+	@TableField(value = "role_name", condition = SqlCondition.LIKE)
+	private String roleName;
+	/**
+	 * 角色编码
+	 */
 
-    @ApiModelProperty("角色编码")
-    @TableField("role_code")
-    private String roleCode;
-    /**
-    * 备注
-    */
+	@ApiModelProperty("角色编码")
+	@TableField("role_code")
+	private String roleCode;
+	/**
+	 * 备注
+	 */
 
-    @ApiModelProperty("备注")
-    @TableField("remark")
-    private String remark;
+	@ApiModelProperty("备注")
+	@TableField("remark")
+	private String remark;
+
+
+	/**
+	 * 关联的菜单
+	 *
+	 * @since 2024/01/05
+	 */
+
+	@TableField(exist = false)
+	private List<Long> menus;
 }

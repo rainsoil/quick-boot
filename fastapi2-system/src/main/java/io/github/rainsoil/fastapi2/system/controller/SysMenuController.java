@@ -83,9 +83,9 @@ public class SysMenuController {
 	 * @return 是否成功
 	 * @since 2023-11-29
 	 */
-	@DeleteMapping()
+	@DeleteMapping("/{id}")
 	@ApiOperation(value = "根据id删除")
-	public Boolean remove(@RequestParam(value = "id", required = true) Long id) {
+	public Boolean remove(@PathVariable(value = "id") Long id) {
 		return this.iSysMenuService.removeById(id);
 	}
 
@@ -117,17 +117,16 @@ public class SysMenuController {
 
 
 	/**
-	 * 属性表菜单
+	 * 树形菜单
 	 *
 	 * @param lazy     是否 懒加载
 	 * @param parentId 父id
 	 * @return
 	 * @since 2023/12/10
 	 */
-	@ApiOperation(value = "属性表菜单")
+	@ApiOperation(value = "树形菜单")
+	@PostMapping("tree")
 	public List<Tree<Long>> tree(boolean lazy, Long parentId) {
-
-
 		return iSysMenuService.treeMenu(lazy, parentId);
 	}
 }

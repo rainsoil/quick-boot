@@ -64,19 +64,19 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 		List<Long> roleIds = user.getRoles();
 		List<SysMenu> sysMenus = this.listByRoleId(roleIds);
 
-		List<TreeNode<Long>> list = sysMenus.stream().filter(menuTypePredicate(type)).map(getNodeFunction()).collect(Collectors.toList());
+		List<TreeNode<Long>> list = sysMenus.stream().filter(menuTypePredicate(type)).map(getNodeFunction2()).collect(Collectors.toList());
 		Long parent = parentId == null ? Constants.MENU_ROOT_ID : parentId;
 		return TreeUtil.build(list, parent);
 	}
 
 	@Override
 	public List<Tree<Long>> treeMenu(boolean lazy, Long parentId) {
-		LoginUser user = LoginUserUtils.getUser();
-		List<Long> roles = user.getRoles();
-		if (CollectionUtil.isEmpty(roles)) {
-			return new ArrayList<>();
-		}
-		List<SysMenu> sysMenus = this.listByRoleId(roles);
+//		LoginUser user = LoginUserUtils.getUser();
+//		List<Long> roles = user.getRoles();
+//		if (CollectionUtil.isEmpty(roles)) {
+//			return new ArrayList<>();
+//		}
+		List<SysMenu> sysMenus = this.list();
 
 		if (!lazy) {
 			List<TreeNode<Long>> collect = sysMenus.stream()
@@ -101,11 +101,55 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 
 	public Predicate<SysMenu> menuTypePredicate(String type) {
 		return vo -> {
-			if (SysMenuEnums.MENU_TYPE_TOP_MENU.getValue().equals(type)) {
-				return SysMenuEnums.MENU_TYPE_TOP_MENU.getType().equals(vo.getType());
-			}
+			// 这里只是查询左侧目录和菜单
+			return vo
+					.getType().equals(SysMenuEnums.MENU_TYPE_LEFT_MENU.getValue()) || vo.getType().equals(SysMenuEnums.MENU.getValue());
+//			if (SysMenuEnums.MENU_TYPE_TOP_MENU.getValue().equals(type)) {
+//				return SysMenuEnums.MENU_TYPE_TOP_MENU.getType().equals(vo.getType());
+//			}
 			// 其他查询 左侧 + 顶部
-			return !SysMenuEnums.MENU_TYPE_BUTTON.getValue().equals(vo.getType());
+//			return !SysMenuEnums.MENU_TYPE_BUTTON.getValue().equals(vo.getType());
+		};
+	}
+
+
+	private Function<SysMenu, TreeNode<Long>> getNodeFunction2() {
+		return vo -> {
+			TreeNode<Long> node = new TreeNode<>();
+			node.setId(vo.getId());
+			node.setParentId(vo.getParentId());
+			node.setName(vo.getName());
+			node.setWeight(vo.getSort());
+			Map<String, Object> ext = new HashMap<>();
+
+
+			ext.put("sort", vo.getSort());
+			ext.put("icon", vo.getIcon());
+			ext.put("path", vo.getPath());
+			ext.put("type", vo.getType());
+			ext.put("component", vo.getComponent());
+
+
+			if (vo.getBlank().equals("1")) {
+				// 不是外链
+				ext.put("meta", new HashMap<String, Object>() {{
+					put("i18n", vo.getName());
+					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
+				}});
+
+			} else {
+				ext.put("href", vo.getPath());
+				ext.put("meta", new HashMap<String, Object>() {{
+					put("target", "_blank");
+					put("title", vo.getName());
+					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
+					put("i18n", vo.getName());
+				}});
+			}
+
+			node.setExtra(ext);
+
+			return node;
 		};
 	}
 
@@ -114,14 +158,18 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 			TreeNode<Long> node = new TreeNode<>();
 			node.setId(vo.getId());
 			node.setParentId(vo.getParentId());
-			node.setName(vo.getMenuName());
+			node.setName(vo.getName());
 			node.setWeight(vo.getSort());
 			Map<String, Object> ext = new HashMap<>();
 
-
+			ext.put("sort", vo.getSort());
 			ext.put("icon", vo.getIcon());
 			ext.put("path", vo.getPath());
+			ext.put("type", vo.getType());
 			ext.put("component", vo.getComponent());
+			ext.put("blank", vo.getBlank());
+			ext.put("keepAlive", vo.getKeepAlive());
+			ext.put("permission", vo.getPermission());
 			if (vo.getBlank().equals("1")) {
 				// 不是外链
 				ext.put("meta", new HashMap<String, Object>() {{
@@ -134,7 +182,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenuMapper, SysMenu> 
 				ext.put("href", vo.getPath());
 				ext.put("meta", new HashMap<String, Object>() {{
 					put("target", "_blank");
-					put("title", vo.getMenuName());
+					put("title", vo.getName());
 					put("keepAlive", vo.getKeepAlive().equals("1") ? false : true);
 				}});
 			}
