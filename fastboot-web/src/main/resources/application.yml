@@ -1,0 +1,96 @@
+server:
+  port: 12000
+  undertow:
+    direct-buffers: true
+    buffer-size: 1024
+    threads:
+      worker: 8000
+      io: 1000
+spring:
+  profiles:
+    active: dev
+  mvc:
+    format:
+      date: dd/MM/yyyy
+      date-time: yyyy-MM-dd HH:mm:ss
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  flyway:
+    ## 如果启动的时候需要flyway管理sql脚本的话，将enabled设置为true
+    enabled: false
+    #  如果数据库不是空表，需要设置成 true，否则启动报错
+    baseline-on-migrate: true
+    # 验证错误时 是否自动清除数据库 高危操作
+    clean-on-validation-error: false
+    encoding: utf-8
+  extends:
+    enable: true
+    restful:
+      enable: true
+  security:
+    ignore-urls:
+      - doc.html
+      - /v3/api-docs/swagger-config
+      - /v3/api-docs
+      - /v3/api-docs/**
+      - /swagger-ui/index.html
+    client:
+      clients:
+        - name: web
+          secret: web
+          encryption: true
+          verificationcode: false
+
+        - name: swagger
+          secret: swagger
+          encryption: false
+          verificationcode: false
+  datasource:
+    hikari:
+      connection-timeout: 60000
+      validation-timeout: 3000
+      idle-timeout: 60000
+      login-timeout: 5
+      max-lifetime: 60000
+      maximum-pool-size: 10
+      minimum-idle: 10
+      read-only: false
+  messages:
+    basename: i18n/message
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: assign_id
+      insert-strategy: not_empty
+      update-strategy: not_empty
+      where-strategy: not_empty
+      logic-delete-field: del_flag
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# springdoc-openapi项目配置
+knife4j:
+  enable: true
+  openapi:
+    title: 快速开发平台
+    description: 快速开发平台
+
+    concat: luyanan
+    url: https://docs.xiaominfo.com
+    version: v4.0
+    license: Apache 2.0
+    license-url: https://stackoverflow.com/
+    terms-of-service-url: https://stackoverflow.com/
+    group:
+      test1:
+        group-name: 分组名称
+        api-rule: package
+        api-rule-resources:
+          - io.github.rainsoil.fastboot.system
+
+sm4:
+  key: 0123456789abcdeffedcba9876543210
