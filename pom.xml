@@ -4,16 +4,16 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>io.github.rainsoil.fastapi2</groupId>
-	<artifactId>fastapi2</artifactId>
+	<groupId>io.github.rainsoil.fastboot</groupId>
+	<artifactId>fastboot</artifactId>
 	<packaging>pom</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<description>java快速开发平台</description>
 	<modules>
-		<module>fastapi2-common</module>
-		<module>fastapi2-core</module>
-		<module>fastapi2-system</module>
-		<module>fastapi2-web</module>
+		<module>fastboot-common</module>
+		<module>fastboot-core</module>
+		<module>fastboot-system</module>
+		<module>fastboot-web</module>
 	</modules>
 
 	<properties>

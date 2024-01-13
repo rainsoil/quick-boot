@@ -1,7 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  io.github.rainsoil.fastapi2.common.spring.SpringExtendAutoConfiguration,\
-  io.github.rainsoil.fastapi2.common.data.mybatis.MybatisPlusExtendAutoConfiguration,\
-  io.github.rainsoil.fastapi2.common.security.config.SpringSecurityAutoConfiguration
-
-
-

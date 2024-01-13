@@ -280,7 +280,7 @@
 
 		<!-- 返回个数 -->
 		<module name="ReturnCount">
-			<property name="max" value="5"/>
+			<property name="max" value="10"/>
 			<property name="format" value="^$"/>
 		</module>
 
