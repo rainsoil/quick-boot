@@ -1,8 +1,8 @@
-# fastboot
+# QuickBoot
 
 ## 简介
 
-- fastboot是一个轻量级的、前后端分离的快速开发框架。
+- QuickBoot是一个轻量级的、前后端分离的快速开发框架。
 - 框架采用Springboot、MybatisPlus、Vue3、ElementPlus、Avue框架开发的一套权限管理系统，通过对前后端的一系列封装,可以达到基于json就可以完成简单crud功能
 
 <br/>
@@ -241,4 +241,4 @@ export default {
 
 [MIT](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2017-present,fastboot
+Copyright (c) 2017-present,QuickBoot
