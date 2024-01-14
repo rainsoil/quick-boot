@@ -36,6 +36,15 @@ public class SpringSecurityProperties {
 
 	private TokenProperties token = new TokenProperties();
 
+
+	/**
+	 * 验证码的配置
+	 *
+	 * @since 2024/01/13
+	 */
+
+	private ValidateCode validatecode = new ValidateCode();
+
 	/**
 	 * token配置类
 	 *
@@ -44,7 +53,7 @@ public class SpringSecurityProperties {
 	 */
 
 	@Data
-	public static class TokenProperties {
+	public  class TokenProperties {
 
 		/**
 		 * 过期时间
@@ -74,6 +83,41 @@ public class SpringSecurityProperties {
 
 
 		private String tokenType = "Bearer";
+	}
+
+
+	/**
+	 * 验证码配置
+	 *
+	 * @author luyanan
+	 * @since 2024/01/13
+	 */
+	@Data
+	public class ValidateCode {
+
+		/**
+		 * 是否开启
+		 *
+		 * @since 2024/01/13
+		 */
+
+		private boolean enable;
+		/**
+		 * 匹配的url
+		 *
+		 * @since 2024/01/13
+		 */
+
+		private String matchurl;
+
+
+		/**
+		 * 有效时间
+		 *
+		 * @since 2024/01/13
+		 */
+
+		private Integer effectiveTime = 5;
 	}
 
 }

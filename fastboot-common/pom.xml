@@ -19,7 +19,10 @@
 
 
 	<dependencies>
-
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
 		<!--JWT工具依赖-->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>

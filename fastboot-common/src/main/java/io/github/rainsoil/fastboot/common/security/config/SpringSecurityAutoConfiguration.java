@@ -3,6 +3,7 @@ package io.github.rainsoil.fastboot.common.security.config;
 import io.github.rainsoil.fastboot.common.security.ClientProperties;
 import io.github.rainsoil.fastboot.common.security.ClientUtils;
 import io.github.rainsoil.fastboot.common.security.SmPasswordEncoder;
+import io.github.rainsoil.fastboot.common.security.code.ValidateCodeConfiguration;
 import io.github.rainsoil.fastboot.common.security.filter.JwtAuthenticationTokenFilter;
 import io.github.rainsoil.fastboot.common.security.handler.JwtAuthenticationEntryPoint;
 import io.github.rainsoil.fastboot.common.security.handler.LoginFailureHandler;
@@ -24,7 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  **/
 @Configuration
 @EnableConfigurationProperties({SpringSecurityProperties.class, ClientProperties.class})
-@Import(WebSecurityConfig.class)
+@Import({WebSecurityConfig.class, ValidateCodeConfiguration.class})
 public class SpringSecurityAutoConfiguration {
 
 	/**

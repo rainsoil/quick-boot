@@ -53,6 +53,9 @@ public class ClientUtils {
 
 		try {
 			ClientProperties.Client client = getClientId(request);
+			if (null == client) {
+				return param;
+			}
 			String sm4Key = SpringUtil.getProperty("sm4.key");
 			param = URLUtil.decode(param);
 			if (client.getEncryption()) {

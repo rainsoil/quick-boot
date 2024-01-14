@@ -35,6 +35,8 @@ spring:
       - /v3/api-docs
       - /v3/api-docs/**
       - /swagger-ui/index.html
+      - /getCode
+      - /favicon.ico
     client:
       clients:
         - name: web
@@ -46,6 +48,8 @@ spring:
           secret: swagger
           encryption: false
           verificationcode: false
+    validate-code:
+      match-url: /login
   datasource:
     hikari:
       connection-timeout: 60000

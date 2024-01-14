@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import io.github.rainsoil.fastboot.common.core.R;
 import io.github.rainsoil.fastboot.common.security.RequestMethodEnum;
 import io.github.rainsoil.fastboot.common.security.annotation.IgnoreAuth;
+import io.github.rainsoil.fastboot.common.security.code.ValidateCodeFilter;
 import io.github.rainsoil.fastboot.common.security.filter.JwtAuthenticationTokenFilter;
 import io.github.rainsoil.fastboot.common.security.handler.JwtAuthenticationEntryPoint;
 import io.github.rainsoil.fastboot.common.security.handler.LoginFailureHandler;
@@ -67,6 +68,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private final SpringSecurityProperties securityProperties;
 
 	private final PasswordEncoder passwordEncoder;
+
+	private final ValidateCodeFilter validateCodeFilter;
 
 
 	/**
@@ -159,7 +162,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 						ServletUtil.write(response, JSON.toJSONString(R.ok("退出成功")), "application/json;charset=utf-8");
 
 					}
-				}).and().addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+				}).and()
+				.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+				.addFilterBefore(authenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
 				.cors();
 	}
 

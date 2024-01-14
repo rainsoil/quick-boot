@@ -3,7 +3,6 @@
 ## 简介
 
 - fastboot是一个轻量级的、前后端分离的快速开发框架。
-
 - 框架采用Springboot、MybatisPlus、Vue3、ElementPlus、Avue框架开发的一套权限管理系统，通过对前后端的一系列封装,可以达到基于json就可以完成简单crud功能
 
 <br/>
@@ -15,6 +14,7 @@
 - 灵活的权限控制，可以控制到菜单和按钮，甚至是字段。
 - 后端对mybatisplus进行二次封装，代码简洁，Service直接实现即可完成增删改查方法
 - 前端对ElementPlus和avue进行二次封装，前端页面只需要配置json文件即可满足百分之90的页面功能。
+- 采用国密加密方式。
 
 <br/>
 
