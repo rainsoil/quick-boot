@@ -72,6 +72,9 @@ public class AbstractJwtTokenManage implements TokenManage {
 		String token = request.getHeader(tokenProperties.getHeaderKey());
 		if (StrUtil.isBlank(token)) {
 			token = Opt.ofNullable(ServletUtil.getCookie(request, tokenProperties.getHeaderKey())).map(a -> a.getValue()).orElse(null);
+			if (StrUtil.isNotBlank(token)) {
+				token = securityProperties.getToken().getTokenType() + " " + token;
+			}
 		}
 		if (StrUtil.isBlank(token)) {
 			token = request.getParameter(tokenProperties.getHeaderKey());

@@ -1,17 +1,15 @@
 package io.github.rainsoil.fastboot.web.exception;
 
-import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import io.github.rainsoil.fastboot.common.core.R;
 import io.github.rainsoil.fastboot.common.exception.BaseException;
 import io.github.rainsoil.fastboot.common.exception.ErrorException;
 import io.github.rainsoil.fastboot.common.exception.GlobalMsgCode;
 import io.github.rainsoil.fastboot.common.exception.WarningException;
+import io.github.rainsoil.fastboot.common.validation.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
@@ -55,12 +53,8 @@ public class GlobalExceptionHandler {
 		ObjectError objectError = allErrors.get(0);
 		String defaultMessage = objectError.getDefaultMessage();
 		Integer code = GlobalMsgCode.BAD_REQUEST;
-		String msg = defaultMessage;
-		if (NumberUtil.isNumber(defaultMessage)) {
-			code = Integer.valueOf(defaultMessage);
-			msg = getMessage(code, e, defaultMessage);
-		}
-		log.error("全局异常信息 code:{},ex={}", code, msg);
+		String msg = getMessage(defaultMessage, code + "", defaultMessage, e);
+		log.warn("全局参数异常信息 code:{},ex={}", code, msg);
 		return R.failed(code, msg);
 	}
 
@@ -84,12 +78,8 @@ public class GlobalExceptionHandler {
 		}
 		String defaultMessage = builder.toString();
 		Integer code = GlobalMsgCode.BAD_REQUEST;
-		String msg = defaultMessage;
-		if (NumberUtil.isNumber(defaultMessage)) {
-			code = Integer.valueOf(defaultMessage);
-			msg = getMessage(code, e, defaultMessage);
-		}
-		log.error("全局异常信息 code:{},ex={}", code, msg);
+		String msg = getMessage(defaultMessage, "{" + code + "}", defaultMessage, e);
+		log.warn("全局参数异常信息 code:{},ex={}", code, msg);
 		return R.failed(code, msg);
 	}
 
@@ -104,7 +94,7 @@ public class GlobalExceptionHandler {
 	public R errrorException(ErrorException e) {
 		Integer code = e.getCode();
 
-		String message = getMessage(code, e, null);
+		String message = getMessage("{" + code + "}", e);
 
 		log.error("全局异常信息 code:{},ex={}", code, message, e);
 		return R.failed(code, message);
@@ -122,7 +112,7 @@ public class GlobalExceptionHandler {
 	public R warningException(WarningException e) {
 		Integer code = e.getCode();
 
-		String message = getMessage(code, e);
+		String message = getMessage("{" + code + "}", e);
 
 		log.warn("全局异常信息 code:{},ex={}", code, message);
 		return R.failed(code, message);
@@ -139,7 +129,7 @@ public class GlobalExceptionHandler {
 	public R baseException(BaseException e) {
 		Integer code = e.getCode();
 
-		String message = getMessage(code, e);
+		String message = getMessage("{" + code + "}", e);
 
 		log.error("全局异常信息 ex={}", message, e);
 		return R.failed(code, message);
@@ -204,31 +194,36 @@ public class GlobalExceptionHandler {
 	 * @return java.lang.String
 	 * @since 2022/10/14
 	 */
-	private String getMessage(Integer code, Exception e) {
-		return getMessage(code, e, null);
+	private String getMessage(String code, Exception e) {
+		return getMessage(code + "", null, null, e);
 	}
 
+
 	/**
-	 * 获取消息
+	 * 获取信息
 	 *
-	 * @param code    消息编码
-	 * @param e       异常
-	 * @param message 默认消息
-	 * @return java.lang.String
-	 * @since 2022/10/13
+	 * @param code        编码
+	 * @param defaultCode 默认编码
+	 * @param msg         默认信息
+	 * @param e           异常
+	 * @return
+	 * @since 2024/01/21
 	 */
-	private String getMessage(Integer code, Exception e, String message) {
-
-		try {
-			message = messageSource.getMessage(code + "", null, LocaleContextHolder.getLocale());
-		} catch (NoSuchMessageException noSuchMessageException) {
-
+	public String getMessage(String code, String defaultCode, String msg, Exception e) {
+		// 优先级  code defaultCode  msg e.msg
+		String resultMsg = null;
+		if (StrUtil.isNotBlank(code)) {
+			resultMsg = MessageUtils.getMessage(code);
 		}
-
-		if (StrUtil.isBlank(message)) {
-			message = e.getLocalizedMessage();
-
+		if (StrUtil.isNotBlank(defaultCode) && StrUtil.isBlank(resultMsg)) {
+			resultMsg = MessageUtils.getMessage(defaultCode);
 		}
-		return message;
+		if (StrUtil.isNotBlank(msg) && StrUtil.isBlank(resultMsg)) {
+			resultMsg = msg;
+		}
+		if (StrUtil.isBlank(resultMsg)) {
+			resultMsg = e.getLocalizedMessage();
+		}
+		return resultMsg;
 	}
 }

@@ -13,7 +13,10 @@
 		<module>fastboot-common</module>
 		<module>fastboot-core</module>
 		<module>fastboot-system</module>
+		<module>fastboot-extends</module>
 		<module>fastboot-web</module>
+
+
 	</modules>
 
 	<properties>

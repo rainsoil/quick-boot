@@ -25,7 +25,8 @@ public class LoginController {
 	/**
 	 * 获取验证码
 	 *
-	 * @param uuid uuid
+	 * @param uuid     uuid
+	 * @param response 响应类
 	 * @return
 	 * @since 2024/01/13
 	 */

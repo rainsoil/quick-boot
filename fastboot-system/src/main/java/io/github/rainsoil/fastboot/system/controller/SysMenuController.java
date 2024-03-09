@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -128,5 +129,23 @@ public class SysMenuController {
 	@PostMapping("tree")
 	public List<Tree<Long>> tree(boolean lazy, Long parentId) {
 		return iSysMenuService.treeMenu(lazy, parentId);
+	}
+
+
+	/**
+	 * 所有的菜单
+	 *
+	 * @return
+	 * @since 2024/01/16
+	 */
+	@ApiOperation(value = "所有的菜单")
+	@GetMapping("allTree")
+	public List<Tree<Long>> allTree() {
+		List<Tree<Long>> trees = iSysMenuService.treeMenu(false, null);
+		Tree<Long> root = new Tree<>();
+		root.setChildren(trees);
+		root.setName("根菜单");
+		root.setId(-1L);
+		return Arrays.asList(root);
 	}
 }

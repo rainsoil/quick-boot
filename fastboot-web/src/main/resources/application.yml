@@ -61,7 +61,7 @@ spring:
       minimum-idle: 10
       read-only: false
   messages:
-    basename: i18n/message
+    basename: i18n/message,i18n/validation
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -98,3 +98,11 @@ knife4j:
 
 sm4:
   key: 0123456789abcdeffedcba9876543210
+code:
+  generator:
+    auth: luyanan
+    ignore-columns: createTime,updateTime,createBy,updateBy,delFlag
+    parent-module-package: io.github.rainsoil.fastboot
+    logic-delete-column-name: del_flag
+    version-column-name: version
+

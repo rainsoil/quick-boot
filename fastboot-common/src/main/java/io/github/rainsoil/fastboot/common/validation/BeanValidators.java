@@ -1,10 +1,7 @@
 package io.github.rainsoil.fastboot.common.validation;
 
 import lombok.experimental.UtilityClass;
-import org.hibernate.validator.messageinterpolation.ResourceBundleMessageInterpolator;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.validation.beanvalidation.MessageSourceResourceBundleLocator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -21,18 +18,6 @@ import java.util.Set;
  **/
 @UtilityClass
 public class BeanValidators {
-	/**
-	 * 消息
-	 *
-	 * @return
-	 * @since 2024/01/13
-	 */
-	private static ResourceBundleMessageSource getMessageSource() {
-		ResourceBundleMessageSource bundleMessageSource = new ResourceBundleMessageSource();
-		bundleMessageSource.setDefaultEncoding("UTF-8");
-		bundleMessageSource.setBasenames("i18n/validation");
-		return bundleMessageSource;
-	}
 
 	/**
 	 * 对象属性校验
@@ -60,8 +45,7 @@ public class BeanValidators {
 	 */
 	public void validate(Object object, Class<?>... groups) {
 		Locale.setDefault(LocaleContextHolder.getLocale());
-		Validator validator = Validation.byDefaultProvider().configure().messageInterpolator(
-						new ResourceBundleMessageInterpolator(new MessageSourceResourceBundleLocator(getMessageSource())))
+		Validator validator = Validation.byDefaultProvider().configure()
 				.buildValidatorFactory().getValidator();
 		validate(validator, object, groups);
 

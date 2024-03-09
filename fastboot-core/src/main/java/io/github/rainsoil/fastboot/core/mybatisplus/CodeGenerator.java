@@ -4,7 +4,6 @@ package io.github.rainsoil.fastboot.core.mybatisplus;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
-import com.baomidou.mybatisplus.generator.config.TemplateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
 import io.github.rainsoil.fastboot.common.data.mybatis.BaseBaseMapper;
@@ -86,19 +85,19 @@ public class CodeGenerator {
 				.packageConfig(builder -> {
 					builder.parent("io.github.rainsoil.fastboot") // 设置父包名
 //							.moduleName("system") // 设置父包模块名
-							.moduleName("system") // 设置父包模块名
+							.moduleName("generator") // 设置父包模块名
 							.pathInfo(Collections.singletonMap(OutputFile.xml, filePath)); // 设置mapperXml生成路径
 				})
 				.strategyConfig(builder -> {
 
 
 //					builder.likeTable(new LikeTable("sys_combo_quan"))
-					builder.addInclude(".*") // 设置需要生成的表名
+					builder.addInclude("g_.*") // 设置需要生成的表名
 							.addTablePrefix("syssss_"); // 设置过滤表前缀
 				})
 				.templateConfig(builder -> {
 							builder
-									.disable(TemplateType.ENTITY)
+//									.disable(TemplateType.ENTITY)
 									.entity("/templates/entity.java")
 									.service("/templates/service.java")
 									.serviceImpl("/templates/serviceImpl.java")
@@ -112,13 +111,12 @@ public class CodeGenerator {
 						}
 
 				)
-//				.injectionConfig(builder -> {
-//					builder.customFile(b -> {
-//						b.fileName("avue.vue").enableFileOverride()
-//								.templatePath("/templates/avue.vue").build();
-//					})
-//					;
-//				})
+				.injectionConfig(builder -> {
+					builder.customFile(b -> {
+						b.filePath("vue").fileName("avue.vue").enableFileOverride()
+								.templatePath("/templates/avue.vue.ftl").build();
+					});
+				})
 				.templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
 				.execute();
 	}

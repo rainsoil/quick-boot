@@ -3,6 +3,7 @@ package io.github.rainsoil.fastboot.system.controller;
 import io.github.rainsoil.fastboot.common.core.PageInfo;
 import io.github.rainsoil.fastboot.common.core.PageRequest;
 import io.github.rainsoil.fastboot.common.data.mybatis.PageHandler;
+import io.github.rainsoil.fastboot.core.vo.DictVo;
 import io.github.rainsoil.fastboot.system.entity.SysDict;
 import io.github.rainsoil.fastboot.system.entity.SysDictItem;
 import io.github.rainsoil.fastboot.system.service.ISysDictService;
@@ -13,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 字典表 前端控制器
@@ -97,8 +99,24 @@ public class SysDictController {
 	@GetMapping("dict/{type}")
 	@ApiOperation(value = "根据字典类型查询")
 	public List<SysDictItem> getByType(@PathVariable("type") String type, @RequestParam(value = "style", required = false, defaultValue = "false") Boolean style) {
-
 		return iSysDictService.getByType(type, style);
+	}
+
+
+	/**
+	 * 查询所有的字典值type
+	 *
+	 * @return
+	 * @since 2024/01/23
+	 */
+	@ApiOperation(value = "查询所有的字典值type")
+	@GetMapping("allType")
+	public List<DictVo> allType() {
+		List<SysDict> list = iSysDictService.list();
+
+		return list.stream().map(a -> new DictVo()
+				.setLabel(a.getDescription() + "-" + a.getType())
+				.setValue(a.getType())).collect(Collectors.toList());
 
 	}
 }

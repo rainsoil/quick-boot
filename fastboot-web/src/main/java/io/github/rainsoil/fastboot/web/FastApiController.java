@@ -12,8 +12,12 @@ import org.springframework.cache.annotation.EnableCaching;
  * @since 2023/09/17
  **/
 @EnableCaching
-@MapperScan("io.github.rainsoil.fastboot.system.mapper")
-@SpringBootApplication(scanBasePackages = {"io.github.rainsoil.fastboot.system", "io.github.rainsoil.fastboot.core", "io.github.rainsoil.fastboot.web"})
+@MapperScan("io.github.rainsoil.fastboot.*.mapper")
+@SpringBootApplication(scanBasePackages = {"io.github.rainsoil.fastboot.system",
+		"io.github.rainsoil.fastboot.core",
+		"io.github.rainsoil.fastboot.web",
+		"io.github.rainsoil.fastboot.generator",
+		"io.github.rainsoil.fastboot.job"})
 public class FastApiController {
 
 
