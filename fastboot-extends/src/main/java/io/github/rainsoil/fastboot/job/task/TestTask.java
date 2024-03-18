@@ -15,6 +15,6 @@ public class TestTask implements ITask {
 	@Override
 	public void run(String params) {
 
-		log.warn("TestTask开始执行");
+		log.debug("TestTask开始执行,参数为:{}", params);
 	}
 }

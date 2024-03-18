@@ -1,8 +1,10 @@
 package io.github.rainsoil.fastboot.job.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.rainsoil.fastboot.common.core.PageInfo;
 import io.github.rainsoil.fastboot.common.core.PageRequest;
 import io.github.rainsoil.fastboot.common.data.mybatis.PageHandler;
+import io.github.rainsoil.fastboot.core.BaseEntity;
 import io.github.rainsoil.fastboot.job.entity.ScheduleJob;
 import io.github.rainsoil.fastboot.job.service.IScheduleJobService;
 import io.swagger.annotations.Api;
@@ -37,6 +39,10 @@ public class ScheduleJobController {
 	@PostMapping("page")
 	public PageInfo<ScheduleJob> page(@RequestBody PageRequest<ScheduleJob> pageRequest) {
 		PageInfo<ScheduleJob> pageInfo = iScheduleJobService.page(pageRequest, new PageHandler<ScheduleJob>() {
+			@Override
+			public void queryWrapperHandler(ScheduleJob param, LambdaQueryWrapper<ScheduleJob> queryWrapper) {
+				queryWrapper.orderByDesc(BaseEntity::getCreateTime);
+			}
 		});
 		return pageInfo;
 	}
@@ -76,9 +82,9 @@ public class ScheduleJobController {
 	 * @return 是否成功
 	 * @since 2024-01-31
 	 */
-	@DeleteMapping()
+	@DeleteMapping("{id}")
 	@ApiOperation(value = "根据id删除")
-	public Boolean remove(@RequestParam(value = "id", required = true) Long id) {
+	public Boolean remove(@PathVariable("id") Long id) {
 		return this.iScheduleJobService.removeById(id);
 	}
 

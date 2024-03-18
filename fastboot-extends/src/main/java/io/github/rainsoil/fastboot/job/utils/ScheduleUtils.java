@@ -91,7 +91,7 @@ public class ScheduleUtils {
 		// 放入参数
 		jobDetail.getJobDataMap().put(JOB_PARAM_KEY, scheduleJob);
 
-		scheduler.scheduleJob(cronTrigger);
+		scheduler.scheduleJob(jobDetail, cronTrigger);
 
 		// 如果为暂停
 		if (scheduleJob.getStatus().equals(JobEnums.STATUS_PAUSE.getValue())) {

@@ -22,6 +22,7 @@ public class BaseServiceImpl<M extends BaseBaseMapper<T>, T> extends MPJBaseServ
 	@Override
 	public PageInfo<T> page(PageRequest<T> pageRequest, PageHandler<T> pageHandler) {
 		IPage iPage = getPage(pageRequest);
+
 		LambdaQueryWrapper<T> queryWrapper = new LambdaQueryWrapper<>();
 		T param = pageRequest.getParam();
 		if (null == pageHandler) {
@@ -30,6 +31,7 @@ public class BaseServiceImpl<M extends BaseBaseMapper<T>, T> extends MPJBaseServ
 		}
 		pageHandler.queryWrapperHandler(param, queryWrapper);
 		queryWrapper.setEntity(param);
+
 
 		IPage resultPage = this.page(iPage, queryWrapper);
 		return pageHandler.getPageInfo(resultPage);

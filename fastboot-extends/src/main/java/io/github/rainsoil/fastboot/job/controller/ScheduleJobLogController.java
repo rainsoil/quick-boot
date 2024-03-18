@@ -1,8 +1,10 @@
 package io.github.rainsoil.fastboot.job.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import io.github.rainsoil.fastboot.common.core.PageInfo;
 import io.github.rainsoil.fastboot.common.core.PageRequest;
 import io.github.rainsoil.fastboot.common.data.mybatis.PageHandler;
+import io.github.rainsoil.fastboot.core.BaseEntity;
 import io.github.rainsoil.fastboot.job.entity.ScheduleJobLog;
 import io.github.rainsoil.fastboot.job.service.IScheduleJobLogService;
 import io.swagger.annotations.Api;
@@ -37,6 +39,10 @@ public class ScheduleJobLogController {
 	@PostMapping("page")
 	public PageInfo<ScheduleJobLog> page(@RequestBody PageRequest<ScheduleJobLog> pageRequest) {
 		PageInfo<ScheduleJobLog> pageInfo = iScheduleJobLogService.page(pageRequest, new PageHandler<ScheduleJobLog>() {
+			@Override
+			public void queryWrapperHandler(ScheduleJobLog param, LambdaQueryWrapper<ScheduleJobLog> queryWrapper) {
+				queryWrapper.orderByDesc(BaseEntity::getCreateTime);
+			}
 		});
 		return pageInfo;
 	}

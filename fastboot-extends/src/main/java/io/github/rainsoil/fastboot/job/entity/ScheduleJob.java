@@ -45,8 +45,8 @@ public class ScheduleJob extends BaseEntity {
     */
 
     @ApiModelProperty("定时任务的参数")
-    @TableField("params")
-    private String params;
+    @TableField("param")
+    private String param;
     /**
     * 定时任务表达式
     */

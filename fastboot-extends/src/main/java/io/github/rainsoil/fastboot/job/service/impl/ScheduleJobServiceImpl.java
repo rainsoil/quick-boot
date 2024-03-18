@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.quartz.Scheduler;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.Serializable;
 
 /**
@@ -28,16 +27,7 @@ import java.io.Serializable;
 public class ScheduleJobServiceImpl extends BaseServiceImpl<ScheduleJobMapper, ScheduleJob> implements IScheduleJobService {
 	private final Scheduler scheduler;
 
-	/**
-	 * 初始化加载
-	 *
-	 * @return
-	 * @since 2024/02/03
-	 */
-	@PostConstruct
-	public void init() {
-		log.warn("加载所有的定时任务");
-	}
+
 
 	@Override
 	public boolean save(ScheduleJob entity) {
