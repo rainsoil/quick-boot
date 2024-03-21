@@ -27,14 +27,14 @@
 - ~~菜单管理~~
 - ~~字典管理~~
 - 开发管理
-    - 代码生成器管理
-       - 数据源管理
-       - 模板管理
-       - 代码生成
-       - 项目名修改
-    - 文件管理
-
-- 定时任务
+  
+  - 代码生成器管理
+    - ~~数据源管理~~
+    - 模板管理
+    - ~~代码生成~~
+    - 项目名修改
+  - 文件管理
+- ~~定时任务~~
 - 新增权限管理框架为sa-token
 
 <br/>
@@ -152,12 +152,11 @@ export default {
 <style scoped>
 
 </style>
-
 ```
 
 <br/>
 
-###  字典管理
+### 字典管理
 
 ```
 <template>
@@ -240,7 +239,6 @@ export default {
 <style scoped>
 
 </style>
-
 ```
 
 <br/>
@@ -250,3 +248,4 @@ export default {
 [MIT](http://opensource.org/licenses/MIT)
 
 Copyright (c) 2017-present,QuickBoot
+
