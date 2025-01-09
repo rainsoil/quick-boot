@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.su60.quickboot</groupId>
+	<artifactId>quick-boot</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<modules>
+		<module>quick-boot-common</module>
+		<module>quick-boot-data</module>
+		<module>quick-boot-security</module>
+		<module>quick-boot-core</module>
+		<module>quick-boot-system</module>
+		<module>quick-boot-web</module>
+
+
+	</modules>
+
+	<properties>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<java.version>17</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<git.commit.version>2.2.5</git.commit.version>
+		<spring.checkstyle.version>0.0.43</spring.checkstyle.version>
+
+		<lombok.version>1.18.24</lombok.version>
+		<hutool-all.version>5.8.34</hutool-all.version>
+		<spring-boot.version>3.1.2</spring-boot.version>
+		<mybatis-plus-join.version>1.4.11</mybatis-plus-join.version>
+		<mybatis-plus-boot.version>3.5.5</mybatis-plus-boot.version>
+		<yitter-idgenerator.version>1.0.6</yitter-idgenerator.version>
+	</properties>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<dependencyManagement>
+
+		<dependencies>
+			<dependency>
+				<groupId>com.github.yitter</groupId>
+				<artifactId>yitter-idgenerator</artifactId>
+				<version>${yitter-idgenerator.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.baomidou</groupId>
+				<artifactId>mybatis-plus-spring-boot3-starter</artifactId>
+				<version>3.5.7</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.yulichang</groupId>
+				<artifactId>mybatis-plus-join-boot-starter</artifactId>
+				<version>${mybatis-plus-join.version}</version>
+			</dependency>
+
+
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>cn.hutool</groupId>
+				<artifactId>hutool-all</artifactId>
+				<version>${hutool-all.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<source>17</source>
+					<target>17</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.3</version>
+			</plugin>
+
+			<!--代码格式插件，默认使用spring 规则-->
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>${spring.checkstyle.version}</version>
+			</plugin>
+			<!--打包关联最新 git commit 信息插件-->
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>${git.commit.version}</version>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>3.6.0</version>
+				<configuration>
+					<!-- 配置文件的路径，在style文件夹下 -->
+					<configLocation>style/checkstyle.xml</configLocation>
+					<encoding>UTF-8</encoding>
+
+					<consoleOutput>true</consoleOutput>
+					<failsOnError>true</failsOnError>
+					<outputEncoding>UTF-8</outputEncoding>
+					<inputEncoding>UTF-8</inputEncoding>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+				</configuration>
+				<executions>
+					<execution>
+						<!-- 绑定pmd:pmd到validate生命周期，在validate时会自动进行代码规范检查 -->
+						<id>validate</id>
+						<phase>validate</phase>
+
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>se.bjurr.gitchangelog</groupId>
+				<artifactId>git-changelog-maven-plugin</artifactId>
+				<version>1.62</version>
+				<executions>
+					<execution>
+						<id>GenerateGitChangelog</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>git-changelog</goal>
+						</goals>
+						<configuration>
+							<templateContent>
+								<![CDATA[
+# Changelog
+Changelog of My Project.
+
+{{#tags}}
+## {{name}}
+ {{#issues}}
+  {{#hasIssue}}
+   {{#hasLink}}
+### {{name}} [{{issue}}]({{link}}) {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+   {{/hasLink}}
+   {{^hasLink}}
+### {{name}} {{issue}} {{title}} {{#hasIssueType}} *{{issueType}}* {{/hasIssueType}} {{#hasLabels}} {{#labels}} *{{.}}* {{/labels}} {{/hasLabels}}
+   {{/hasLink}}
+  {{/hasIssue}}
+  {{^hasIssue}}
+### {{name}}
+  {{/hasIssue}}
+
+  {{#commits}}
+**{{{messageTitle}}}**
+
+{{#messageBodyItems}}
+ * {{.}}
+{{/messageBodyItems}}
+
+[{{hash}}](https://gitee.com/{{ownerName}}/{{repoName}}/commit/{{hash}}) {{authorName}} *{{commitTime}}*
+
+  {{/commits}}
+
+ {{/issues}}
+{{/tags}}
+         ]]>
+							</templateContent>
+
+							<file>CHANGELOG.md</file>
+						</configuration>
+					</execution>
+				</executions>
+
+
+			</plugin>
+			<plugin>
+				<groupId>com.su60.project.replace</groupId>
+				<artifactId>project-replace-maven-plugin</artifactId>
+				<version>1.0-SNAPSHOT</version>
+				<configuration>
+					<!-- 是否替换目录-->
+					<replacePath>true</replacePath>
+					<sourcedir>${project.basedir}</sourcedir>
+					<targetdir>${project.basedir}</targetdir>
+					<!-- 是否删除老文件-->
+					<deleteOld>true</deleteOld>
+					<!--替换的文件正则 -->
+					<includes>
+						<include>**/*.java</include>
+						<include>**/*.xml</include>
+					</includes>
+
+					<excludes>
+						<exclude>**/.git/**</exclude>
+						<exclude>**/.idea/**</exclude>
+						<exclude>**/target/**</exclude>
+						<exclude>**/doc/**</exclude>
+
+					</excludes>
+
+
+					<!-- 替换配置-->
+					<replacements>
+						<replacement>
+							<source>com.su60</source>
+							<target>com.su60</target>
+						</replacement>
+						<replacement>
+							<source>com/su60</source>
+							<target>com/su60</target>
+						</replacement>
+					</replacements>
+
+				</configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<!-- 阿里云maven仓库 -->
+	<repositories>
+		<repository>
+			<id>public</id>
+			<name>aliyun nexus</name>
+			<url>https://maven.aliyun.com/repository/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>public</id>
+			<name>aliyun nexus</name>
+			<url>https://maven.aliyun.com/repository/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+</project>

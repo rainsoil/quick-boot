@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    username: root
+    password: rootroot
+    url: jdbc:mysql://192.168.50.105:3406/qc?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true&autoReconnect=true&failOverReadOnly=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  level:
+    cn.t200.quickboot: debug

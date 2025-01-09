@@ -1,0 +1,45 @@
+server:
+  port: 8080
+spring:
+  security:
+    enable: true
+    token:
+      enable: true
+      sign-key: example12345555
+    ignore-urls:
+      - /file/upload/**
+      - /file/view/**
+      - /login
+  cache:
+    type: caffeine
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/fastapi?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2B8&allowMultiQueries=true&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  log:
+    enable: true
+    print: true
+  extends:
+    enable: true
+dromara:
+  x-file-storage:
+    default-platform: local-1
+    local-plus:
+      - platform: local-1 # 存储平台标识
+        enable-storage: true  #启用存储
+        enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
+        domain: http://127.0.0.1:8080/ # 访问域名，例如：“http://127.0.0.1:8030/file/”，注意后面要和 path-patterns 保持一致，“/”结尾，本地存储建议使用相对路径，方便后期更换域名
+        base-path: file/view/ # 基础路径
+        path-patterns: /file/** # 访问路径
+        storage-path: E:/Temp/ # 存储路径
+file:
+  default-classify:
+    classify: default
+    limit-ext: jpg,png
+    limit-size: 10240
+  file-classifies:
+    - classify: test
+      limit-size: 324
+      limit-ext: jpg
+  domain: http://127.0.0.1:8080/
