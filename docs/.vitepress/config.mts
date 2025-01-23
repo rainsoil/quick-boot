@@ -49,6 +49,12 @@ export default defineConfig({
                         {text: 'One', link: '/guide/one'},
                         {text: 'Two', link: '/guide/two'}
                     ]
+                },
+                {
+                    text: '布局',
+                    items: [
+                        {text: 'c7-title标题', link: '/tag/title'},
+                    ],
                 }
             ],
             //  框架介绍
@@ -68,8 +74,8 @@ export default defineConfig({
                     items: [
                         {text: 'su-button', link: '/tag/button'},
                         {text: 'One', link: '/guide/one'},
-                        {text: 'Two', link: '/guide/two'}
-                    ]
+                    ],
+
                 }
             ],
         },
