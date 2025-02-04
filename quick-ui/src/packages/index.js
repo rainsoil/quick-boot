@@ -1,7 +1,7 @@
-import C7Select from 'c7Select/index.js'
+import C7Input from "@/packages/c7Input/index.js";
 
 const components = {
-    C7Select
+    C7Input
 }
 const install = (app) => {
     for (const key in components) {

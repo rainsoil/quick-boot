@@ -1,8 +1,6 @@
 package com.su60.quickboot.data.file;
 
 import com.su60.quickboot.data.file.strategy.LocalFileTemplateStorage;
-import org.dromara.x.file.storage.core.aspect.FileStorageAspect;
-import org.dromara.x.file.storage.spring.EnableFileStorage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
  * @since 2024/05/30
  **/
 @Configuration
-@EnableFileStorage
 @EnableConfigurationProperties(FileProperties.class)
 @ComponentScan("com.su60.quickboot.data.file")
 public class FileConfiguration {
