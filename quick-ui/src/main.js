@@ -14,7 +14,7 @@ import router from './router'
 import directive from './directive' // directive
 
 // 加载组件
-import c7Ui from '@/packages/index'
+import c7Ui from '@/packages/index.js'
 // 注册指令
 import plugins from './plugins' // plugins
 import {download} from '@/utils/request'
@@ -77,12 +77,12 @@ app.component("qDatePicker", qDatePicker);
 app.component('formLayout', formLayout)
 app.component('qtable', qtable)
 app.component("qtableSearch", qtableSearch);
-app.component("c7Ui", c7Ui);
 
 app.use(router)
 app.use(store)
 app.use(plugins)
 app.use(elementIcons)
+app.use(c7Ui)
 app.component('svg-icon', SvgIcon)
 
 directive(app)

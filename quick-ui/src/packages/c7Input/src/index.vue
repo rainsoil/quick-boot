@@ -1,6 +1,5 @@
 <template>
 
-  <span>111</span>
   <el-col :span="config.span">
     <el-form-item :prop="config.prop" :label="config.label" :label-width="config.labelWidth">
       <!-- 使用具名插槽或作用域插槽时可以添加额外的属性 -->
@@ -26,7 +25,12 @@
 </template>
 
 <script setup>
-import {ref, computed, useSlots} from 'vue';
+import {ref, computed, useSlots, defineOptions} from 'vue';
+
+defineOptions({
+  name: 'C7Input'
+})
+
 // 定义参数
 const props = defineProps({
   // 父组件传过来的值
@@ -93,7 +97,9 @@ const config = computed(() => {
     // 标签文本
     label: props.label,
     // 属性
-    prop: props.prop
+    prop: props.prop,
+    // 提示信息
+    placeholder: props.placeholder
   }
 })
 
