@@ -54,7 +54,7 @@ export function getDictList(dictType) {
 }
 
 export function getDictLabel(dictType, dictValue) {
-    let mathDicts = getDictList(dictType).filter(p => p.value == dictValue);
+    let mathDicts = getDictList(dictType).filter(p => p.value === dictValue);
     if (null != mathDicts && mathDicts.length > 0) {
         return mathDicts[0];
     } else {

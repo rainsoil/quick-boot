@@ -85,6 +85,13 @@ app.use(elementIcons)
 app.use(c7Ui)
 app.component('svg-icon', SvgIcon)
 
+
+// 全局注入
+import provideSerivce from "./service/provideSerivce";
+app.provide("getRequest", provideSerivce.getRequest)
+
+
+
 directive(app)
 
 // 使用element-plus 并且设置全局的大小

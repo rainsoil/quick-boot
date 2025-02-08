@@ -1,4 +1,4 @@
-import C7Input from "@/packages/c7Input/index.js";
+import C7Input from "@/packages/components/c7Input/index.js";
 
 const components = {
     C7Input
