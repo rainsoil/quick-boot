@@ -1,18 +1,22 @@
 import useDictStore from '@/store/modules/dict'
 import {getDicts} from '@/api/system/dict/data'
 
+
 /**
  * 获取字典数据
  */
 export function useDict(...args) {
+    const loading = ref(false);
     const res = ref({});
     return (() => {
         args.forEach((dictType, index) => {
             res.value[dictType] = [];
             const dicts = useDictStore().getDict(dictType);
+            console.log("dicts", dicts)
             if (dicts) {
                 res.value[dictType] = dicts;
             } else {
+                loading.value = true;
                 getDicts(dictType).then(resp => {
                     res.value[dictType] = resp.data.map(p => ({
                         label: p.dictLabel,
@@ -21,9 +25,11 @@ export function useDict(...args) {
                         elTagClass: p.cssClass
                     }))
                     useDictStore().setDict(dictType, res.value[dictType]);
+                    loading.value = false;
                 })
             }
         })
+        console.log(res.value)
         return toRefs(res.value);
     })()
 }
@@ -54,7 +60,9 @@ export function getDictList(dictType) {
 }
 
 export function getDictLabel(dictType, dictValue) {
-    let mathDicts = getDictList(dictType).filter(p => p.value == dictValue);
+    const dicts = useDict(dictType)[dictType].value;
+    console.log(dicts, dictType)
+    let mathDicts = dicts.filter(p => p.value == dictValue);
     if (null != mathDicts && mathDicts.length > 0) {
         return mathDicts[0];
     } else {
