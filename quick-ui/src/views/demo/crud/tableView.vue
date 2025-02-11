@@ -16,6 +16,7 @@
         <el-table-column label="id" prop="id"></el-table-column>
        <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="性别" prop="sex">
+
           <template #default="scope">
            {{state.getDictLabel("sys_user_sex",scope.row.sex)}}
           </template>
