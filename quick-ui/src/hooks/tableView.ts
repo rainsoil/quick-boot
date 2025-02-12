@@ -3,9 +3,8 @@ import {onActivated, onMounted} from "vue";
 import baseService from "../service/baseService";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {download} from "../utils/request";
-// import {useDict, getDictLabel} from '../utils/dict'
-import {useDict2 } from '../utils/dict2'
-const { getDict,getDictLabel } = useDict2();
+import {useDict } from '../utils/dict'
+const { getDict,getDictLabel } = useDict();
 
 const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
         const defaultOptions: IViewHooksOptions = {
