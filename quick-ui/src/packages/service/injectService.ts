@@ -40,6 +40,8 @@ export default {
 
         return injectGetRequest(path, params, headers);
     },
+
+
     /**
      * 匹配字典项
      * @param dictType

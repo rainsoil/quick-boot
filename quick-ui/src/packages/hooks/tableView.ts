@@ -175,9 +175,9 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
             },
             // 导出
             exportHandle() {
-                download(state.exportURL, {
-                    ...state.dataForm
-                })
+                // download(state.exportURL, {
+                //     ...state.dataForm
+                // })
                 // window.location.href = `${app.api}${state.exportURL}?${qs.stringify({
                 //     ...state.dataForm,
                 //     token: getToken()
