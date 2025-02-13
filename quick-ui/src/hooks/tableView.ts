@@ -3,8 +3,8 @@ import {onActivated, onMounted} from "vue";
 import baseService from "../service/baseService";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {download} from "../utils/request";
-import {useDict, getDictLabel} from '../utils/dict'
-
+import {useDict } from '../utils/dict'
+const { getDict,getDictLabel } = useDict();
 
 const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
         const defaultOptions: IViewHooksOptions = {
@@ -50,9 +50,11 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
         const rejectFns = {
             getDictLabel(dictType: string, dictValue: string) {
 
+
                 if (null == dictType || undefined == dictType || null == dictValue || undefined == dictValue) {
                     return "";
                 }
+                // getDict(dictType);
                 return getDictLabel(dictType, dictValue);
             }
         };

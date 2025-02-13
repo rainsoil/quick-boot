@@ -43,7 +43,7 @@ export default defineConfig(({mode, command}) => {
             open: true,
             proxy: {
                 '/dev-api/mockapi': {
-                    target: 'http://localhost:8800',
+                    target: 'https://apifoxmock.com/m1/4742948-4395863-default/',
                     // target: 'http://localhost:8080',
                     // target: 'https://vue.ruoyi.vip/prod-api',
                     changeOrigin: true,

@@ -1,63 +1,31 @@
+// composables/useDict.js
 import useDictStore from '@/store/modules/dict'
-import {getDicts} from '@/api/system/dict/data'
+import {computed, onServerPrefetch, onMounted} from 'vue';
 
-/**
- * 获取字典数据
- */
-export function useDict(...args) {
-    const res = ref({});
-    return (() => {
-        args.forEach((dictType, index) => {
-            res.value[dictType] = [];
-            const dicts = useDictStore().getDict(dictType);
-            if (dicts) {
-                res.value[dictType] = dicts;
-            } else {
-                getDicts(dictType).then(resp => {
-                    res.value[dictType] = resp.data.map(p => ({
-                        label: p.dictLabel,
-                        value: p.dictValue,
-                        elTagType: p.listClass,
-                        elTagClass: p.cssClass
-                    }))
-                    useDictStore().setDict(dictType, res.value[dictType]);
-                })
-            }
-        })
-        return toRefs(res.value);
-    })()
-}
+export function useDict() {
+    const store = useDictStore();
 
-export function getDictList(dictType) {
+    /**
+     * 获取字典项（自动触发请求）
+     * @param {string} type 字典类型
+     * @returns {import('vue').ComputedRef<Array>} 字典项数组（响应式）
+     */
+    const getDict = (type) => {
+        // 触发请求（若尚未缓存）
+        store.fetchDict(type);
 
+        // 返回响应式字典数据，初始为空数组
+        return computed(() => store.dictData[type] || []);
+    };
 
-    const dicts = useDictStore().getDict(dictType);
+    const getDictLabel = (type, value) => {
+        const dict = getDict(type).value;
+        console.log(dict)
+        if (!dict) return value;
 
-    if (dicts) {
-        return dicts;
-    } else {
-        getDicts(dictType).then(resp => {
-            console.log(resp)
-            let rs = resp.data.map(p => ({
-                label: p.dictLabel,
-                value: p.dictValue,
-                elTagType: p.listClass,
-                elTagClass: p.cssClass
-            }))
-            console.log(rs)
-            return rs;
-            // console.log(dictType,res.value)
-            // useDictStore().setDict(dictType, res.value);
-        })
-    }
+        const item = dict.find(item => item.dictValue === value);
+        return item ? item.dictLabel : value;
+    };
 
-}
-
-export function getDictLabel(dictType, dictValue) {
-    let mathDicts = getDictList(dictType).filter(p => p.value === dictValue);
-    if (null != mathDicts && mathDicts.length > 0) {
-        return mathDicts[0];
-    } else {
-        return null;
-    }
+    return {getDict, getDictLabel};
 }

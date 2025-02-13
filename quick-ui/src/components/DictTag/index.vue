@@ -89,7 +89,7 @@ const unmatch = computed(() => {
 });
 
 function init() {
-  // console.log(props.dictType)
+  console.log(props.dictType)
   // console.log(proxy.useDict(props.dictType))
   // optionRef.value = proxy.useDict(props.dictType);
   // console.log(optionRef.value)
