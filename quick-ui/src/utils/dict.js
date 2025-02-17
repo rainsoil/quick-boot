@@ -20,7 +20,6 @@ export function useDict() {
 
     const getDictLabel = (type, value) => {
         const dict = getDict(type).value;
-        console.log(dict)
         if (!dict) return value;
 
         const item = dict.find(item => item.dictValue === value);

@@ -63,6 +63,8 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                 }
                 state.dataListLoading = true;
 
+
+                console.log("state.getDataListURL", state.getDataListURL)
                 baseService.getRequest(state.getDataListURL, {
                     order: state.order,
                     orderField: state.orderField,
@@ -70,10 +72,12 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                     limit: state.getDataListIsPage ? state.limit : null,
                     ...state.dataForm
                 }).then((res) => {
+                    console.log("res", res)
                     state.dataListLoading = false;
                     state.dataList = state.getDataListIsPage ? res.data.records : res.data;
                     state.total = state.getDataListIsPage ? res.data.total : 0;
-                }).catch(() => {
+                }).catch((error) => {
+                    console.log("eeee",error)
                     state.dataListLoading = false;
                 })
             },

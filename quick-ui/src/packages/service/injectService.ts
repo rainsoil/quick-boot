@@ -33,6 +33,7 @@ export default {
      */
     getRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
         // 从 inject 中获取请求函数
+        console.log(inject("getRequest"))
         const injectGetRequest = inject<GetRequest>('getRequest');
         if (!injectGetRequest) {
             throw new Error('getRequest 没有提供，请在父组件中通过 provide 注入！');
@@ -49,7 +50,7 @@ export default {
      */
     getDictLabel(dictType: string, dictValue: string) {
         let matchedDicts = this.getDictByType(dictType).filter(p => p.value == dictValue);
-        return matchedDicts.length > 0 ? matchedDicts[0] : null;
+        return matchedDicts.length > 0 ? matchedDicts[0] : dictValue;
     }
 
 }

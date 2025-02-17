@@ -1,5 +1,5 @@
-import C7Input from "@/packages/components/c7Input/index.js";
-
+import C7Input from "./components/c7Input/index.js";
+import tableView from "./hooks/tableView";
 const components = {
     C7Input
 }
@@ -15,5 +15,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 
 export default {
     install,
-    ...components
+    ...components,
+    tableView
 }

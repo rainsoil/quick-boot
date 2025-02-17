@@ -1,113 +1,61 @@
-import { defineConfig } from 'vitepress'
-
+import {defineConfig} from 'vitepress'
+import {demoblockPlugin, demoblockVitePlugin} from 'vitepress-theme-demoblock'
+import path from 'path'
+import vueJsx from '@vitejs/plugin-vue-jsx'
+import nav from './configs/nav'
+import sidebar from './configs/sidebar'
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "quick-boot快速开发平台",
-  description: "quick-boot快速开发平台",
-  themeConfig: {
-    // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: '首页', link: '/' },
-      {
-        text: '在线文档',
-        items: [
-          {
-            // 该部分的标题
-            text: '前端标签文档',
-            link: '/ui/index'
-          },
-          {
-            // 该部分的标题
-            text: '后端接口文档',
-            link: '/docs/index'
-          }
-        ]
+    title: "quick-boot快速开发平台",
+    description: "quick-boot快速开发平台",
+    lastUpdated: true,
+    cleanUrls: true,
+    markdown: {
+        theme: { light: 'github-light', dark: 'github-dark' },
 
-      },
-      {text: '在线体验', link: '/markdown-examples'},
-    ],
-
-    // 侧边栏菜单栏设置
-    sidebar: {
-      // 前端标签
-      '/tag/': [
-        {
-          text: '按钮组件',
-          items: [
-            {text: 'su-button', link: '/tag/button'},
-            {text: 'One', link: '/guide/one'},
-            {text: 'Two', link: '/guide/two'}
-          ]
-        },
-        {
-          text: '表单组件',
-          items: [
-            {text: 'su-button', link: '/tag/button'},
-            {text: 'One', link: '/guide/one'},
-            {text: 'Two', link: '/guide/two'}
-          ]
-        },
-        {
-          text: '布局',
-          items: [
-            {text: 'c7-title标题', link: '/tag/title'},
-          ],
+        config: (md) => {
+            md.use(demoblockPlugin, {
+                customClass: 'demoblock-custom'
+            })
         }
-      ],
-      //  框架介绍
-      '/docs/': [
-        {
-          text: '简介',
-          items: [
-            {text: '简介', link: '/tag/button'},
-            {text: '环境要求', link: '/guide/one'},
-            {text: '开发环境搭建', link: '/guide/two'},
-            {text: '版本发布', link: '/guide/two'},
-            {text: '文件上传', link: '/docs/文件上传'}
-          ]
-        },
-        {
-          text: '表单组件',
-          items: [
-            {text: 'su-button', link: '/tag/button'},
-            {text: 'One', link: '/guide/one'},
-          ],
+    },
+    vite: {
+        plugins: [demoblockVitePlugin(), vueJsx()],
+        resolve: {
+            alias: {
 
+                // 设置路径
+                '~': path.resolve(__dirname, './'),
+                // 设置别名
+                '@': path.resolve(__dirname, './src')
+            }
         }
-      ],
-      //  标签介绍
-      '/ui/': [
-        {
-          text: '简介',
-          items: [
-            {text: '表格Hook', link: '/ui/tableHook'},
-
-          ]
-        },
-        {
-          text: '表单组件',
-          items: [
-            {text: 'su-button', link: '/tag/button'},
-            {text: 'One', link: '/guide/one'},
-          ],
-
-        }
-      ],
     },
 
-    // 导航栏中展示带有图标的社交帐户链接
-    socialLinks: [
-      {icon: 'gitee', link: 'https://gitee.com/rainsoil/quick-boot'}
-    ],
-    // 页脚配置
-    footer: {
-      message: 'Released under the MIT License.',
-      copyright: '© 2024-2025 chu7 ™. All Rights Reserved. \r xxxx'
+    themeConfig: {
+        // https://vitepress.dev/reference/default-theme-config
+        nav,
+        sidebar,
+        // 导航栏中展示带有图标的社交帐户链接
+        socialLinks: [
+            {icon: 'gitee', link: 'https://gitee.com/rainsoil/quick-boot'}
+        ],
+        // 页脚配置
+        footer: {
+            message: 'Released under the MIT License.',
+            copyright: '© 2024-2025 chu7 ™. All Rights Reserved. \r xxxx'
+        },
+        // 开启本地搜索
+        search: {
+            provider: 'local'
+        },
+        editLink: {
+            pattern: 'https://github.com/xinlei3166/vitepress-demo/edit/master/docs/:path',
+            text: '在 GitHub 上编辑此页'
+        },
+        outlineTitle: '本页目录',
+        lastUpdatedText: '上次更新',
+        logo: '/logo.svg',
     },
-    // 开启本地搜索
-    search: {
-      provider: 'local'
-    }
-  }
 })
 
