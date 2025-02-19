@@ -34,12 +34,12 @@ export default {
      */
     getRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
         // 从 inject 中获取请求函数
-        const injectGetRequest = inject<GetRequest>('getRequest');
+        const injectGetRequest = inject('getRequest');
         if (!injectGetRequest) {
             throw new Error('getRequest 没有提供，请在父组件中通过 provide 注入！');
         }
 
-        return injectGetRequest(path, params, headers);
+        return injectGetRequest.value(path, params, headers);
     },
 
     /**
@@ -66,7 +66,7 @@ export default {
      */
     getDictLabel(dictType: string, dictValue: string) {
         let matchedDicts = this.getDictByType(dictType).filter(p => p.dictValue == dictValue);
-        return matchedDicts.length > 0 ? matchedDicts[0] : dictValue;
+        return matchedDicts.length > 0 ? matchedDicts[0] : null;
     }
 
 

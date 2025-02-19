@@ -10,9 +10,10 @@
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview",
-    "docs:dev": "vitepress dev docs",
-    "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+
+    "deploy": "zsh scripts/gh-pages.sh",
+    "docs:dev": "pnpm -C docs dev",
+    "docs:build": "pnpm -C docs build"
   },
   "repository": {
     "type": "git",

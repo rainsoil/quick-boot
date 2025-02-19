@@ -101,6 +101,7 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
             },
             // 分页
             pageSizeChangeHandle(val: number) {
+                console.log(123)
                 state.page = 1;
                 state.limit = val;
                 viewFns.query();
@@ -147,7 +148,6 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                         type: "warning"
                     })
                         .then(() => {
-                            console.log("1111")
                             baseService
                                 .deleteRequest(
                                     `${state.deleteURL}${state.deleteIsBatch ? "" : "/" + id}`,

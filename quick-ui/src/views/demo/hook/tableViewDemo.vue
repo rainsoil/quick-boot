@@ -20,7 +20,7 @@
               plain
               icon="Plus"
               @click="alertDataListSelections"
-          >获取选中的数据
+          >选中的数据
           </el-button>
 
           <el-button
@@ -28,8 +28,10 @@
               plain
               icon="Plus"
               @click="alertDataListSelectionsId"
-          >获取选中的数据id
+          >选中的数据id
           </el-button>
+
+
 
         </el-col>
       </el-row>
