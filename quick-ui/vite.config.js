@@ -14,16 +14,7 @@ export default defineConfig(({mode, command}) => {
         base: VITE_APP_ENV === 'production' ? '/' : '/',
         plugins: [
             createVitePlugins(env, command === 'build'),
-            viteMockServe({
-                mockPath: 'mock', // 指定存放 mock 文件的目录
-                // localEnabled: process.env.NODE_ENV === 'development', // 只在开发环境中启用本地 mock
-                prodEnabled: false, // 禁用生产环境下的 mock（可选）
-                supportTs: true, // 如果你的 mock 文件是 TypeScript 编写的，请开启此选项
-                watchFiles: true,// 监听 mock 文件的变化并热更新（可选）
-                enable: true, // 是否启用
-                logger: true, // 日志,
 
-            })
         ],
         resolve: {
             // https://cn.vitejs.dev/config/#resolve-alias

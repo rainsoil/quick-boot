@@ -20,7 +20,8 @@ export default {
             throw new Error('getDictByType 没有提供，请在父组件中通过 provide 注入！');
         }
 
-        const result = injectGetDictByType(dictType);
+        const result = injectGetDictByType(dictType)
+
         return Array.isArray(result) ? result : [];
     },
 
@@ -33,7 +34,6 @@ export default {
      */
     getRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
         // 从 inject 中获取请求函数
-        console.log(inject("getRequest"))
         const injectGetRequest = inject<GetRequest>('getRequest');
         if (!injectGetRequest) {
             throw new Error('getRequest 没有提供，请在父组件中通过 provide 注入！');
@@ -42,6 +42,22 @@ export default {
         return injectGetRequest(path, params, headers);
     },
 
+    /**
+     * 发送Delete请求
+     * @param path 路径
+     * @param params 参数
+     * @param headers header头部
+     * @returns {*}
+     */
+    deleteRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
+        // 从 inject 中获取请求函数
+        const injectDeleteRequest = inject<GetRequest>('deleteRequest');
+        if (!injectDeleteRequest) {
+            throw new Error('deleteRequest 没有提供，请在父组件中通过 provide 注入！');
+        }
+
+        return injectDeleteRequest(path, params, headers);
+    },
 
     /**
      * 匹配字典项
@@ -49,8 +65,9 @@ export default {
      * @param dictValue
      */
     getDictLabel(dictType: string, dictValue: string) {
-        let matchedDicts = this.getDictByType(dictType).filter(p => p.value == dictValue);
+        let matchedDicts = this.getDictByType(dictType).filter(p => p.dictValue == dictValue);
         return matchedDicts.length > 0 ? matchedDicts[0] : dictValue;
     }
+
 
 }

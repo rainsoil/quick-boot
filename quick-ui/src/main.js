@@ -55,8 +55,7 @@ const app = createApp(App)
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
-import {getRequest} from "./service/provideSerivce";
-app.config.globalProperties.getRequest = getRequest
+
 
 app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
@@ -89,8 +88,10 @@ app.component('svg-icon', SvgIcon)
 
 
 // 全局注入
-// import provideSerivce from "./service/provideSerivce";
-// app.provide("getRequest", provideSerivce.getRequest)
+import {getRequest,deleteRequest,getDictByType} from "./service/provideSerivce";
+app.provide("getRequest", getRequest)
+app.provide("getDictByType",getDictByType)
+app.provide("deleteRequest",deleteRequest)
 
 
 

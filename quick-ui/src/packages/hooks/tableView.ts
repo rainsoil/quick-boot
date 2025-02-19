@@ -51,7 +51,8 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                 if (null == dictType || undefined == dictType || null == dictValue || undefined == dictValue) {
                     return "";
                 }
-                return baseService.getDictLabel(dictType, dictValue);
+                let dict = baseService.getDictLabel(dictType, dictValue);
+                return dict == null ? dictValue : dict.dictLabel;
             }
         };
 
@@ -62,9 +63,6 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                     return;
                 }
                 state.dataListLoading = true;
-
-
-                console.log("state.getDataListURL", state.getDataListURL)
                 baseService.getRequest(state.getDataListURL, {
                     order: state.order,
                     orderField: state.orderField,
@@ -72,12 +70,10 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                     limit: state.getDataListIsPage ? state.limit : null,
                     ...state.dataForm
                 }).then((res) => {
-                    console.log("res", res)
                     state.dataListLoading = false;
                     state.dataList = state.getDataListIsPage ? res.data.records : res.data;
                     state.total = state.getDataListIsPage ? res.data.total : 0;
                 }).catch((error) => {
-                    console.log("eeee",error)
                     state.dataListLoading = false;
                 })
             },
@@ -151,8 +147,9 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                         type: "warning"
                     })
                         .then(() => {
+                            console.log("1111")
                             baseService
-                                .delete(
+                                .deleteRequest(
                                     `${state.deleteURL}${state.deleteIsBatch ? "" : "/" + id}`,
                                     state.deleteIsBatch
                                         ? id
