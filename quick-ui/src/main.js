@@ -88,12 +88,12 @@ app.component('svg-icon', SvgIcon)
 
 
 // 全局注入
-import {getRequest,deleteRequest,getDictByType} from "./service/provideSerivce";
-const requestFn = ref(getRequest);
-
-app.provide("getRequest",requestFn)
-app.provide("getDictByType",getDictByType)
-app.provide("deleteRequest",deleteRequest)
+// import {getRequest,deleteRequest,getDictByType} from "./service/provideSerivce";
+// const requestFn = ref(getRequest);
+//
+// app.provide("getRequest",requestFn)
+// app.provide("getDictByType",getDictByType)
+// app.provide("deleteRequest",deleteRequest)
 
 
 

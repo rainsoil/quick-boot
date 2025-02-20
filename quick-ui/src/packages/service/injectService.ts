@@ -1,73 +1,53 @@
-import {inject} from "vue";
-
-// 字段type类型
-type  GetDictByType = (dictType: string) => Promise<any>;
+import { inject } from 'vue';
 
 // 请求的类型
-type  GetRequest = (path: string, params?: Object, headers?: Record<string, string>) => Promise<any>;
-
+type GetRequest = (path: string, params?: Object, headers?: Record<string, string>) => Promise<any>;
 
 export default {
-    /**
-     * 根据字典类型获取字典数据
-     * @param dictType
-     * @returns {*|*[]}
-     */
-    getDictByType(dictType: string): any[] {
-        // 从 inject 中获取字典查询函数
-        const injectGetDictByType = inject<GetDictByType>('getDictByType');
-        if (!injectGetDictByType) {
-            throw new Error('getDictByType 没有提供，请在父组件中通过 provide 注入！');
+    setup() {
+        // 使用 inject 获取需要的服务路径和请求函数
+        const servicePath = '../../../docs/.vitepress/config/provideSerivce.js';
+
+        const servicePath2 = inject<string>('servicePath2');
+        if (!servicePath2) {
+            throw new Error('servicePath2 没有提供，请在父组件中通过 provide 注入！');
         }
 
-        const result = injectGetDictByType(dictType)
+        // 定义请求函数
+        const getDictByType = async (dictType: string): Promise<any[]> => {
+            // 使用动态导入加载字典服务
+            const mod = await import(servicePath);
+            if (!mod) {
+                throw new Error('getDictByType 没有提供，请在父组件中通过 provide 注入！');
+            }
+            const result = mod.getDictByType(dictType);
+            return Array.isArray(result) ? result : [];
+        };
 
-        return Array.isArray(result) ? result : [];
-    },
+        const getRequest = async (path: string, params?: Object, headers?: Record<string, string>): Promise<any> => {
+            const mod = await import(/* @vite-ignore */ servicePath2);
+            return mod != null ? mod.getRequest(path, params, headers) :
+                Promise.reject('getRequest 没有提供，请在' + servicePath2 + '中加入！');
+        };
 
-    /**
-     * 发送 get 请求
-     * @param path 路径
-     * @param params 参数
-     * @param headers header头部
-     * @returns {*}
-     */
-    getRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
-        // 从 inject 中获取请求函数
-        const injectGetRequest = inject('getRequest');
-        if (!injectGetRequest) {
-            throw new Error('getRequest 没有提供，请在父组件中通过 provide 注入！');
-        }
+        const deleteRequest = async (path: string, params?: Object, headers?: Record<string, string>): Promise<any> => {
+            const injectDeleteRequest = inject<GetRequest>('deleteRequest');
+            if (!injectDeleteRequest) {
+                throw new Error('deleteRequest 没有提供，请在父组件中通过 provide 注入！');
+            }
+            return injectDeleteRequest(path, params, headers);
+        };
 
-        return injectGetRequest.value(path, params, headers);
-    },
+        const getDictLabel = (dictType: string, dictValue: string) => {
+            let matchedDicts = getDictByType(dictType).filter(p => p.dictValue == dictValue);
+            return matchedDicts.length > 0 ? matchedDicts[0] : null;
+        };
 
-    /**
-     * 发送Delete请求
-     * @param path 路径
-     * @param params 参数
-     * @param headers header头部
-     * @returns {*}
-     */
-    deleteRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
-        // 从 inject 中获取请求函数
-        const injectDeleteRequest = inject<GetRequest>('deleteRequest');
-        if (!injectDeleteRequest) {
-            throw new Error('deleteRequest 没有提供，请在父组件中通过 provide 注入！');
-        }
-
-        return injectDeleteRequest(path, params, headers);
-    },
-
-    /**
-     * 匹配字典项
-     * @param dictType
-     * @param dictValue
-     */
-    getDictLabel(dictType: string, dictValue: string) {
-        let matchedDicts = this.getDictByType(dictType).filter(p => p.dictValue == dictValue);
-        return matchedDicts.length > 0 ? matchedDicts[0] : null;
+        return {
+            getDictByType,
+            getRequest,
+            deleteRequest,
+            getDictLabel
+        };
     }
-
-
-}
+};

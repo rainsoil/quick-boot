@@ -5,25 +5,29 @@ import "element-plus/dist/index.css";
 import "element-plus/theme-chalk/dark/css-vars.css";
 // 图标并进行全局注册
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-import { NotFound, globals } from "../vitepress";
-import {getDictByType , getRequest} from "../config/provideSerivce";
+import {NotFound, globals} from "../vitepress";
+import {getDictByType, getRequest} from "../config/provideSerivce";
+import {ref} from 'vue'
 import './styles/var.css'
+
 export default {
-  ...theme,
-  NotFound,
-  enhanceApp({ app }) {
-    app.use(ElementPlus);
-    // 注册所有图标
-    for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-      app.component(key, component);
-    }
-    // app.component("Demo", VPDemo);
-    globals.forEach(([name, Comp]) => {
-      app.component(name, Comp)
-    })
+    ...theme,
+    NotFound,
+    enhanceApp({app}) {
+        app.use(ElementPlus);
+        // 注册所有图标
+        for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+            app.component(key, component);
+        }
+        // app.component("Demo", VPDemo);
+        globals.forEach(([name, Comp]) => {
+            app.component(name, Comp)
+        })
 
-
-    app.provide("getRequest", getRequest)
-    app.provide("getDictByType", getDictByType )
-  },
+        // app.config.globalProperties.$getRequest = getRequest;
+        //
+        let servicePath = '../../../docs/.vitepress/config/provideSerivce.js';
+        app.provide("servicePath", servicePath)
+        // app.provide("getDictByType", getDictByType )
+    },
 };
