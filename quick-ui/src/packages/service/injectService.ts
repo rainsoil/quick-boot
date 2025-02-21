@@ -37,7 +37,7 @@ export default {
             servicePath = inject('servicePath');
         }
         console.log("servicePath",servicePath)
-        const mod = await import(servicePath);
+        const mod = await import(/* @vite-ignore */ servicePath);
         if (!mod) {
             throw new Error('getDictByType 没有提供，请在父组件中通过 provide 注入！');
         }

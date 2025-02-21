@@ -95,7 +95,8 @@ app.component('svg-icon', SvgIcon)
 // app.provide("getDictByType",getDictByType)
 // app.provide("deleteRequest",deleteRequest)
 
-
+let servicePath = '../../service/provideSerivce.js';
+app.provide("servicePath", servicePath)
 
 directive(app)
 
