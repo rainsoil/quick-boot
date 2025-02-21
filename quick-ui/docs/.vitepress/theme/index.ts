@@ -7,7 +7,7 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {NotFound, globals} from "../vitepress";
 import {getDictByType, getRequest} from "../config/provideSerivce";
-import {ref} from 'vue'
+import {inject, ref, reactive} from 'vue'
 import './styles/var.css'
 
 export default {
@@ -23,11 +23,19 @@ export default {
         globals.forEach(([name, Comp]) => {
             app.component(name, Comp)
         })
-
-        // app.config.globalProperties.$getRequest = getRequest;
-        //
+        // app.config.globalProperties.$myGlobalValue = 'Hello VitePress!'
+        // // app.config.globalProperties.$getRequest = getRequest;
+        // //
         let servicePath = '../../../docs/.vitepress/config/provideSerivce.js';
         app.provide("servicePath", servicePath)
+        //
+        // const servicePath2 = inject('servicePath2');
+        // console.log("servicePath2", servicePath2)
+        // const globalData = reactive({
+        //     message: 'Global message'
+        // })
+        // app.provide('globalData', globalData)
+
         // app.provide("getDictByType", getDictByType )
     },
 };

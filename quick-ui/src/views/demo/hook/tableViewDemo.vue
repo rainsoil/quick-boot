@@ -1,7 +1,7 @@
 <!-- tableView 表格hook-->
 
 <template>
-
+  <div>{{ $myGlobalValue }}</div>
   <div class="app-container">
     <el-card style="max-width: 100%">
       <template #header>

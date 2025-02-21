@@ -2,6 +2,7 @@
 
 
 <template>
+
   <el-table :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle()">
     <el-table-column label="id" prop="id"></el-table-column>
     <el-table-column label="dataPicker" prop="dataPicker"></el-table-column>

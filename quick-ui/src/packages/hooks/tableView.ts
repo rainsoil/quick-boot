@@ -1,6 +1,6 @@
 import {IObject, IViewHooks, IViewHooksOptions} from "./interface";
 import {onActivated, onMounted} from "vue";
-import {getRequest} from "../service/injectService";
+import baseService from "../service/injectService";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {inject} from "vue";
 
