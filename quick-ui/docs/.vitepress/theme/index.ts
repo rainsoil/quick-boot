@@ -24,10 +24,11 @@ export default {
             app.component(name, Comp)
         })
         // app.config.globalProperties.$myGlobalValue = 'Hello VitePress!'
-        // // app.config.globalProperties.$getRequest = getRequest;
+        app.config.globalProperties.$getRequest = getRequest;
+        app.config.globalProperties.$getDictByType = getDictByType
         // //
-        let servicePath = '../../../docs/.vitepress/config/provideSerivce.js';
-        app.provide("servicePath", servicePath)
+        // let servicePath = '../../../docs/.vitepress/config/provideSerivce.js';
+        // app.provide("servicePath", servicePath)
         //
         // const servicePath2 = inject('servicePath2');
         // console.log("servicePath2", servicePath2)

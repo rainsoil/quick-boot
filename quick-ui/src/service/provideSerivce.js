@@ -26,9 +26,16 @@ export function deleteRequest(path, params, headers) {
 
 
 export function getDictByType(dictType) {
-    return useDict().getDict(dictType).value;
+    let  res = useDict().getDict(dictType);
+    console.log(res.value)
+    return res.value;
 }
 
+export default {
+    getRequest,
+    deleteRequest,
+    getDictByType
+}
 
 
 

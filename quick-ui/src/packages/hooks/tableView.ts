@@ -1,5 +1,5 @@
 import {IObject, IViewHooks, IViewHooksOptions} from "./interface";
-import {onActivated, onMounted} from "vue";
+import {computed, onActivated, onMounted, ref} from "vue";
 import baseService from "../service/injectService";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {inject} from "vue";
@@ -51,9 +51,11 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                 if (null == dictType || undefined == dictType || null == dictValue || undefined == dictValue) {
                     return "";
                 }
-                // let dict = baseService.getDictLabel(dictType, dictValue);
-                let dict = null;
+                let dict = baseService.getDictLabel(dictType, dictValue);
+                console.log(dict)
+                // // let dict = null;
                 return dict == null ? dictValue : dict.dictLabel;
+
             }
         };
 

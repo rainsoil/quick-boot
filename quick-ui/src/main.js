@@ -50,7 +50,6 @@ import qtable from "@/components/qtable/index.vue";
 import qtableSearch from "@/components/qtableSearch/index.vue";
 
 
-
 const app = createApp(App)
 
 // 全局方法挂载
@@ -78,7 +77,11 @@ app.component("qDatePicker", qDatePicker);
 app.component('formLayout', formLayout)
 app.component('qtable', qtable)
 app.component("qtableSearch", qtableSearch);
+// 全局注入
+import {getRequest, deleteRequest, getDictByType} from "./service/provideSerivce";
 
+app.config.globalProperties.$getRequest = getRequest;
+app.config.globalProperties.$getDictByType = getDictByType;
 app.use(router)
 app.use(store)
 app.use(plugins)
@@ -87,8 +90,6 @@ app.use(c7Ui)
 app.component('svg-icon', SvgIcon)
 
 
-// 全局注入
-// import {getRequest,deleteRequest,getDictByType} from "./service/provideSerivce";
 // const requestFn = ref(getRequest);
 //
 // app.provide("getRequest",requestFn)
@@ -98,6 +99,7 @@ app.component('svg-icon', SvgIcon)
 let servicePath = '../../service/provideSerivce.js';
 app.provide("servicePath", servicePath)
 
+app.provide("getRequest", getRequest);
 directive(app)
 
 // 使用element-plus 并且设置全局的大小
