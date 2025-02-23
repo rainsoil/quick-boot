@@ -1,5 +1,10 @@
 <template>
+  <el-date-picker
+      v-model="modelValue"
+      type="date"
+      placeholder="Pick a day"
 
+  />
 </template>
 <script setup>
 //参数

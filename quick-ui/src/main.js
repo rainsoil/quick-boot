@@ -82,6 +82,7 @@ import {getRequest, deleteRequest, getDictByType} from "./service/provideSerivce
 
 app.config.globalProperties.$getRequest = getRequest;
 app.config.globalProperties.$getDictByType = getDictByType;
+app.config.globalProperties.$deleteRequest = deleteRequest
 app.use(router)
 app.use(store)
 app.use(plugins)
@@ -95,12 +96,12 @@ app.component('svg-icon', SvgIcon)
 // app.provide("getRequest",requestFn)
 // app.provide("getDictByType",getDictByType)
 // app.provide("deleteRequest",deleteRequest)
-
-let servicePath = '../../service/provideSerivce.js';
-app.provide("servicePath", servicePath)
-
-app.provide("getRequest", getRequest);
-directive(app)
+//
+// let servicePath = '../../service/provideSerivce.js';
+// app.provide("servicePath", servicePath)
+//
+// app.provide("getRequest", getRequest);
+// directive(app)
 
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {

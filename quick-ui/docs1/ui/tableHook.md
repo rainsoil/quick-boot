@@ -8,7 +8,7 @@
 <!--演示tableView Hook的demo类 -->
 
 <template>
-<tableViewDemo></tableViewDemo>
+
 
 
 </template>

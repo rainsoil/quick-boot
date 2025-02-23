@@ -38,7 +38,7 @@
 </template>
 
 <script setup name="Role">
-import tableView from "@/hooks/tableView";
+import tableView from "@/packages/hooks/tableView";
 import {reactive, ref, toRefs} from "vue";
 
 import AddOrUpdate from "@/views/system/role/add-or-update.vue";

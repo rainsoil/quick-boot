@@ -1,7 +1,11 @@
-import C7Input from "./components/c7Input/index.js";
+import C7Input from "./components/c7Input/src/index.vue";
+import DemoInput from  "components/DemoInput.vue"
+import c7Date from "components/C7-Input.vue";
 import tableView from "./hooks/tableView";
 const components = {
-    C7Input
+    C7Input,
+    DemoInput,
+    c7Date
 }
 const install = (app) => {
     for (const key in components) {

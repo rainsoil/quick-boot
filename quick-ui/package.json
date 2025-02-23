@@ -10,9 +10,9 @@
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview",
-
     "deploy": "zsh scripts/gh-pages.sh",
     "docs:dev": "pnpm -C docs dev",
+    "docs1:dev": "vitepress dev docs1",
     "docs:build": "pnpm -C docs build"
   },
   "repository": {

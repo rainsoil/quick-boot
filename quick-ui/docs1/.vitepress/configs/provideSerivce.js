@@ -22,7 +22,8 @@ export function getRequest(path, params, headers) {
     });
 }
 
-export function getDictByType (dictType) {
+export function getDictByType(dictType) {
     return [];
 }
+
 

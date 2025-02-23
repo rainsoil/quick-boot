@@ -69,12 +69,11 @@ export default {
      */
     deleteRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
         // 从 inject 中获取请求函数
-        const injectDeleteRequest = inject<GetRequest>('deleteRequest');
-        if (!injectDeleteRequest) {
-            throw new Error('deleteRequest 没有提供，请在父组件中通过 provide 注入！');
+        const instance = getCurrentInstance();
+        if (null == cache_instance && null != instance) {
+            cache_instance = instance;
         }
-
-        return injectDeleteRequest(path, params, headers);
+        return cache_instance.proxy.$deleteRequest(path, params, headers);
     },
 
     /**
