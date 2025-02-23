@@ -1,11 +1,9 @@
-import C7Input from "./components/c7Input/src/index.vue";
-import DemoInput from  "components/DemoInput.vue"
-import c7Date from "components/C7-Input.vue";
 import tableView from "./hooks/tableView";
+import c7Input from '../packages/components/c7Input/index.js';
+import  c7DatePicker from '../packages/components/c7DatePicker/index.js'
 const components = {
-    C7Input,
-    DemoInput,
-    c7Date
+    c7Input,
+    c7DatePicker
 }
 const install = (app) => {
     for (const key in components) {

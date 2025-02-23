@@ -7,10 +7,8 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {NotFound, globals} from "../vitepress";
 import {getDictByType, getRequest, deleteRequest} from "../config/provideSerivce";
-import {inject, ref, reactive} from 'vue'
 import './styles/var.css'
-import c7Ui from '../../../src/packages/index'
-import DemoInput from "../../../src/packages/components/DemoInput.vue";
+import c7Ui from '../../../src/packages/index.js'
 
 export default {
     ...theme,
@@ -25,10 +23,8 @@ export default {
         globals.forEach(([name, Comp]) => {
             app.component(name, Comp)
         })
-        app.component("DemoInput", DemoInput);
-        // console.log(c7Input)
-        // app.component("c7Input",c7Input);
-        // app.use(c7Ui)
+
+        app.use(c7Ui)
         app.config.globalProperties.$getRequest = getRequest;
         app.config.globalProperties.$getDictByType = getDictByType
         app.config.globalProperties.$deleteRequest = deleteRequest

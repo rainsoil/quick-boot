@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import {ref, computed, useSlots, defineOptions} from 'vue';
+import {ref, computed, useSlots, defineOptions,watch} from 'vue';
 
 defineOptions({
   name: 'C7Input'
@@ -56,7 +56,7 @@ const props = defineProps({
     default: ''
   },
   // 绑定的属性值
-  value: {
+  modelValue: {
     type: [String, Number],
     default: ''
   },

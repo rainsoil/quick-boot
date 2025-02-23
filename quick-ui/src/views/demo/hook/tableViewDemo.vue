@@ -1,10 +1,8 @@
 <!-- tableView 表格hook-->
 
 <template>
-  <div>{{ $myGlobalValue }}</div>
-  <c7-input  prop="name" placeholder="请输入名称"></c7-input>
-  <c7-date prop="date" placeholder="请选择日期"></c7-date>
-  <demo-input>1</demo-input>
+
+
   <div class="app-container">
     <el-card style="max-width: 100%">
       <template #header>
