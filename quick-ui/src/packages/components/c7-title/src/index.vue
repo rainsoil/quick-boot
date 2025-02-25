@@ -1,44 +1,46 @@
-<!-- 卡片组件-->
 <template>
-  <el-card class="box-card">
-    <template #header>
-      <div class="clearfix">
+  <el-card shadow="always" class="button-container" :style="buttonContainerStyle">
+    <template #default>
+      <!-- 使用 div 包裹内容，并应用 flex 布局 -->
+      <div class="content-wrapper">
+
         <!-- 色块部分 -->
-        <span  class="color-block" v-if="props.isShowColorBlock"
-              :style="{backgroundColor: colorBlockStyle.backgroundColor}"></span>
+        <div class="color-block" v-if="props.isShowColorBlock"
+             :style="{backgroundColor: colorBlockStyle.backgroundColor}"></div>
 
         <!-- 文字部分 -->
         <span class="text" :style="textStyle">{{ props.label }}</span>
-        <el-button style="float: right; padding: 3px 0" text @click="toggleContent">
-          {{ isExpanded ? '收起' : '展开' }}
-        </el-button>
-      </div>
-    </template>
-    <transition name="fade">
-      <div v-if="isExpanded">
-        <!-- 这里是你的卡片内容 -->
 
+        <!-- 按钮部分，放置在 div 的最后面，这样它会靠右 -->
         <slot></slot>
       </div>
-    </transition>
+    </template>
   </el-card>
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, computed, useSlots, defineOptions,watch} from 'vue';
 
-// 定义参数
+defineOptions({
+  name: 'c7Title'
+})
+// 定义属性
 const props = defineProps({
-  // 定义参数
-  // 卡片标题
+  // label  组件标题
   label: {
     type: String,
-    default: ''
+    default: '',
+    required: true
+  },
+  // 背景色(当为空的时候不显示)
+  backgroundColor: {
+    type: String,
+    default: '#f0f2f5'
   },
   // 是否展示色块
   isShowColorBlock: {
     type: Boolean,
-    default: true
+    default: false
   },
   // 色块颜色
   colorBlockColor: {
@@ -58,17 +60,7 @@ const props = defineProps({
     type: Boolean,
     default: true
   }
-});
-
-
-// 定义是否展开的状态，默认为true表示展开
-const isExpanded = ref(true);
-
-// 切换内容显示状态的方法
-const toggleContent = () => {
-  isExpanded.value = !isExpanded.value;
-};
-
+})
 // 样式绑定
 const sizeClasses = {
   h1: '2em', // 32px
@@ -77,6 +69,15 @@ const sizeClasses = {
   h4: '1em', // 16px
   h5: '0.83em' // 13.28px
 };
+
+// 计算属性
+const buttonContainerStyle = computed(() => {
+  if (!props.backgroundColor) {
+    return '';
+  } else return {
+    backgroundColor: props.backgroundColor
+  }
+})
 // 色块计算属性
 const colorBlockStyle = computed(() => {
   console.log(props.colorBlockColor)
@@ -93,33 +94,22 @@ const textStyle = computed(() => {
     flex: 1
   }
 })
-
 </script>
 
 <style scoped>
-/* 添加任何必要的样式 */
-.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
+/* 应用 Flexbox 布局 */
+.content-wrapper {
+  display: flex;
+  align-items: center; /* 垂直居中对齐 */
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity 0.5s;
-}
-
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */
-{
-  opacity: 0;
-}
-
+/* 定义色块样式 */
 .color-block {
-  display: inline-block;
-  width: 10px; /* 色块宽度 */
-  height: 23px; /* 色块高度 */
-  margin-right: 8px; /* 色块与文字之间的间距 */
-  vertical-align: middle; /* 垂直对齐方式 */
+  width: 12px; /* 设置色块宽度 */
+  height: 25px; /* 设置色块高度 */
+  margin-right: 8px; /* 设置与文字的间距 */
 }
+
 /* 可选：为文字添加一些样式 */
 .text {
 
@@ -127,4 +117,8 @@ const textStyle = computed(() => {
   font-weight: bold; /* 加粗字体 */
 }
 
+/* 确保按钮靠右 */
+.right-button {
+  margin-left: auto; /* 强制按钮推到右侧 */
+}
 </style>

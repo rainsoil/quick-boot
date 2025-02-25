@@ -6,7 +6,7 @@ import "element-plus/theme-chalk/dark/css-vars.css";
 // 图标并进行全局注册
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {NotFound, globals} from "../vitepress";
-import {getDictByType, getRequest, deleteRequest} from "../config/provideSerivce";
+import {getDictByType, getRequest, deleteRequest, openNewTab} from "../config/provideSerivce";
 import './styles/var.css'
 import c7Ui from '../../../src/packages/index.js'
 
@@ -28,6 +28,7 @@ export default {
         app.config.globalProperties.$getRequest = getRequest;
         app.config.globalProperties.$getDictByType = getDictByType
         app.config.globalProperties.$deleteRequest = deleteRequest
+        app.config.globalProperties.$openNewTab = openNewTab
 
     },
 };

@@ -38,28 +38,32 @@ export default {
         if (null == servicePath) {
             servicePath = inject('servicePath');
         }
-        // const servicePath2 = inject<string>('servicePath');
-        // if (!servicePath2) {
-        //     throw new Error('servicePath2 没有提供，请在父组件中通过 provide 注入！');
-        // }
-        /*        const mod = import(/!* @vite-ignore *!/servicePath);
-                mod.then(mod => {
-                    // mod.getRequest(path, params, headers).then(res => {
-                    //     console.log(res)
-                    // })
-                    return mod.getRequest(path, params, headers)
-                })
-                return null;*/
         const instance = getCurrentInstance();
         if (null == cache_instance && null != instance) {
             cache_instance = instance;
         }
         return cache_instance.proxy.$getRequest(path, params, headers);
-        // return mod != null ? mod.getRequest(path, params, headers) :
-        //     Promise.reject('getRequest 没有提供，请在' + servicePath + '中加入！');
-
     },
 
+
+    /**
+     * 发送 get 请求
+     * @param path 路径
+     * @param params 参数
+     * @param headers header头部
+     * @returns {*}
+     */
+    postRequest(path: string, params?: Object, headers?: Record<string, string>): Promise<any> {
+
+        if (null == servicePath) {
+            servicePath = inject('servicePath');
+        }
+        const instance = getCurrentInstance();
+        if (null == cache_instance && null != instance) {
+            cache_instance = instance;
+        }
+        return cache_instance.proxy.$postRequest(path, params, headers);
+    },
     /**
      * 发送Delete请求
      * @param path 路径
@@ -86,6 +90,17 @@ export default {
         console.log(res)
         let matchedDicts = res ? res.filter(p => p.dictValue == dictValue) : [];
         return matchedDicts.length > 0 ? matchedDicts[0] : null;
+    },
+    /**
+     * 打开新的页面
+     * @param path
+     */
+    openNewTab(path) {
+        const instance = getCurrentInstance();
+        if (null == cache_instance && null != instance) {
+            cache_instance = instance;
+        }
+        return cache_instance.proxy.$openNewTab(path);
     }
 
 

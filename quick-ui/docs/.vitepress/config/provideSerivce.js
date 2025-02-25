@@ -22,7 +22,7 @@ export function getRequest(path, params, headers) {
     });
 }
 
-export function getDictByType (dictType) {
+export function getDictByType(dictType) {
     return [];
 }
 
@@ -39,4 +39,13 @@ export function deleteRequest(path, params, headers) {
         data: params,
         method: "DELETE"
     });
+}
+
+
+/**
+ * 打开新的页面
+ * @param path
+ */
+export function openNewTab(path) {
+    window.open(path)
 }

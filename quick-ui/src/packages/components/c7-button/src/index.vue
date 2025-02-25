@@ -13,9 +13,14 @@
 </template>
 
 <script setup>
+import {ref, computed, useSlots, defineOptions,watch} from 'vue';
+
 import {ElMessage, ElMessageBox} from 'element-plus'
-import BaseService from "@/service/baseService.js";
-import c7Interface from "@/components/chu7/c7-interface.js"
+import   injectService from  '../../../service/injectService.ts'
+
+defineOptions({
+  name: 'c7Button'
+})
 // 成功之后的回调函数
 const emit = defineEmits(['successCallback'])
 
@@ -24,7 +29,7 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-  datas: {
+  params: {
     type: Object,
     default: () => ({}), // 请求参数
   },
@@ -78,7 +83,7 @@ const buttonClick = () => {
 
 const sendRequest = () => {
   if (!props.href) {
-    BaseService.post(props.url, props.datas).then(res => {
+    injectService.postRequest(props.url, props.params).then(res => {
       if (props.isSuccessCallback) {
         // 调用父组件的方法
         const msgs = res
@@ -88,7 +93,7 @@ const sendRequest = () => {
       }
     });
   } else {
-    c7Interface.openNewTab(props.href, props.label);
+    injectService.openNewTab(props.href, props.label);
   }
 
 }
