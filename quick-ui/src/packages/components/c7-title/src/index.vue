@@ -1,124 +1,101 @@
 <template>
-  <el-card shadow="always" class="button-container" :style="buttonContainerStyle">
-    <template #default>
-      <!-- 使用 div 包裹内容，并应用 flex 布局 -->
-      <div class="content-wrapper">
-
-        <!-- 色块部分 -->
-        <div class="color-block" v-if="props.isShowColorBlock"
-             :style="{backgroundColor: colorBlockStyle.backgroundColor}"></div>
-
-        <!-- 文字部分 -->
-        <span class="text" :style="textStyle">{{ props.label }}</span>
-
-        <!-- 按钮部分，放置在 div 的最后面，这样它会靠右 -->
-        <slot></slot>
-      </div>
-    </template>
-  </el-card>
+  <h1 class="ep-title">
+    <span class="label" :style="labelStyle">{{ label }}</span>
+    <span><slot></slot></span>
+  </h1>
 </template>
 
 <script setup>
-import {ref, computed, useSlots, defineOptions,watch} from 'vue';
+import { computed, defineProps } from 'vue';
 
-defineOptions({
-  name: 'c7Title'
-})
 // 定义属性
 const props = defineProps({
-  // label  组件标题
   label: {
     type: String,
-    default: '',
-    required: true
+    default: '默认标题',
   },
-  // 背景色(当为空的时候不显示)
-  backgroundColor: {
+  labelSize: {
     type: String,
-    default: '#f0f2f5'
+    default: 'h1', // 默认是 h1 大小
   },
-  // 是否展示色块
-  isShowColorBlock: {
-    type: Boolean,
-    default: false
-  },
-  // 色块颜色
-  colorBlockColor: {
+  labelColor: {
     type: String,
-    default: '#409eff'
+    default: '#24a6d9', // 默认空字符串，表示没有颜色
   },
-  //文本内容大小
-  textSize: {
-    type: String,
-    default: 'h2',
-    validator(value) {
-      return ['h1', 'h2', 'h3', 'h4', 'h5'].includes(value);
-    }
-  },
-  // 是否加粗
-  isBold: {
-    type: Boolean,
-    default: true
-  }
-})
-// 样式绑定
-const sizeClasses = {
-  h1: '2em', // 32px
-  h2: '1.5em', // 24px
-  h3: '1.17em', // 18.72px
-  h4: '1em', // 16px
-  h5: '0.83em' // 13.28px
-};
+});
 
-// 计算属性
-const buttonContainerStyle = computed(() => {
-  if (!props.backgroundColor) {
-    return '';
-  } else return {
-    backgroundColor: props.backgroundColor
+// 计算 label 的 fontSize 和 label:before 的背景颜色
+const labelStyle = computed(() => {
+  let fontSize;
+
+  // 根据传入的 labelSize 设置不同的字体大小
+  switch (props.labelSize) {
+    case 'h1':
+      fontSize = '32px';
+      break;
+    case 'h2':
+      fontSize = '28px';
+      break;
+    case 'h3':
+      fontSize = '24px';
+      break;
+    case 'h4':
+      fontSize = '20px';
+      break;
+    case 'h5':
+      fontSize = '18px';
+      break;
+    case 'h6':
+      fontSize = '16px';
+      break;
+    default:
+      // 如果是自定义的 px 值
+      fontSize = /^(\d+)px$/.test(props.labelSize) ? props.labelSize : '20px'; // 默认 20px
+      break;
   }
-})
-// 色块计算属性
-const colorBlockStyle = computed(() => {
-  console.log(props.colorBlockColor)
+
+  // 设置一个自定义 CSS 变量来控制背景色
   return {
-    backgroundColor: props.colorBlockColor
-  }
-})
-// 文本内容样式
-const textStyle = computed(() => {
-  return {
-    fontWeight: `${props.isBold ? 'bold' : 'normal'}`,
-    fontSize: `${sizeClasses[props.textSize]}`,
-    //让文字占据尽可能多的空间
-    flex: 1
-  }
-})
+    fontSize,
+    '--label-color': props.labelColor || 'transparent', // 如果 labelColor 为空，使用 transparent
+  };
+});
 </script>
 
-<style scoped>
-/* 应用 Flexbox 布局 */
-.content-wrapper {
+<style lang="scss" scoped>
+.ep-title {
+  color: #333;
+  padding: 18px 0;
+  border-bottom: 3px solid #333;
+  margin-bottom: 20px;
+  font-family: "Microsoft Yahei";
   display: flex;
-  align-items: center; /* 垂直居中对齐 */
-}
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 
-/* 定义色块样式 */
-.color-block {
-  width: 12px; /* 设置色块宽度 */
-  height: 25px; /* 设置色块高度 */
-  margin-right: 8px; /* 设置与文字的间距 */
-}
+  .label {
+    position: relative;
+    font-weight: 700;
+    display: inline-block;
+    font-size: inherit;
+    --label-color: transparent; /* 默认透明色 */
+  }
 
-/* 可选：为文字添加一些样式 */
-.text {
+  .label:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    bottom: -18px;
+    background-color: var(--label-color); /* 使用 CSS 变量来绑定背景色 */
+    visibility: visible; /* 确保显示时才有色块 */
+  }
 
-  flex: 1; /* 让文字占据尽可能多的空间 */
-  font-weight: bold; /* 加粗字体 */
-}
-
-/* 确保按钮靠右 */
-.right-button {
-  margin-left: auto; /* 强制按钮推到右侧 */
+  /* 如果 labelColor 为空，隐藏色块 */
+  .label[style*="--label-color: transparent"]::before {
+    visibility: hidden;
+  }
 }
 </style>
