@@ -14,9 +14,11 @@
 
 <script setup>
 import {ref, computed, useSlots, defineOptions,watch} from 'vue';
+import pkg from 'lodash';
+const { debounce } = pkg;
 
 import {ElMessage, ElMessageBox} from 'element-plus'
-import   injectService from  '../../../service/injectService.ts'
+import   injectService from  '../../../service/injectService.js'
 
 defineOptions({
   name: 'c7Button'
@@ -72,30 +74,39 @@ const props = defineProps({
   },
 })
 
-const buttonClick = () => {
-  // 如果需要提示框的话
+let isProcessing = ref(false); // 用于防止重复点击
+
+const buttonClick = debounce(() => {
+  if (isProcessing.value) return; // 如果已经有请求在处理，直接返回
+
   if (props.confirm) {
     confirm();
   } else {
     sendRequest()
   }
-}
+}, 300); // 假设防抖间隔为300毫秒
 
 const sendRequest = () => {
+  isProcessing.value = true; // 开始处理请求时设置为true
   if (!props.href) {
     injectService.postRequest(props.url, props.params).then(res => {
+      // 请求完成后，重置状态
+      isProcessing.value = false;
       if (props.isSuccessCallback) {
-        // 调用父组件的方法
-        const msgs = res
-        emit("successCallback", msgs);
+        emit("successCallback", res);
       } else {
         ElMessage.success(props.successMessage)
       }
+    }).catch(err => {
+      // 在请求失败的情况下也要记得重置状态
+      isProcessing.value = false;
+      console.error('请求失败:', err);
     });
   } else {
     injectService.openNewTab(props.href, props.label);
+    // 对于打开新标签页的情况，立即重置状态
+    isProcessing.value = false;
   }
-
 }
 
 const confirm = () => {
@@ -104,12 +115,10 @@ const confirm = () => {
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    sendRequest()
+    sendRequest();
   }).catch(() => {
-    // ElMessage({
-    //   type: 'info',
-    //   message: '已取消删除'
-    // });
+    // 确认框取消时也需要重置状态
+    isProcessing.value = false;
   });
 }
 

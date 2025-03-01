@@ -6,7 +6,10 @@
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue';
+import {computed, defineOptions, defineProps} from 'vue';
+defineOptions({
+  name: 'c7Title'
+})
 
 // 定义属性
 const props = defineProps({

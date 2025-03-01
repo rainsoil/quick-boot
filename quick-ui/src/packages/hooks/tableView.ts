@@ -53,8 +53,8 @@ const tableView = (props: IViewHooksOptions | IObject): IViewHooks => {
                 }
                 let dict = baseService.getDictLabel(dictType, dictValue);
                 console.log(dict)
-                // // let dict = null;
-                return dict == null ? dictValue : dict.dictLabel;
+                // let dict = null;
+                return dict == null ? dictValue : dict.label;
 
             }
         };

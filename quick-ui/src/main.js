@@ -78,8 +78,8 @@ app.component('formLayout', formLayout)
 app.component('qtable', qtable)
 app.component("qtableSearch", qtableSearch);
 // 全局注入
-import {getRequest, deleteRequest, getDictByType} from "./service/provideSerivce";
-
+import {getRequest, deleteRequest, getDictByType, postRequest} from "./service/provideSerivce";
+window.$postRequest = postRequest
 app.config.globalProperties.$getRequest = getRequest;
 app.config.globalProperties.$getDictByType = getDictByType;
 app.config.globalProperties.$deleteRequest = deleteRequest

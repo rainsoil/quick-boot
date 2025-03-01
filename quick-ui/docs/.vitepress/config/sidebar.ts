@@ -47,6 +47,7 @@ export default {
         {
             text: '表单组件',
             items: [
+                {text: 'c7-select', link: '/ui/select'},
                 {text: 'c7-input', link: '/ui/input'},
                 {text: 'c7-date-picker', link: '/ui/datePicker'},
             ],

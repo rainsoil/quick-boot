@@ -6,6 +6,7 @@
                 placeholder="请输入名称" @change="inputChange"></c7-input>
 
     </el-row>
+    <el-button @click="inputChange2">点我</el-button>
 
     <span>{{ form.name }}</span>
   </el-form>
@@ -13,13 +14,18 @@
 
 <script setup>
 import {ref} from 'vue'
-
+import injectService from "../../../packages/service/injectService.js";
 // do not use same name with ref
 const form = ref({
   name: '',
 
 })
 
+const inputChange2 = () => {
+  injectService.postRequest("https://www.baidu.com/", {}).then(res => {
+    console.log(res)
+  })
+}
 const inputChange = (val) => {
   console.log(val)
   alert(val)

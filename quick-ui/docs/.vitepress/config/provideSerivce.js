@@ -22,8 +22,47 @@ export function getRequest(path, params, headers) {
     });
 }
 
+/**
+ * 通用post方法
+ * @param path
+ * @param body
+ * @returns
+ */
+export function postRequest(path, body, headers) {
+    return new Promise((resolve, reject) => {
+        request({
+            url: path,
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json;charset=UTF-8",
+                ...headers
+            },
+            data: body
+        })
+            .then(resolve)
+            .catch((error) => {
+                if (error !== "-999") {
+                    reject(error);
+                }
+            });
+    });
+}
+
+
 export function getDictByType(dictType) {
-    return [];
+    let dict = [{
+        label: "男",
+        value: "0"
+    },
+        {
+            label: "女",
+            value: "1"
+        },
+
+
+    ];
+
+    return dict;
 }
 
 /**

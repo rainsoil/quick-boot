@@ -8,7 +8,7 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 // 图标并进行全局注册
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {NotFound, globals} from "../vitepress";
-import {getDictByType, getRequest, deleteRequest, openNewTab} from "../config/provideSerivce";
+import {getDictByType, getRequest, deleteRequest, openNewTab, postRequest} from "../config/provideSerivce";
 import './styles/var.css'
 import c7Ui from '../../../src/packages/index.js'
 
@@ -29,10 +29,22 @@ export default {
         })
 
         app.use(c7Ui)
+
         app.config.globalProperties.$getRequest = getRequest;
+        app.config.globalProperties.$postRequest = postRequest;
         app.config.globalProperties.$getDictByType = getDictByType
         app.config.globalProperties.$deleteRequest = deleteRequest
         app.config.globalProperties.$openNewTab = openNewTab
+        if (typeof window !== 'undefined') {
+            // 在浏览器中运行的代码
+            window.$getRequest = getRequest;
+            window.$postRequest = postRequest;
+            window.$getDictByType = getDictByType
+            window.$deleteRequest = deleteRequest
+            window.$openNewTab = openNewTab
+        }
+
+
 
     },
 };

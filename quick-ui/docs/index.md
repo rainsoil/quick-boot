@@ -10,7 +10,7 @@ hero:
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/
+      link: /ui/
     - theme: alt
       text: View on GitHub
       link: https://gitee.com/rainsoil/quick-ui

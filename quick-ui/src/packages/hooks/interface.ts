@@ -130,3 +130,66 @@ export interface IHttpResponse {
     msg: string;
     data: any;
 }
+
+
+/**
+ * 字典Hook参数
+ */
+export interface IDictHooksOptions {
+
+    /**
+     * 字典list
+     */
+    dictList?: IObject[];
+
+
+    /**
+     * 字典type
+     */
+    dictType?: string;
+
+
+    /**
+     * 加载字典的yrl
+     */
+    dictUrl?: string;
+
+}
+
+
+export interface IDict {
+
+    /**
+     * 字典的标签值
+     */
+    value?: string;
+
+
+    /**
+     * 字典的标签名
+     */
+    label?: string;
+}
+
+export interface IDictHooks extends IViewHooksOptions, IObject {
+    /**
+     * 调用接口获取字典数据
+     * @param params 参数
+     * @param loading loading
+     */
+    getDictListFromApi: (params: IObject, loading: boolean) => void;
+
+
+    /**
+     * 根据字典类型获取字典值
+     * @param dictType
+     */
+    getDictByDictType: (dictType: string) => void;
+
+
+    /**
+     * 根据参数获取字典值
+     * @param param
+     */
+    getDict: (param: IObject) => Promise<any>;
+}
