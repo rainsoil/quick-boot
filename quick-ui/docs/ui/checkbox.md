@@ -1,26 +1,29 @@
-# c7-select下拉
+# checkBox
 
-## 基础功能
+
+## 基础
 :::demo
+checkbox/baseCheckbox
 
-select/baseSelect
 :::
 
 
-## 使用字典值
-:::demo
-select/selectWithDictType
-:::
-
-
-## 加载远程方法
+## 初始化数据(结果用,分割)
 :::demo
 
 
-select/selectWithRemote
+checkbox/initDataCheckBox
 
 :::
 
+
+## 初始化数据(结果为数组)
+:::demo
+
+
+checkbox/initDataCheckBox2
+
+:::
 
 
 ## Attributes
@@ -33,5 +36,5 @@ url | 接口url | String  |   |
 label | 按钮名称(必填) |  String |    |
 dictType|  字典值type | String |    |
 dataList| 字典数据 |  Array  |   | []
-remote| 是否加载远程方法 | Boolean | true/false | false
-
+rangeMerge| 结果是否合并(,隔开) | Boolean | true/false | false
+indeterminate| 当 indeterminate 为 true 时，显示全选/全不选复选框 | Boolean | true/false | false

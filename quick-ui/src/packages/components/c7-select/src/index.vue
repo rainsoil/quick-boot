@@ -29,7 +29,7 @@ defineOptions({
 
 const emit = defineEmits([])
 const props = defineProps({
-  modelValue: {type: [String, Number, Array], default: ''},
+  modelValue: {type: [ Array], default: ''},
   url: {type: String, default: ''},
   params: {type: Object, default: () => ({})},
   dictType: {type: String, default: ''},
@@ -40,7 +40,7 @@ const props = defineProps({
 
 const state = reactive({...dictHook()});
 
-const options = ref([]); // 显示的选项
+let options = ref([]); // 显示的选项
 const loading = ref(false); // 加载状态
 
 // 当props发生变化时自动调用fetchData
@@ -53,7 +53,8 @@ onMounted(() => {
 // 请求数据的方法
 function fetchData() {
 
-  state.getDict(props.dataList, props.dictType, props.url,{}, loading.value).then(res => {
+  // let dictType = props.dictType;
+  state.getDict(props.dataList, props.dictType, props.url, {}, loading.value).then(res => {
     options.value = res || [];
   });
 
@@ -64,26 +65,13 @@ function remoteSearchMethod(query) {
   let params = {
     query: query
   };
+
   state.getDict(null, null, props.url, params, loading.value).then(res => {
     options.value = res || [];
+
   });
 }
 
-
-// function getDataFromApi(param) {
-//   // 如果api和params都有值，发请求
-//   loading.value = true;
-//   try {
-//     injectService.postRequest(props.url, param).then(res => {
-//       let data = res.data;
-//       options.value = data || [];
-//     });
-//   } catch (error) {
-//     console.error('请求失败:', error);
-//   } finally {
-//     loading.value = false;
-//   }
-// }
 
 // 处理 v-model 的更新
 function handleUpdateModelValue(value) {

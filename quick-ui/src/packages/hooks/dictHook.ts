@@ -1,5 +1,6 @@
 import {IObject, IDictHooksOptions, IDictHooks, IViewHooksOptions} from "./interface";
 import injectService from '../service/injectService'
+import {Ref, ref} from "vue";
 
 const dictHook = () => {
 
@@ -12,7 +13,6 @@ const dictHook = () => {
          */
         getDict(dictList: IObject, dictType: string, dictUrl: string, param: IObject, loading: boolean): Promise<any> {
             return new Promise((resolve, reject) => {
-                console.log(dictList, dictType, dictUrl, param, loading)
                 if (dictUrl) {
                     loading = true;
                     try {
@@ -27,7 +27,6 @@ const dictHook = () => {
                         loading = false;
                     }
                 } else if (dictType) {
-                    console.log('dictType', dictType)
                     let dict = injectService.getDictByType(dictType) || [];
                     resolve(dict);
                 } else {
@@ -35,14 +34,8 @@ const dictHook = () => {
                 }
             });
 
-            // console.log(state.dictList,state.dictUrl,state.dictType)
-            // if (state.dictType) {
-            //     viewFns.getDictByDictType(state.dictType)
-            // } else if (state.dictUrl) {
-            //     viewFns.getDictListFromApi(state.dictUrl, param)
-            // }
-            // console.log(state.dictList)
-        }
+        },
+
     }
 
     return {
