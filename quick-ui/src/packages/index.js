@@ -8,6 +8,7 @@ import c7DatePicker from "../packages/components/c7-date-picker/index.js";
 import c7Select from "../packages/components/c7-select/index.js";
 import c7Checkbox from "../packages/components/c7-checkbox/index.js";
 import c7Cascader from "../packages/components/c7-cascader/index.js";
+import C7Upload from "../packages/components/c7-upload/index.js";
 
 
 const components = {
@@ -18,7 +19,8 @@ const components = {
     c7DatePicker,
     c7Select,
     c7Checkbox,
-    c7Cascader
+    c7Cascader,
+    C7Upload
 }
 const install = (app) => {
     console.log(c7Cascader)

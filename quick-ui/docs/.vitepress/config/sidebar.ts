@@ -51,7 +51,8 @@ export default {
                 {text: 'c7-input', link: '/ui/input'},
                 {text: 'c7-date-picker', link: '/ui/datePicker'},
                 {text: "c7-checkbox", link: "/ui/checkbox"},
-                {text: "c7-cascader", link: "/ui/cascader"}
+                {text: "c7-cascader", link: "/ui/cascader"},
+                {text: "c7-upload", link: "/ui/upload"}
             ],
 
         },
