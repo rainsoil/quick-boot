@@ -23,7 +23,8 @@ const props = defineProps({
   },
   labelColor: {
     type: String,
-    default: '#24a6d9', // 默认空字符串，表示没有颜色
+    // default: '#24a6d9', // 默认空字符串，表示没有颜色
+    default: '', // 默认空字符串，表示没有颜色
   },
 });
 

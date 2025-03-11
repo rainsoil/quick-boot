@@ -9,7 +9,7 @@ import c7Select from "../packages/components/c7-select/index.js";
 import c7Checkbox from "../packages/components/c7-checkbox/index.js";
 import c7Cascader from "../packages/components/c7-cascader/index.js";
 import C7Upload from "../packages/components/c7-upload/index.js";
-
+import C7Preview from "../packages/components/c7-preview/index.js";
 
 const components = {
     c7Button,
@@ -20,7 +20,8 @@ const components = {
     c7Select,
     c7Checkbox,
     c7Cascader,
-    C7Upload
+    C7Upload,
+    C7Preview
 }
 const install = (app) => {
     console.log(c7Cascader)
