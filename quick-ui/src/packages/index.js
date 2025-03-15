@@ -1,7 +1,6 @@
 import tableView from "./hooks/tableView";
 import dictHook from "./hooks/dictHook"
 import c7Button from "../packages/components/c7-button/index.js";
-import c7Input from "../packages/components/c7-input/index.js";
 import c7Card from "../packages/components/c7-card/index.js";
 import c7Title from "../packages/components/c7-title/index.js";
 import c7DatePicker from "../packages/components/c7-date-picker/index.js";
@@ -10,10 +9,13 @@ import c7Checkbox from "../packages/components/c7-checkbox/index.js";
 import c7Cascader from "../packages/components/c7-cascader/index.js";
 import C7Upload from "../packages/components/c7-upload/index.js";
 import C7Preview from "../packages/components/c7-preview/index.js";
+import C7Layer from "../packages/components/c7-layer/index.js";
+import c7Dialog from "../packages/components/c7-dialog/index.js";
+import c7TableSearch from "../packages/components/c7-search/index.js";
+import c7Table from "../packages/components/c7-table/index.js";
 
 const components = {
     c7Button,
-    c7Input,
     c7Card,
     c7Title,
     c7DatePicker,
@@ -21,7 +23,11 @@ const components = {
     c7Checkbox,
     c7Cascader,
     C7Upload,
-    C7Preview
+    C7Preview,
+    C7Layer,
+    c7Dialog,
+    c7TableSearch,
+    c7Table
 }
 const install = (app) => {
     console.log(c7Cascader)

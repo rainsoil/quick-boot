@@ -48,12 +48,13 @@ export default {
             text: '表单组件',
             items: [
                 {text: 'c7-select', link: '/ui/select'},
-                {text: 'c7-input', link: '/ui/input'},
                 {text: 'c7-date-picker', link: '/ui/datePicker'},
                 {text: "c7-checkbox", link: "/ui/checkbox"},
                 {text: "c7-cascader", link: "/ui/cascader"},
                 {text: "c7-upload", link: "/ui/upload"},
-                {text: "c7-preview", link: "/ui/preview"}
+                {text: "c7-preview", link: "/ui/preview"},
+                {text: "c7-dialog", link: "/ui/dialog"},
+                {text: "c7-search", link: "/ui/search"}
             ],
 
         },
