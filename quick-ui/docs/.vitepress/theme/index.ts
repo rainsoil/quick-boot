@@ -10,8 +10,8 @@ import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 import {NotFound, globals} from "../vitepress";
 import {getDictByType, getRequest, deleteRequest, openNewTab, postRequest} from "../config/provideSerivce";
 import './styles/var.css'
-import c7Ui from '../../../src/packages/index.js'
-
+// import c7Ui from '../../../src/packages/index.js'
+import c7Ui from "c7-plus"
 export default {
     ...theme,
     NotFound,

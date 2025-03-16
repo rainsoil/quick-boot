@@ -23,6 +23,7 @@
     "vitepress-theme-demoblock": "^3.0.3"
   },
   "dependencies": {
-    "@vue/shared": "^3.4.29"
+    "@vue/shared": "^3.4.29",
+    "c7-plus": "workspace:*"
   }
 }

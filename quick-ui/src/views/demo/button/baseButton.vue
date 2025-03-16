@@ -8,7 +8,8 @@
   </div>
 </template>
 <script setup>
-import tableView from "../../../packages/hooks/tableView";
+// 现代构建工具（Vite/webpack）会优先使用 ES 模块
+import {tableView} from 'c7-plus/hooks/tableView';
 const clickFun = () => {
   alert("触发前端事件")
 }
