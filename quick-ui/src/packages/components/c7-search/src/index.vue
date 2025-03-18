@@ -72,37 +72,12 @@
     </div>
 
 
-<!--    <el-row :gutter="10" class="mb8" v-if="props.buttons.enable">-->
-<!--      &lt;!&ndash; 新增按钮&ndash;&gt;-->
-<!--      <el-button v-if="props.buttons.addBtn.enable"-->
-<!--                 :type="props.buttons.addBtn.type"-->
-<!--                 plain-->
-<!--                 :icon="props.buttons.addBtn.icon"-->
-<!--                 :disabled="props.buttons.addBtn.disabled"-->
-<!--                 @click="addBtnHandle()"-->
-<!--      >{{ props.buttons.addBtn.label }}-->
-<!--      </el-button>-->
 
-<!--      &lt;!&ndash;修改按钮 &ndash;&gt;-->
-<!--      <el-button v-if="props.buttons.deleteBtn.enable"-->
-<!--                 :type="props.buttons.deleteBtn.type"-->
-<!--                 plain-->
-<!--                 :icon="props.buttons.deleteBtn.icon"-->
-<!--                 :disabled="props.buttons.deleteBtn.disabled"-->
-<!--                 @click="deleteBtnHandle()"-->
-<!--      >{{ props.buttons.deleteBtn.label }}-->
-
-<!--      </el-button>-->
-<!--    </el-row>-->
-
-<!--    <el-row :gutter="10" class="mb8" v-if="!props.buttons.enable">-->
-<!--      <slot name="extra"></slot>-->
-<!--    </el-row>-->
   </div>
 
 </template>
 <script setup lang="ts">
-import {addBtn, IButton, IColumn, IColumnEnum} from './search.js'
+import { IButton, IColumn, IColumnEnum} from './search.js'
 import {ref, defineOptions, PropType, computed} from 'vue'
 
 const emit = defineEmits(['update:modelValue', "handleSearch", "handleReset", "addBtnHandle", "deleteHandle", "exportHandle"])
@@ -138,59 +113,7 @@ const props = defineProps({
     type: String,
     default: '100%'
   },
-  // 操作
-  buttons: {
-    type: Object as PropType<{
-      enable: boolean,
-      // 新增按钮
-      addBtn: IButton,
-      // 删除
-      deleteBtn: IButton
-      // 导出
 
-      // 导入
-
-    }>,
-    default: () => ({
-      enable: true,
-      addBtn: {
-        // 是否开启
-        enable: true,
-
-        // 按钮文本
-        label: '新增',
-
-        // 是否显示
-        display: true,
-
-        // 是否禁用
-        disabled: false,
-        // type
-        type: 'primary',
-        // icon
-        icon: 'plus',
-
-      },
-      deleteBtn: {
-        // 是否开启
-        enable: true,
-
-        // 按钮文本
-        label: '删除',
-
-        // 是否显示
-        display: true,
-
-        // 是否禁用
-        disabled: false,
-        // type
-        type: 'danger',
-        // icon
-        icon: 'Delete',
-
-      },
-    })
-  }
 })
 
 
@@ -217,11 +140,5 @@ const sortedColumns = computed(() => {
 })
 
 
-const addBtnHandle = () => {
-  emit("addBtnHandle")
-}
-// 编辑按钮
-const deleteBtnHandle = () => {
-  emit("deleteHandle")
-}
+
 </script>

@@ -54,7 +54,8 @@ export default {
                 {text: "c7-upload", link: "/ui/upload"},
                 {text: "c7-preview", link: "/ui/preview"},
                 {text: "c7-dialog", link: "/ui/dialog"},
-                {text: "c7-search", link: "/ui/search"}
+                {text: "c7-search", link: "/ui/search"},
+                {text: "c7-table", link: "/ui/table"}
             ],
 
         },
