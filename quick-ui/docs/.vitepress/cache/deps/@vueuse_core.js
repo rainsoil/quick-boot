@@ -3,7 +3,7 @@ import {
   isVue2,
   isVue3,
   set
-} from "./chunk-OORLY3MF.js";
+} from "./chunk-WI5M5CEO.js";
 import {
   Fragment,
   TransitionGroup,
@@ -39,11 +39,11 @@ import {
   version,
   watch,
   watchEffect
-} from "./chunk-BSFMHU4P.js";
-import "./chunk-YMLZSFWS.js";
-import "./chunk-5WWUZCGV.js";
+} from "./chunk-YHNL4I3R.js";
+import "./chunk-JVSYCCQQ.js";
+import "./chunk-5WRI5ZAA.js";
 
-// ../node_modules/.pnpm/@vueuse+shared@10.11.0_vue@3.5.13/node_modules/@vueuse/shared/index.mjs
+// ../node_modules/.pnpm/@vueuse+shared@10.11.0_vue@3.5.13_typescript@5.8.2_/node_modules/@vueuse/shared/index.mjs
 function computedEager(fn, options) {
   var _a;
   const result = shallowRef();
@@ -1540,7 +1540,7 @@ function whenever(source, cb, options) {
   return stop;
 }
 
-// ../node_modules/.pnpm/@vueuse+core@10.11.0_vue@3.5.13/node_modules/@vueuse/core/index.mjs
+// ../node_modules/.pnpm/@vueuse+core@10.11.0_vue@3.5.13_typescript@5.8.2_/node_modules/@vueuse/core/index.mjs
 function computedAsync(evaluationCallback, initialState, optionsOrRef) {
   let options;
   if (isRef(optionsOrRef)) {
@@ -6965,8 +6965,7 @@ function useScrollLock(element, initialState = false) {
     set(v) {
       if (v)
         lock();
-      else
-        unlock();
+      else unlock();
     }
   });
 }
@@ -7308,8 +7307,7 @@ function useStorageAsync(key, initialValue, storage, options = {}) {
           data.value = mergeDefaults(value, rawInit);
         else if (type === "object" && !Array.isArray(value))
           data.value = { ...rawInit, ...value };
-        else
-          data.value = value;
+        else data.value = value;
       } else {
         data.value = await serializer.read(rawValue);
       }
@@ -8064,8 +8062,7 @@ function useUserMedia(options = {}) {
     (v) => {
       if (v)
         _start();
-      else
-        _stop();
+      else _stop();
     },
     { immediate: true }
   );

@@ -10,8 +10,8 @@ import { mdPlugin } from "./config/plugins";
 
 export default defineConfig({
   // base: "/",
-  title: 'quick-boot快速开发框架',
-  description: "quick-boot快速开发框架",
+  title: "ElementPlus Kit",
+  description: "基于 ElementPlus 的组件生成器",
   head: [
     ['link', { rel: 'icon', href: 'logo.png' }],
     ["meta", { name: 'referrer', content: 'no-referrer' }]

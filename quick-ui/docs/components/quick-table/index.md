@@ -5,7 +5,26 @@
 
 ## 基础用法
 
+:::demo
+QTable/base
+:::
 
+
+## 插槽使用
+
+插槽分为三类：分别时表头、表格和分页插槽；
+### **表头插槽**
+:::demo
+QTable/slot-theader
+:::
+
+### **表格插槽**
+
+表格内容区域插槽，支持原始组件的 的`empty`和`append` 插槽；
+
+:::demo
+QTable/slot-tbody-nodata
+:::
 
 除了原始组件拥有的的`empty`和`append`外，还支持了**操作列插槽**、**数据列插槽**、**表头插槽**。
 
@@ -37,7 +56,7 @@
     <template #sex.header="{ row }"> // [!code focus] // [!code ++]
         <el-tag size="small" type="warning">Sex</el-tag> // [!code focus] // [!code ++]
     </template> // [!code focus] // [!code ++]
-   <!-- 配置 sex 插槽实现单元格内容自定义渲染 --> // [!code focus]
+   <!-- 配置 sex 插槽实现单元格内容自定义渲染 --> // [!code focus] 
     <template #sex="{ row }"> // [!code focus]  // [!code ++]
         <el-tag size="small" v-if="row.sex === 1">男</el-tag> // [!code focus] // [!code ++]
         <el-tag size="small" type="danger" v-if="row.sex === 2">女</el-tag> // [!code focus] // [!code ++]
@@ -46,6 +65,23 @@
 </template>
 
 ```
+如下案例
+:::demo
+QTable/slot-tbody
+:::
+
+### **分页插槽**
+:::demo
+QTable/slot-tfooter
+:::
+
+
+
+## 树形数据
+支持树类型的数据的显示。 当 row 中包含 `children` 字段时，被视为树形数据。 渲染嵌套数据需要 prop 的 `row-key`
+:::demo
+QTable/tree-table
+:::
 
 
 

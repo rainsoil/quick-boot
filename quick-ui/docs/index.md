@@ -1,25 +1,25 @@
 ---
 layout: home
 hero:
-  name: quick-boot
+  name: ElementPlus Kit
   text: 摸鱼、开发两不误
   tagline: 简单，灵活，高效。不信你试试
   image:
     src: logo.png
-    alt: quick-boot
+    alt: ElementPlus Kit
   actions:
     - theme: brand
       text: Get Started
-      link: /ui/
+      link: /guide/
     - theme: alt
       text: View on GitHub
-      link: https://gitee.com/rainsoil/quick-ui
+      link: https://github.com/mitjs/element-plus-kit.git
 features:
   - icon: 🌈
     title: 简单上手
   - icon: 🛠️
     title: 配置灵活
-  - icon: ⚡️
+  - icon: ⚡️ 
     title: 开发提效
   - icon: 🙌
     title: 解放双手

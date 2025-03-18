@@ -4,9 +4,26 @@
 
 ## 基础用法
 :::demo
-hook/tableViewDemo
+QForm/base
 :::
 
+## 行内表单
+:::demo
+QForm/inline-form
+:::
+
+## 对其方式、尺寸控制、栅格布局
+:::demo
+QForm/label-postion-form
+:::
+
+
+## 检验表单、控制隐藏
+
+### 校验表单
+:::demo
+QForm/validate-form
+:::
 
 ### 显隐控制
 
@@ -27,6 +44,22 @@ hook/tableViewDemo
   vIf: true
 }
 ```
+1. **表单自身显隐控制**
+:::demo
+QForm/form-showHide
+:::
+1. **外部控制表单显隐**
+:::demo
+QForm/form-showHide-out
+:::
+
+## 只读表单
+
+设置`readonly` 可开启表单只读模式
+
+:::demo
+QForm/readonly-form
+:::
 
 
 ##  API

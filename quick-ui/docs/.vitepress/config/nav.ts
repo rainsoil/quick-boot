@@ -1,21 +1,6 @@
 export default [
-
-  {text: '首页', link: '/'},
-  {
-    text: '在线文档',
-    items: [
-      {
-        // 该部分的标题
-        text: '前端标签文档',
-        link: '/ui/index'
-      },
-      {
-        // 该部分的标题
-        text: '后端接口文档',
-        link: '/docs/index'
-      }
-    ]
-
-  },
-  {text: '在线体验', link: '/markdown-examples'},
-]
+  { text: "指南", link: "/guide/design", activeMatch: "^/guide/" },
+  { text: "QForm", link: "/components/quick-form/index" },
+  { text: "QTable", link: "/components/quick-table/index" },
+  { text: "Element-Plus官网", link: "https://element-plus.org/zh-CN/", icon: 'https://element-plus.org/images/element-plus-logo-small.svg' },
+];
