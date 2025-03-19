@@ -9,10 +9,9 @@
 
 <script setup lang="ts" name="base">
 import {ref} from "vue";
-import {QForm, ItemOptions, userTable, useTableHook} from "c7-plus";
+import {QForm, ItemOptions, tableHook} from "c7-plus";
 
-userTable("1111")
-console.log(useTableHook().tableData)
+console.log(tableHook)
 const opts1 = [{label: "选项1", value: "1"}, {label: "选项2", value: "2"}];
 
 const opts = ref(opts1);

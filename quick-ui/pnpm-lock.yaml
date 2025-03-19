@@ -97,7 +97,7 @@ importers:
         specifier: ^3.4.29
         version: 3.5.13
       c7-plus:
-        specifier: workspace:^
+        specifier: workspace:*
         version: link:../packages/c7-plus
     devDependencies:
       '@vitejs/plugin-vue-jsx':

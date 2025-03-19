@@ -1,1 +1,1 @@
-export * from './hooks/TableHook'
+export * from './hooks/tableHook'
