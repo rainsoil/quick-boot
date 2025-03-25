@@ -88,3 +88,15 @@ export function deleteRequest(path, params, headers) {
 export function openNewTab(path) {
     window.open(path)
 }
+
+/**
+ * 下载
+ * @param path 路径
+ * @param params 参数
+ * @param filename 文件名
+ * @param headers 头部
+ */
+export function download(path, params, filename, headers) {
+
+    window.location.href = path + "?fileName=" + encodeURIComponent(filename) + "&delete=" + false
+}

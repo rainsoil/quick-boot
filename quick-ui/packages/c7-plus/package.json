@@ -28,6 +28,7 @@
     "vite": "^4.5.0",
     "vite-plugin-dts": "^3.9.1",
     "vite-plugin-static-copy": "^2.2.0",
-    "vue": "^3.3.5"
+    "vue": "^3.3.5",
+    "pinia": "2.1.7"
   }
 }

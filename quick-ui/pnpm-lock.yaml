@@ -118,6 +118,9 @@ importers:
       markdown-it-container:
         specifier: ^3.0.0
         version: 3.0.0
+      pinia:
+        specifier: 2.1.7
+        version: 2.1.7(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       prismjs:
         specifier: ^1.29.0
         version: 1.29.0
@@ -154,6 +157,9 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
+      pinia:
+        specifier: 2.1.7
+        version: 2.1.7(typescript@5.8.2)(vue@3.5.13(typescript@5.8.2))
       rimraf:
         specifier: ^5.0.7
         version: 5.0.10

@@ -1,10 +1,12 @@
 import {IViewHooks, IViewHooksOptions} from "../types/ITableHook";
-import {computed, onActivated, onMounted, ref} from "vue";
-import {IObject} from "../types/ITypes";
+import {computed, onActivated, onMounted, ref, inject} from "vue";
+import {getConfig} from "../config/C7Config";
 import {injectService} from "../service/injectService";
 import {ElMessage, ElMessageBox} from "element-plus";
+import {IObject} from "../types/ITypes";
 
 export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
+
 
     // 默认的配置
     const defaultOptions: IViewHooksOptions = {
@@ -85,6 +87,181 @@ export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
         dataListSelectionsIds: []
     }
 
+    /**
+     * 配置合并
+     * @param options
+     * @param props
+     */
+    const mergeDefaultStateToPageState = (options: IObject, props: IObject): IViewHooksOptions => {
+        if (!options || !props) {
+            throw new Error("options and props must be valid objects");
+        }
 
+        for (const key in options) {
+            if (!props.hasOwnProperty(key)) {
+                props[key] = options[key];
+            }
+        }
+        return props;
+    };
+    const state = mergeDefaultStateToPageState(defaultOptions, props);
+    onMounted(() => {
+        if (state.createdIsNeed && !state.activatedIsNeed) {
+            viewFns.query();
+        }
+    });
+    onActivated(() => {
+        if (state.activatedIsNeed) {
+            viewFns.query();
+        }
+    })
+    const rejectFns = {
+        getDictLabel(dictType: string, dictValue: string) {
+            if (!dictType || !dictValue) {
+                return "";
+            }
+            try {
+                const dict = injectService.getDictLabel(dictType, dictValue);
+                return dict && dict.label ? dict.label : dictValue;
+            } catch (error) {
+                console.error("Error fetching dictionary label:", error);
+                return dictValue;
+            }
+        }
+    };
+
+    const viewFns = {
+
+        // 获取数据列表
+        query() {
+            if (!state.getDataListURL) {
+                console.warn('getDataListURL is undefined or null, request not sent.');
+                return;
+            }
+            state.dataListLoading = true;
+            // 请求
+            injectService.getRequest(state.getDataListURL, {
+                // 排序参数
+                order: state.order,
+                // 排序字段
+                orderField: state.orderField,
+                page: state.getDataListIsPage ? state.page : null,
+                limit: state.getDataListIsPage ? state.limit : null,
+                ...state.dataForm
+            }).then(res => {
+                state.dataListLoading = false;
+                state.dataList = state.getDataListIsPage ? res.data.records : res.data;
+                state.total = state.getDataListIsPage ? res.data.total : (Array.isArray(res.data) ? res.data.length : 0);
+            }).catch(error => {
+                state.dataListLoading = false;
+                console.error('Error occurred during data list query:', error);
+            })
+        },
+        // 多选
+        dataListSelectionChangeHandle(val: IObject[]) {
+            state.dataListSelections = val;
+            state.dataListSelectionsIds = state.dataListSelections
+                ? state.dataListSelections.map(
+                    (item: IObject) => state.deleteIsBatchKey && item[state.deleteIsBatchKey]
+                )
+                : [];
+        },
+        // 排序
+        dataListSortChangeHandle(sort: IObject) {
+            if (!sort.order || !sort.prop) {
+                state.order = "";
+                state.orderField = "";
+                return false;
+            }
+            state.order = sort.order.replace(/ending$/, "");
+            state.orderField = sort.prop.replace(/([A-Z])/g, "_$1").toLowerCase();
+            viewFns.query();
+        },
+        // 分页
+        pageSizeChangeHandle(val: number) {
+            state.page = 1;
+            state.limit = val;
+            viewFns.query();
+        },
+        // 分页(当前页)
+        pageCurrentChangeHandle(val: number) {
+            state.page = val;
+            viewFns.query();
+        },
+        // 搜索
+        getDataList() {
+
+            state.page = 1;
+            viewFns.query();
+        },
+        //重置
+        handleReset(param?: IObject) {
+            state.dataForm = {}
+            Object.assign(state.dataForm, param)
+            state.page = 1;
+            viewFns.query();
+        },
+        // 删除
+        deleteHandle(id?: string): Promise<any> {
+            return new Promise((resolve, reject) => {
+                console.log(state.deleteIsBatch, id, !id, state.dataListSelections, state.dataListSelections.length <= 0)
+                if (
+                    state.deleteIsBatch &&
+                    !id &&
+                    state.dataListSelections &&
+                    state.dataListSelections.length <= 0
+                ) {
+                    ElMessage.warning({
+                        message: '请选择操作项',
+                        duration: 500
+                    });
+                    return;
+                }
+
+                ElMessageBox.confirm("确定进行删除操作?", "提示", {
+                    confirmButtonText: "确认",
+                    cancelButtonText: "取消",
+                    type: "warning"
+                })
+                    .then(() => {
+                        injectService
+                            .deleteRequest(
+                                `${state.deleteURL}${state.deleteIsBatch ? "" : "/" + id}`,
+                                state.deleteIsBatch
+                                    ? id
+                                        ? [id]
+                                        : state.dataListSelectionsIds
+                                    : {}
+                            )
+                            .then((res) => {
+                                ElMessage.success({
+                                    message: "成功",
+                                    duration: 500,
+                                    onClose: () => {
+                                        viewFns.query();
+                                        resolve(true);
+                                    }
+                                });
+                            });
+                    })
+                    .catch(() => {
+                        //
+                    });
+            });
+
+        },
+        // 导出
+        exportHandle() {
+            injectService.download(state.exportURL, {
+                ...state.dataForm
+            }, "", {})
+        },
+
+    }
+    return {
+        ...rejectFns,
+        ...viewFns,
+
+    }
 }
 

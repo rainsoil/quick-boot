@@ -92,6 +92,7 @@ export interface IViewHooks extends IViewHooksOptions, IObject {
     /**
      * 列表排序事件
      */
+
     dataListSortChangeHandle: (sort: IObject) => void;
     /**
      * 列表切换每页显示数量事件

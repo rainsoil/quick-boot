@@ -1,8 +1,46 @@
 <template>
+  <el-row>
+    <el-col :span="24">
+      <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="alertDataListSelections"
+      >选中的数据
+      </el-button>
 
-  <el-table :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle">
+      <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="alertDataListSelectionsId"
+      >选中的数据id
+      </el-button>
+
+      <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="state.deleteHandle"
+      >删除
+      </el-button>
+
+
+      <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="state.handleReset"
+      >重置
+      </el-button>
+
+
+
+    </el-col>
+  </el-row>
+  <el-table :data="state.dataList" border @selection-change="state.dataListSelectionChangeHandle" @sort-change="state.dataListSortChangeHandle">
     <el-table-column type="selection"></el-table-column>
-    <el-table-column label="id" prop="id"></el-table-column>
+    <el-table-column label="id" prop="id" sortable ></el-table-column>
     <el-table-column label="姓名" prop="name"></el-table-column>
     <el-table-column label="性别" prop="sex">
 
@@ -31,8 +69,8 @@
 
 <script setup lang="ts">
 import {reactive, ref, toRefs} from "vue";
-import {QForm, ItemOptions, tableHook} from "c7-plus";
-const view = reactive({
+import { tableHook, IViewHooksOptions} from "c7-plus";
+const view = reactive<IViewHooksOptions>({
   getDataListURL: "/mockapi/crud/tableView",
   getDataListIsPage: true,
   deleteURL: "/mockapi/crud/tableView",
@@ -42,4 +80,11 @@ const view = reactive({
 });
 const state = reactive({...tableHook(view), ...toRefs(view)});
 
+const alertDataListSelections = () => {
+  alert(JSON.stringify(state.dataListSelections))
+}
+
+const alertDataListSelectionsId = () => {
+  alert(JSON.stringify(state.dataListSelectionsIds))
+}
 </script>

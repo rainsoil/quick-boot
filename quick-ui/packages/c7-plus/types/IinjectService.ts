@@ -43,4 +43,18 @@ export interface IinjectService {
      * @param path
      */
     openNewTab(path: string): void;
+
+
+
+    /**
+     * 下载文件或数据。
+     *
+     * 该函数用于从指定路径下载文件或数据，并支持自定义请求参数、文件名和请求头。
+     *
+     * @param {string} [path] - 下载资源的路径。如果未提供，则使用默认路径。
+     * @param {IObject} [params] - 请求参数，通常为键值对对象。如果未提供，则不传递任何参数。
+     * @param {string} [filename] - 下载文件的名称。如果未提供，则使用默认文件名或从响应头中获取。
+     * @param {IObject} [headers] - 请求头信息，通常为键值对对象。如果未提供，则使用默认请求头。
+     */
+    download(path?: string, params?: IObject, filename?: string, headers?: IObject): void;
 }
