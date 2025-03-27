@@ -1,7 +1,8 @@
 import {getConfig} from "../config/C7Config";
-import {IDict, IDictHook} from "../types/ITypes";
+import {IDict, IDictHook, IObject} from "../types/ITypes";
 import useDictStore from './dictStore'
 import {computed, Ref, ref} from "vue";
+import {injectService} from "../service/injectService";
 
 /**
  * 字典值封装
@@ -38,6 +39,35 @@ export const dictHook = (): IDictHook => {
 
             // 返回响应式字典数据，初始为空数组
             return computed(() => store.dictData[dictType] || []);
-        }
+        },
+        /**
+         * 获取字典值
+         */
+        getDict2(dictList: IObject, dictType: string, dictUrl: string, param: IObject, loading: boolean): Promise<any> {
+            return new Promise((resolve, reject) => {
+                if (dictUrl) {
+                    loading = true;
+                    try {
+                        injectService.postRequest(dictUrl, param, {}).then(res => {
+                            let data = res.data;
+                            resolve(data);
+                        });
+
+                    } catch (error) {
+                        console.error('请求失败:', error);
+                    } finally {
+                        loading = false;
+                    }
+                } else if (dictType) {
+                    let dict = injectService.getDictByType(dictType) || [];
+                    resolve(dict);
+                } else {
+                    resolve(dictList);
+                }
+            });
+
+        },
+
+
     }
 }

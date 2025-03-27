@@ -1,5 +1,3 @@
-export * from './quick-form/src/types'
-export * from './quick-table/src/types'
 export * from './types/ITypes'
 export * from './types/ITableHook'
 export * from './types/IinjectService'

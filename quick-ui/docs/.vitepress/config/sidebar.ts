@@ -34,5 +34,27 @@ export default {
                 {text: '字典Hook', link: '/components/c7/dictHook'},
             ],
         },
+        {
+            text: '布局组件',
+            items: [
+                {text: 'title组件', link: '/components/c7/c7Title'},
+                {text: 'card卡片组件', link: '/components/c7/card'},
+            ],
+        },
+        {
+            text: '表单组件',
+            items: [
+                {text: 'Button按钮', link: '/components/c7/button'},
+                {text: 'c7-select', link: '/components/c7/select'},
+                {text: 'c7-date-picker', link: '/components/c7/datePicker'},
+                {text: "c7-checkbox", link: "/components/c7/checkbox"},
+                {text: "c7-cascader", link: "/components/c7/cascader"},
+                {text: "c7-upload", link: "/components/c7/upload"},
+                {text: "c7-preview", link: "/components/c7/preview"},
+                {text: "c7-dialog", link: "/components/c7/dialog"},
+                {text: "c7-search", link: "/components/c7/search"}
+            ],
+
+        },
     ]
 };

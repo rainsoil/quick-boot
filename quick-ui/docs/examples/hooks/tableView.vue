@@ -45,7 +45,7 @@
     <el-table-column label="性别" prop="sex">
 
       <template #default="scope">
-        {{ state.getDictLabel("sys_user_sex", scope.row.sex) }}
+        {{ state.getDictLabel("sex", scope.row.sex) }}
       </template>
     </el-table-column>
     <el-table-column label="操作" order="99" width="80px">
