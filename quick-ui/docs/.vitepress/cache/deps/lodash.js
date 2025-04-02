@@ -1,6 +1,6 @@
 import {
   __commonJS
-} from "./chunk-G3PMV62Z.js";
+} from "./chunk-5WWUZCGV.js";
 
 // ../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/lodash.js
 var require_lodash = __commonJS({
@@ -736,7 +736,7 @@ var require_lodash = __commonJS({
           }
           return new LodashWrapper(value);
         }
-        var baseCreate = /* @__PURE__ */ function() {
+        var baseCreate = function() {
           function object() {
           }
           return function(proto) {
@@ -4043,7 +4043,7 @@ var require_lodash = __commonJS({
         var gte = createRelationalOperation(function(value, other) {
           return value >= other;
         });
-        var isArguments = baseIsArguments(/* @__PURE__ */ function() {
+        var isArguments = baseIsArguments(function() {
           return arguments;
         }()) ? baseIsArguments : function(value) {
           return isObjectLike(value) && hasOwnProperty.call(value, "callee") && !propertyIsEnumerable.call(value, "callee");

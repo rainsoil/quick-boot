@@ -2,8 +2,6 @@
 
 
   <c7-table :table-data="dataList" :columns="columns">
-
-
     <!-- 自定义 slot -->
     <template #address="{ row }">
       <span style="color: blue;">{{ row.address }}</span>

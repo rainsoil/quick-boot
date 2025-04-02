@@ -4,3 +4,11 @@
 
 table/demo
 :::
+
+
+
+## crud
+:::demo
+
+table/demo2
+:::
