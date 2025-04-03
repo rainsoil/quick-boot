@@ -24,7 +24,6 @@
     "pinia": "2.1.7"
   },
   "dependencies": {
-    "@vue/shared": "^3.4.29",
-    "c7-plus": "workspace:*"
+
   }
 }

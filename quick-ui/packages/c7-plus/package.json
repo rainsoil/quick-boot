@@ -4,10 +4,26 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "module": "./dist/es/index.js",
+  "types": "./dist/types/core/index.d.ts",
   "scripts": {
     "clean": "rimraf ../../dist",
-    "build": "pnpm run clean && vite build"
+    "build": "vite build"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/es/index.js",
+      "require": "./dist/umd/index.umd.cjs",
+      "types": "./dist/types/core/index.d.ts"
+    },
+    "./dist/": {
+      "import": "./dist/",
+      "require": "./dist/"
+    }
+  },
+  "sideEffects": [
+    "./dist/index.css"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",

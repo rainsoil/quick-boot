@@ -13,7 +13,8 @@
     "deploy": "zsh scripts/gh-pages.sh",
     "docs:dev": "pnpm -C docs dev",
     "docs1:dev": "vitepress dev docs1",
-    "docs:build": "pnpm -C docs build"
+    "docs:build": "pnpm -C docs build",
+    "c7-plus:build": "pnpm -C packages/c7-plus build"
   },
   "repository": {
     "type": "git",
@@ -38,6 +39,7 @@
     "vue-router": "4.4.0"
   },
   "devDependencies": {
+    "vite-plugin-dts": "3.9.1",
     "@vitejs/plugin-vue": "5.0.5",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "sass": "1.77.5",
@@ -48,6 +50,8 @@
     "vite-plugin-mock": "^3.0.2",
     "vite-plugin-svg-icons": "2.0.1",
     "vitepress": "^1.6.2",
-    "vitepress-theme-demoblock": "^3.0.5"
+    "vitepress-theme-demoblock": "^3.0.5",
+    "@vue/shared": "^3.4.29",
+    "c7-plus": "workspace:*"
   }
 }

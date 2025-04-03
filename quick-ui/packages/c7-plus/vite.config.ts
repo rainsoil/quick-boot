@@ -32,7 +32,7 @@ export default defineConfig({
     })
   ],
   build: {
-    outDir: resolve(projRoot, "dist/"),
+    outDir: resolve(__dirname, "dist/"),
     emptyOutDir: true,
     target: "modules",
     minify: true,

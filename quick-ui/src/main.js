@@ -5,16 +5,14 @@ import Cookies from 'js-cookie'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import locale from 'element-plus/es/locale/lang/zh-cn'
-
 import '@/assets/styles/index.scss' // global css
 
 import App from './App'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
-
+import c7Plus from 'c7-plus'
 // 加载组件
-import c7Ui from '@/packages/index.js'
 // 注册指令
 import plugins from './plugins' // plugins
 import {download} from '@/utils/request'
@@ -77,8 +75,13 @@ app.component("qDatePicker", qDatePicker);
 app.component('formLayout', formLayout)
 app.component('qtable', qtable)
 app.component("qtableSearch", qtableSearch);
+
+const pinia = createPinia();
+
+app.use(pinia); // 注册 Pinia
 // 全局注入
 import {getRequest, deleteRequest, getDictByType, postRequest} from "./service/provideSerivce";
+import {createPinia} from "pinia";
 window.$postRequest = postRequest
 app.config.globalProperties.$getRequest = getRequest;
 app.config.globalProperties.$getDictByType = getDictByType;
@@ -87,7 +90,7 @@ app.use(router)
 app.use(store)
 app.use(plugins)
 app.use(elementIcons)
-app.use(c7Ui)
+app.use(c7Plus)
 app.component('svg-icon', SvgIcon)
 
 

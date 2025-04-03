@@ -8,7 +8,7 @@ import {injectService} from "../service/injectService";
  * 字典值封装
  */
 export const dictHook = (): IDictHook => {
-    const store = useDictStore();
+
 
     return {
         getDictByValue(dictType: string, value: string): string {
@@ -24,10 +24,10 @@ export const dictHook = (): IDictHook => {
 
             dictTypes.forEach(dictType => {
                 // 触发请求（若尚未缓存）
-                store.fetchDict(dictType);
+                useDictStore.fetchDict(dictType);
 
                 // 返回响应式字典数据，初始为空数组
-                dictData[dictType] = computed(() => store.dictData[dictType] || []);
+                dictData[dictType] = computed(() => useDictStore.getStoredDict()[dictType] || []);
                 // dictData[dictType] = dicts.value;
 
             });
@@ -35,10 +35,10 @@ export const dictHook = (): IDictHook => {
         },
         getDict: (dictType: string) => {
             // 触发请求（若尚未缓存）
-            store.fetchDict(dictType);
+            useDictStore.fetchDict(dictType);
 
             // 返回响应式字典数据，初始为空数组
-            return computed(() => store.dictData[dictType] || []);
+            return computed(() => useDictStore.getStoredDict[dictType] || []);
         },
         /**
          * 获取字典值
