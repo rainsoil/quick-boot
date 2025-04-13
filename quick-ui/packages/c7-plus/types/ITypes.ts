@@ -142,8 +142,6 @@ export interface IColumn {
 }
 
 
-
-
 /**
  * 按钮配置
  */
@@ -183,6 +181,7 @@ export enum IColumnEnum {
     // 卡槽
     SLOT = 'slot'
 }
+
 /**
  * 表格字段
  */
@@ -200,7 +199,7 @@ export interface ITableColumn {
     /**
      * 排序
      */
-    order?: number,
+    order?: number | 0,
 
     /**
      * 字段类型

@@ -8,7 +8,7 @@ axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 const service = axios.create({
     // axios中请求配置有baseURL选项，表示请求URL公共部分
 
-    baseURL:  'https://apifoxmock.com/m1/4742948-4395863-default/',
+    baseURL:  'https://m1.apifoxmock.com/m1/4742948-4395863-default/',
     // 超时
     timeout: 10000
 })

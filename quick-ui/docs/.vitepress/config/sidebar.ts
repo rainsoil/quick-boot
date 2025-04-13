@@ -1,13 +1,4 @@
 export default {
-    // "/components/": [
-    //   {
-    //     text: "基础组件",
-    //     items: [
-    //       { text: "QuickFrom", link: "/components/quick-form/index" },
-    //       { text: "QTable", link: "/components/quick-table/index" },
-    //     ],
-    //   },
-    // ],
     "/guide/": [
         {text: "设计", link: "/guide/design"},
         {
@@ -52,7 +43,8 @@ export default {
                 {text: "c7-upload", link: "/components/c7/upload"},
                 {text: "c7-preview", link: "/components/c7/preview"},
                 {text: "c7-dialog", link: "/components/c7/dialog"},
-                {text: "c7-search", link: "/components/c7/search"}
+                {text: "c7-search", link: "/components/c7/search"},
+                {text: "c7-table", link: "/components/c7/table"}
             ],
 
         },

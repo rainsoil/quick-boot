@@ -1,6 +1,4 @@
 <template>
-
-
   <el-row :gutter="10" class="mb8" v-if="props.buttons.enable">
     <!-- 新增按钮-->
     <el-button v-if="props.buttons.addBtn.enable"
@@ -12,7 +10,7 @@
     >{{ props.buttons.addBtn.label }}
     </el-button>
 
-    <!--修改按钮 -->
+    <!-- 删除按钮 -->
     <el-button v-if="props.buttons.deleteBtn.enable"
                :type="props.buttons.deleteBtn.type"
                plain
@@ -20,22 +18,32 @@
                :disabled="props.buttons.deleteBtn.disabled"
                @click="deleteBtnHandle()"
     >{{ props.buttons.deleteBtn.label }}
-
     </el-button>
+
+    <!-- 导出按钮 -->
+    <el-button v-if="props.buttons.exportBtn.enable"
+               :type="props.buttons.exportBtn.type"
+               plain
+               :icon="props.buttons.exportBtn.icon"
+               :disabled="props.buttons.exportBtn.disabled"
+               @click="exportHandle()"
+    >{{ props.buttons.exportBtn.label }}
+    </el-button>
+
+    <!-- 按钮扩展-->
+    <slot name="appendButton"></slot>
   </el-row>
   <div style="margin-top: 30px"></div>
-  <el-table :data="tableData" border v-bind="props">
+  <el-table :data="state.dataList" border v-bind="props" @sort-change="dataListSortChangeHandle">
     <!-- 多选-->
     <el-table-column v-if="selection" type="selection" align="center"/>
     <!-- 渲染 JSON 配置生成的列 -->
     <template v-for="(column, index) in sortedColumns" :key="index">
-
-
       <el-table-column
-
           v-if="column.type == 'text' || !column.type"
           :label="column.label"
           :prop="column.prop"
+          :sortable="column.sortable"
           :bind="column.props"
       >
         <template #default="scope" v-if="column.formatter">
@@ -44,29 +52,36 @@
           }}
         </template>
         <template v-slot="scope" v-if="column.isSlot">
-
           <slot :name="column.slotName || ('slot_' + column.prop)" v-bind="scope">
             <!-- 默认展示 -->
             {{ scope.row[column.prop] }}
           </slot>
         </template>
-        <!--        <template v-slot="scope" v-if="column.props.dictType">-->
-        <!--          <dict-tag :dict-type=column.props.dictType :value="scope.row[column.props.prop]"/>-->
-        <!--          &lt;!&ndash;          <span>{{ state.getDictLabel("sys_normal_disable", scope.row.status)}}</span>&ndash;&gt;-->
-        <!--          &lt;!&ndash;                    <span>{{ scope.row }}</span>&ndash;&gt;-->
-        <!--        </template>-->
       </el-table-column>
-
     </template>
   </el-table>
+
+  <!-- 分页 -->
+  <el-pagination
+      v-if="state.getDataListIsPage"
+      @size-change="pageSizeChangeHandle"
+      @current-change="pageCurrentChangeHandle"
+      :current-page="state.page"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="state.limit"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="state.total">
+  </el-pagination>
+
 
 </template>
 
 <script setup lang="ts">
 import {IButton, IColumn, IColumnEnum} from '../../c7-search/src/search.js'
-import {ITableColumn} from '../../../types/ITypes'
+import {IObject, ITableColumn} from '../../../types/ITypes'
 import {tableHook} from "../../../hooks/tableHook.ts";
-import {ref, defineOptions, PropType, computed} from 'vue'
+import {IViewHooks, IViewHooksOptions} from "../../../types/ITableHook";
+import {ref, defineOptions, PropType, computed, reactive, toRefs} from 'vue'
 
 defineOptions({
   name: 'c7Table'
@@ -74,15 +89,24 @@ defineOptions({
 const emit = defineEmits(["addBtnHandle", "deleteHandle", "exportHandle"])
 
 const props = defineProps({
-
+  tableProps: {
+    type: Object as PropType<IViewHooksOptions>,
+    required: false
+  },
+  // 列表查询参数
+  tableParam: {
+    type: Object,
+    required: false,
+    default: () => {
+      return {}
+    }
+  },
   // 表格数据
   tableData: {
     type: Array,
     required: true,
     default: () => []
   },
-
-
   // 列
   columns: {
     type: Array as PropType<ITableColumn[]>,
@@ -94,8 +118,6 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-
-
   // 操作
   buttons: {
     type: Object as PropType<{
@@ -103,54 +125,91 @@ const props = defineProps({
       // 新增按钮
       addBtn: IButton,
       // 删除
-      deleteBtn: IButton
+      deleteBtn: IButton,
       // 导出
-
-      // 导入
-
+      exportBtn: IButton
     }>,
     default: () => ({
       enable: true,
       addBtn: {
         // 是否开启
         enable: true,
-
         // 按钮文本
         label: '新增',
-
         // 是否显示
         display: true,
-
         // 是否禁用
         disabled: false,
         // type
         type: 'primary',
         // icon
         icon: 'plus',
-
       },
       deleteBtn: {
         // 是否开启
         enable: true,
-
         // 按钮文本
         label: '删除',
-
         // 是否显示
         display: true,
-
         // 是否禁用
         disabled: false,
         // type
         type: 'danger',
         // icon
         icon: 'Delete',
-
+      },
+      exportBtn: {
+        // 是否开启
+        enable: true,
+        // 按钮文本
+        label: '导出',
+        // 是否显示
+        display: true,
+        // 是否禁用
+        disabled: false,
+        // type
+        type: 'success',
+        // icon
+        icon: 'Download',
       },
     })
   }
 })
 
+const view = reactive<IViewHooksOptions>({
+  ...props.tableProps,
+})
+const state = reactive({...tableHook(view), ...toRefs(view)});
+
+// 分页
+const pageSizeChangeHandle = (val: number) => {
+  state.pageSizeChangeHandle(val)
+}
+
+// 分页(当前页)
+const pageCurrentChangeHandle = (val: number) => {
+  state.pageCurrentChangeHandle(val)
+}
+
+// 排序
+const dataListSortChangeHandle = (sort: IObject) => {
+  state.dataListSortChangeHandle(sort)
+}
+
+const getDataList = () => {
+  state.getDataList()
+  console.log(state.dataList)
+}
+
+// 排序列：这里只排序 JSON 列，因为插槽内容是直接渲染的
+const sortedColumns = computed(() => {
+  return props.columns.sort((a, b) => a.order - b.order);
+});
+// 重置
+const handleReset = () => {
+  state.handleReset()
+}
 
 const addBtnHandle = () => {
   emit("addBtnHandle")
@@ -160,9 +219,16 @@ const deleteBtnHandle = () => {
   emit("deleteHandle")
 }
 
+// 导出按钮
+const exportHandle = () => {
+  state.exportHandle()
+}
 
-// 排序列：这里只排序 JSON 列，因为插槽内容是直接渲染的
-const sortedColumns = computed(() => {
-  return props.columns.sort((a, b) => a.order - b.order);
-});
+defineExpose({
+  getDataList,
+  handleReset,
+  pageSizeChangeHandle,
+  pageCurrentChangeHandle,
+  dataListSortChangeHandle,
+})
 </script>

@@ -1,9 +1,9 @@
 <template>
   <div class="form-layout-container">
     <div ref="formMainLeft">
-      <el-form :ref="props.refName" :inline="true" :label-width="props.labelWidth">
+      <el-form :ref="props.refName" :label-width="props.labelWidth">
         <el-row>
-          <el-col :span="item.span?item.span:12" v-for="(item, index) in sortedColumns" :key="index">
+          <el-col :span="item.span?item.span:8" v-for="(item, index) in sortedColumns" :key="index">
 
             <el-form-item :label="item.label" :prop="item.prop" :required="item.required" :rules="item.rules">
               <!-- 如果配置使用自定义卡槽，则渲染对应插槽 -->
@@ -62,47 +62,21 @@
 
             </el-form-item>
           </el-col>
+          <el-form-item>
+            <el-button type="primary" icon="Search" @click="handleSearch()">搜索</el-button>
+            <el-button icon="Refresh" @click="handleReset()">重置</el-button>
+          </el-form-item>
         </el-row>
 
-        <el-form-item>
-          <el-button type="primary" icon="Search" @click="handleSearch()">搜索</el-button>
-          <el-button icon="Refresh" @click="handleReset()">重置</el-button>
-        </el-form-item>
+
       </el-form>
     </div>
 
-
-<!--    <el-row :gutter="10" class="mb8" v-if="props.buttons.enable">-->
-<!--      &lt;!&ndash; 新增按钮&ndash;&gt;-->
-<!--      <el-button v-if="props.buttons.addBtn.enable"-->
-<!--                 :type="props.buttons.addBtn.type"-->
-<!--                 plain-->
-<!--                 :icon="props.buttons.addBtn.icon"-->
-<!--                 :disabled="props.buttons.addBtn.disabled"-->
-<!--                 @click="addBtnHandle()"-->
-<!--      >{{ props.buttons.addBtn.label }}-->
-<!--      </el-button>-->
-
-<!--      &lt;!&ndash;修改按钮 &ndash;&gt;-->
-<!--      <el-button v-if="props.buttons.deleteBtn.enable"-->
-<!--                 :type="props.buttons.deleteBtn.type"-->
-<!--                 plain-->
-<!--                 :icon="props.buttons.deleteBtn.icon"-->
-<!--                 :disabled="props.buttons.deleteBtn.disabled"-->
-<!--                 @click="deleteBtnHandle()"-->
-<!--      >{{ props.buttons.deleteBtn.label }}-->
-
-<!--      </el-button>-->
-<!--    </el-row>-->
-
-<!--    <el-row :gutter="10" class="mb8" v-if="!props.buttons.enable">-->
-<!--      <slot name="extra"></slot>-->
-<!--    </el-row>-->
   </div>
 
 </template>
 <script setup lang="ts">
-import {addBtn, IButton, IColumn, IColumnEnum} from './search.js'
+import {IButton, IColumn, IColumnEnum} from './search.js'
 import {ref, defineOptions, PropType, computed} from 'vue'
 
 const emit = defineEmits(['update:modelValue', "handleSearch", "handleReset", "addBtnHandle", "deleteHandle", "exportHandle"])
@@ -220,8 +194,17 @@ const sortedColumns = computed(() => {
 const addBtnHandle = () => {
   emit("addBtnHandle")
 }
+const handleSearch = () => {
+  emit("handleSearch")
+}
 // 编辑按钮
 const deleteBtnHandle = () => {
   emit("deleteHandle")
 }
+// 重置
+const handleReset = () => {
+  emit("update:modelValue", {});
+  emit("handleReset");
+}
+
 </script>
