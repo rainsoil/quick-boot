@@ -23,7 +23,7 @@ export interface IViewHooksOptions {
     /**
      * 删除接口，API地址
      */
-    deleteURL?: "";
+    deleteURL?: string;
     /**
      * 删除接口，是否需要批量？
      */

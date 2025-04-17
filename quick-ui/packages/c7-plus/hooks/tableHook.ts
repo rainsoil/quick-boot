@@ -154,6 +154,7 @@ export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
         // 多选
         dataListSelectionChangeHandle(val: IObject[]) {
             state.dataListSelections = val;
+            console.log(state.dataListSelections)
             state.dataListSelectionsIds = state.dataListSelections
                 ? state.dataListSelections.map(
                     (item: IObject) => state.deleteIsBatchKey && item[state.deleteIsBatchKey]
@@ -212,6 +213,7 @@ export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
                     return;
                 }
 
+                console.log(state.dataListSelectionsIds)
                 ElMessageBox.confirm("确定进行删除操作?", "提示", {
                     confirmButtonText: "确认",
                     cancelButtonText: "取消",

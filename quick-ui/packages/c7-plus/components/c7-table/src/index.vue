@@ -16,7 +16,7 @@
                plain
                :icon="props.buttons.deleteBtn.icon"
                :disabled="props.buttons.deleteBtn.disabled"
-               @click="deleteBtnHandle()"
+               @click="state.deleteHandle()"
     >{{ props.buttons.deleteBtn.label }}
     </el-button>
 
@@ -34,7 +34,8 @@
     <slot name="appendButton"></slot>
   </el-row>
   <div style="margin-top: 30px"></div>
-  <el-table :data="state.dataList" border v-bind="props" @sort-change="dataListSortChangeHandle">
+  <el-table :data="state.dataList" border v-bind="props" @sort-change="dataListSortChangeHandle"
+            @selection-change="state.dataListSelectionChangeHandle">
     <!-- 多选-->
     <el-table-column v-if="selection" type="selection" align="center"/>
     <!-- 渲染 JSON 配置生成的列 -->
@@ -58,7 +59,16 @@
           </slot>
         </template>
       </el-table-column>
+
     </template>
+    <el-table-column label="操作" order="99" prop="operate">
+      <template v-slot="scope">
+        <slot name="operate" v-bind="scope">
+          <!-- 默认展示 -->
+          <el-button type="text" size="small" @click="deleteBtnHandle(scope.row.id)">删除</el-button>
+        </slot>
+      </template>
+    </el-table-column>
   </el-table>
 
   <!-- 分页 -->
@@ -215,8 +225,8 @@ const addBtnHandle = () => {
   emit("addBtnHandle")
 }
 // 编辑按钮
-const deleteBtnHandle = () => {
-  emit("deleteHandle")
+const deleteBtnHandle = (id?: string) => {
+  state.deleteHandle(id)
 }
 
 // 导出按钮
@@ -227,6 +237,7 @@ const exportHandle = () => {
 defineExpose({
   getDataList,
   handleReset,
+  deleteBtnHandle,
   pageSizeChangeHandle,
   pageCurrentChangeHandle,
   dataListSortChangeHandle,

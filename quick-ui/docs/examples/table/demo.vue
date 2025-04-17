@@ -3,7 +3,11 @@
   <c7-table-search :columns="tableSearchProps" ref="searchRef" v-model="searchParam"
                    @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
   <c7-table :tableProps="tableProps" :columns="columns" ref="tableRef" @addBtnHandle="handle('新增')"
-            @deleteHandle="handle('删除')"></c7-table>
+            :selection="true">
+    <template #operate="scope">
+      <el-button type="primary" @click="tableRef.deleteBtnHandle(scope.row.id)">删除</el-button>
+    </template>
+  </c7-table>
 </template>
 
 <script setup lang="ts">
@@ -57,15 +61,13 @@ const tableData = ref([
 ])
 const tableProps = ref<IViewHooksOptions>({
   getDataListURL: '/mockapi/crud/tableView',
+  deleteURL: '/mockapi/crud/tableView',
   dataForm: searchParam
 
 
 })
 const tableRef = ref<InstanceType<typeof c7Table>>();
 
-const getDataList = () => {
-  tableRef.value.getDataList();
-}
 
 const handle = (msg) => {
   alert(msg)
