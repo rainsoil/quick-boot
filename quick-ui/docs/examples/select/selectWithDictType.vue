@@ -3,7 +3,7 @@
 
   <el-row :gutter="10">
     <el-col :span="8">
-      <c7-select  dict-type="dictType" v-model="choose"></c7-select>
+      <c7-select  dict-type="sex" v-model="choose"></c7-select>
     </el-col>
 
     <el-col :span="8">

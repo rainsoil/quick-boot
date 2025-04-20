@@ -38,6 +38,8 @@ const columns = ref<ITableColumn[]>([
   {
     label: '性别',
     prop: 'sex',
+    dictType: 'sex',
+    type: 'dict'
   },
   {
     label: '地址',

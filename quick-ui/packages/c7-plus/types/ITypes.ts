@@ -1,4 +1,4 @@
-import {Ref} from "vue";
+import {ref, Ref} from "vue";
 
 export interface IObject<T = any> {
     [key: string]: T;
@@ -31,7 +31,7 @@ export interface IDictHook {
      * @param dictType - 字典类型，用于指定需要获取的字典项类别。
      * @returns 返回一个包含字典项的数组，数组中的每个元素都符合 `IDict` 接口的定义。
      */
-    getDict(dictType: string): Ref<IDict[]>;
+    getDict(...dictType: string[]): ref<Record<string, IDict[]>>;
 
 
     /**
@@ -43,13 +43,6 @@ export interface IDictHook {
      */
     getDictByValue(dictType: string, value: string): string;
 
-
-    /**
-     * 根据多个字典类型获取多个字典项列表。
-     *
-     * @param dictTypes - 字典类型数组，用于指定需要获取的字典项类别。
-     */
-    getDicts(dictTypes: string[]): Ref<Record<string, Ref<IDict[]>>>;
 
 
     /**
@@ -232,6 +225,12 @@ export interface ITableColumn {
      * 卡槽名称
      */
     slotName?: string,
+
+
+    /**
+     * 字典类型
+     */
+    dictType?: string,
 }
 
 
@@ -242,5 +241,6 @@ export enum ITableColumnType {
     INPUT = 'text',
     SLOT = 'slot',
     IMAGE = 'image',
+    DICT = 'dict'
 
 }

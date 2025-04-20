@@ -3,7 +3,8 @@ import {onActivated, onMounted} from "vue";
 import {injectService} from "../service/injectService";
 import {ElMessage, ElMessageBox} from "element-plus";
 import {IObject} from "../types/ITypes";
-import {dictHook} from "./dictHook";
+import {useDict} from "./dictHook";
+
 
 export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
 
@@ -120,7 +121,8 @@ export const tableHook = (props: IViewHooksOptions | IObject): IViewHooks => {
             if (!dictType || !dictValue) {
                 return "";
             }
-            return dictHook().getDictByValue(dictType, dictValue);
+            const {getDictByValue} = useDict(dictType);
+            return getDictByValue(dictType, dictValue);
         }
     };
 

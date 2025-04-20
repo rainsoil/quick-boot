@@ -60,6 +60,20 @@
         </template>
       </el-table-column>
 
+      <!-- else if  type == 'dict' -->
+      <el-table-column
+          v-else-if="column.type == 'dict'"
+          :label="column.label"
+          :prop="column.prop"
+          :sortable="column.sortable"
+          :bind="column.props"
+      >
+        <template #default="scope" >
+          {{
+           state.getDictLabel(column.dictType, scope.row[column.prop])
+          }}
+        </template>
+      </el-table-column>
     </template>
     <el-table-column label="操作" order="99" prop="operate">
       <template v-slot="scope">

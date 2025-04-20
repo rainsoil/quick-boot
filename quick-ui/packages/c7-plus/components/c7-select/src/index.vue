@@ -20,9 +20,10 @@
 
 <script setup>
 import {ref, reactive, watch, onMounted, defineOptions, toRefs} from 'vue';
-import {dictHook} from '../../../hooks/dictHook.ts'
+import {useDict} from '../../../hooks/dictHook.ts'
 import {injectService} from '../../../service/injectService.ts'
 
+const {getDict2} = useDict("");
 defineOptions({
   name: 'c7Select'
 })
@@ -54,7 +55,8 @@ onMounted(() => {
 function fetchData() {
 
   // let dictType = props.dictType;
-  dictHook().getDict2(props.dataList, props.dictType, props.url, {}, loading.value).then(res => {
+  getDict2(props.dataList, props.dictType, props.url, {}, loading.value).then(res => {
+    console.log("getDict2", res)
     options.value = res || [];
   });
 
@@ -66,7 +68,7 @@ function remoteSearchMethod(query) {
     query: query
   };
 
-  dictHook().getDict2(null, null, props.url, params, loading.value).then(res => {
+  getDict2(null, null, props.url, params, loading.value).then(res => {
     options.value = res || [];
 
   });

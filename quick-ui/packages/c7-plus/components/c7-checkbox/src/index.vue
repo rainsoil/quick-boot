@@ -26,9 +26,10 @@
 </template>
 
 <script setup>
-import { defineOptions, reactive, ref, watch, onMounted, computed } from "vue";
-import {dictHook} from '../../../hooks/dictHook.ts'
+import {defineOptions, reactive, ref, watch, onMounted, computed} from "vue";
+import {useDict} from '../../../hooks/dictHook.ts'
 
+const {getDict2} = useDict();
 defineOptions({
   name: 'c7Checkbox'
 });
@@ -38,19 +39,18 @@ const emit = defineEmits(['update:modelValue']);
 
 // 支持 modelValue 为数组或逗号分隔的字符串
 const props = defineProps({
-  modelValue: { type: [Array, String], default: () => [] },
-  url: { type: String, default: '' },
-  params: { type: Object, default: () => ({}) },
-  dictType: { type: String, default: '' },
-  dataList: { type: Array, default: () => [] },
+  modelValue: {type: [Array, String], default: () => []},
+  url: {type: String, default: ''},
+  params: {type: Object, default: () => ({})},
+  dictType: {type: String, default: ''},
+  dataList: {type: Array, default: () => []},
   // 当 indeterminate 为 true 时，显示全选/全不选复选框
-  indeterminate: { type: Boolean, default: false },
+  indeterminate: {type: Boolean, default: false},
   // 当 rangeMerge 为 true 时，选中结果用逗号分隔
   rangeMerge: {type: Boolean, default: true},
 
 });
 
-const state = reactive({...dictHook()});
 
 const checkList = ref([]); // 内部存储当前选中的值
 let options = ref([]);    // 用于显示的选项
@@ -78,7 +78,7 @@ onMounted(() => {
  * 加载数据：通过 dictHook 获取字典或 API 数据
  */
 function fetchData() {
-  dictHook().getDict2(props.dataList, props.dictType, props.url, {}, loading.value).then(
+  getDict2(props.dataList, props.dictType, props.url, {}, loading.value).then(
       (res) => {
         options.value = res || [];
       }

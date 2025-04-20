@@ -11,7 +11,7 @@
         style="width: 240px"
     >
       <el-option
-          v-for="item in dictMap.sex"
+          v-for="item in dicts['sex']"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -26,7 +26,7 @@
         style="width: 240px"
     >
       <el-option
-          v-for="item in dictMap.zhuanye"
+          v-for="item in dicts.zhuanye"
           :key="item.value"
           :label="item.label"
           :value="item.value"
@@ -37,8 +37,8 @@
     <p>--------------</p>
     <!-- 将div的内容循环10次-->
     <div v-for="i in 10" :key="i">
-      <div v-for="item in dictList" :key="item.value">
-        {{ item.label }} ---- {{ dictHook().getDictByValue("sex", '1') }}
+      <div v-for="item in dicts.sex" :key="item.value">
+        {{ item.label }} ---- {{ getDictByValue("sex", '1') }}
       </div>
       <p>--------------</p>
     </div>
@@ -48,11 +48,9 @@
 
 <script setup lang="ts">
 import {ref, computed, watch, onMounted} from 'vue'
-import {dictHook} from "c7-plus";
+import {useDict} from "c7-plus";
 
-const dictList = dictHook().getDict("sex");
-
-const dictMap = ref(dictHook().getDicts(["sex", "zhuanye"]));
+const {dicts,getDictByValue} = useDict("sex", "zhuanye");
 
 const select1 = ref("")
 
