@@ -28,10 +28,11 @@ public class SysRoleMenuServiceImpl extends BaseServiceImpl2<SysRoleMenuMapper, 
 
 	@Override
 	public void save(Long roleId, List<Long> menuIds) {
+
+		this.remove(new LambdaQueryWrapper<SysRoleMenuEntity>().eq(SysRoleMenuEntity::getRoleId, roleId));
 		if (CollectionUtil.isEmpty(menuIds)) {
 			return;
 		}
-		this.remove(new LambdaQueryWrapper<SysRoleMenuEntity>().eq(SysRoleMenuEntity::getRoleId, roleId));
 		List<SysRoleMenuEntity> entityList = menuIds.stream().map(a -> {
 			SysRoleMenuEntity sysRoleMenuEntity = new SysRoleMenuEntity();
 			sysRoleMenuEntity.setRoleId(roleId);

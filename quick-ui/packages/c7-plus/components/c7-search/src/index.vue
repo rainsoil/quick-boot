@@ -3,94 +3,99 @@
     <div ref="formMainLeft">
       <el-form :ref="props.refName" :label-width="props.labelWidth">
         <el-row>
-          <el-col :span="item.span?item.span:8" v-for="(item, index) in sortedColumns" :key="index">
-
-            <el-form-item :label="item.label" :prop="item.prop" :required="item.required" :rules="item.rules">
-              <!-- 如果配置使用自定义卡槽，则渲染对应插槽 -->
+          <el-col :span="item.span || 8" v-for="(item, index) in sortedColumns" :key="index">
+            <el-form-item
+                :label="item.label"
+                :prop="item.prop"
+                :required="item.required"
+                :rules="item.rules"
+            >
+              <!-- 自定义插槽 -->
               <template v-if="item.type === 'slot'">
-                <slot :name="item.slotName || ('slot_' + item.prop)"
-                      :item="item"
-                      :modelValue="props.modelValue[item.prop]"
-
-                      @change="handleChange(item, $event)">
-                </slot>
+                <slot
+                    :name="item.slotName || ('slot_' + item.prop)"
+                    :item="item"
+                    :modelValue="localModel[item.prop]"
+                    @change="handleChange(item, $event)"
+                ></slot>
               </template>
-              <!-- input输入框-->
+
+              <!-- 输入框 -->
               <el-input
-                  v-if="(item.type === 'input' || !item.type) && item.display"
-                  v-model="props.modelValue[item.prop]"
-                  :placeholder="item.placeholder?item.placeholder:'请输入'+item.label"
+                  v-else-if="(item.type === 'input' || !item.type) && item.display"
+                  v-model="localModel[item.prop]"
+                  :placeholder="item.placeholder || '请输入' + item.label"
                   clearable
-                  @change="handleChange(item,props.modelValue[item.prop])"
+                  @change="handleChange(item, localModel[item.prop])"
               />
-              <!-- 下拉-->
-              <c7-select v-if="item.type === 'select'" v-model="props.modelValue[item.prop]" :dict-type="item.dictType"
-                         :placeholder="item.placeholder?item.placeholder:'请输入'+item.label"
-                         :data-list="item.dataList"
-                         @change="handleChange(item,props.modelValue[item.prop])"
 
-              ></c7-select>
-              <!-- 级联-->
-              <c7-cascader v-if="item.type === 'cascader'" v-model="props.modelValue[item.prop]"
-                           :result-type="3"
-                           :placeholder="item.placeholder?item.placeholder:'请输入'+item.label"
-                           :data-list="item.dataList"
-                           @change="handleChange(item,props.modelValue[item.prop])"
+              <!-- 下拉选择 -->
+              <c7-select
+                  v-else-if="item.type === 'select'"
+                  v-model="localModel[item.prop]"
+                  :dict-type="item.dictType"
+                  :placeholder="item.placeholder || '请输入' + item.label"
+                  :data-list="item.dataList"
+                  @change="handleChange(item, localModel[item.prop])"
+              />
 
-              ></c7-cascader>
+              <!-- 级联选择 -->
+              <c7-cascader
+                  v-else-if="item.type === 'cascader'"
+                  v-model="localModel[item.prop]"
+                  :result-type="3"
+                  :placeholder="item.placeholder || '请输入' + item.label"
+                  :data-list="item.dataList"
+                  @change="handleChange(item, localModel[item.prop])"
+              />
 
-              <!--date -->
+              <!-- 日期选择器 -->
               <c7-date-picker
-                  v-if="datePickerTypes.indexOf(item.type)>0"
-                  v-model="props.modelValue[item.prop]"
+                  v-else-if="datePickerTypes.includes(item.type)"
+                  v-model="localModel[item.prop]"
                   :type="item.type"
                   :value-format="item.valueFormat"
-                  :placeholder="item.placeholder?item.placeholder:'请输入'+item.label"
+                  :placeholder="item.placeholder || '请输入' + item.label"
                   :format="item.format"
-                  :start-placeholder=item.startPlaceholder
-                  :end-placeholder=item.endPlaceholder
+                  :start-placeholder="item.startPlaceholder"
+                  :end-placeholder="item.endPlaceholder"
                   :default-value="item.defaultValue"
                   :default-timer="item.defaultTime"
-                  :range-separator=item.rangeSseparator
-                  @change="handleChange(item,props.modelValue[item.prop])"
-                  :style="'width:'+ (item.columnsWidth?item.columnsWidth:props.columnsWidth) "
+                  :range-separator="item.rangeSeparator"
+                  :style="'width:' + (item.columnsWidth || props.columnsWidth)"
+                  @change="handleChange(item, localModel[item.prop])"
               />
-              <!-- datetime-->
-              <!--其他   动态组件渲染，根据 JSON 配置的组件名称-->
-              <!-- 动态组件渲染，根据 JSON 配置的组件名称 -->
-              <!-- 动态渲染组件，并使用 v-bind 将所有 props 一次性传入 -->
-
             </el-form-item>
           </el-col>
+
+          <!-- 操作按钮 -->
           <el-form-item>
-            <el-button type="primary" icon="Search" @click="handleSearch()">搜索</el-button>
-            <el-button icon="Refresh" @click="handleReset()">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleSearch">搜索</el-button>
+            <el-button icon="Refresh" @click="handleReset">重置</el-button>
           </el-form-item>
         </el-row>
-
-
       </el-form>
     </div>
-
   </div>
-
 </template>
-<script setup lang="ts">
-import {IButton, IColumn, IColumnEnum} from './search.js'
-import {ref, defineOptions, PropType, computed} from 'vue'
 
-const emit = defineEmits(['update:modelValue', "handleSearch", "handleReset", "addBtnHandle", "deleteHandle", "exportHandle"])
+<script setup lang="ts">
+import { IButton, IColumn } from './search.js'
+import { ref, defineOptions, PropType, computed, watch } from 'vue'
+
+const emit = defineEmits(['update:modelValue', 'handleSearch', 'handleReset', 'addBtnHandle', 'deleteHandle'])
 
 defineOptions({
   name: 'c7TableSearch',
   inheritAttrs: false
 })
 
+// 日期选择器支持的类型列表
 const datePickerTypes = ref([
   'year', 'years', 'month', 'months', 'date', 'dates', 'datetime', 'week', 'datetimerange', 'daterange', 'monthrange', 'yearrange'
 ])
 
-// 定义组件 Props
+// 定义 Props
 const props = defineProps({
   refName: {
     type: String,
@@ -112,99 +117,90 @@ const props = defineProps({
     type: String,
     default: '100%'
   },
-  // 操作
   buttons: {
     type: Object as PropType<{
       enable: boolean,
-      // 新增按钮
       addBtn: IButton,
-      // 删除
       deleteBtn: IButton
-      // 导出
-
-      // 导入
-
     }>,
     default: () => ({
       enable: true,
       addBtn: {
-        // 是否开启
         enable: true,
-
-        // 按钮文本
         label: '新增',
-
-        // 是否显示
         display: true,
-
-        // 是否禁用
         disabled: false,
-        // type
         type: 'primary',
-        // icon
-        icon: 'plus',
-
+        icon: 'plus'
       },
       deleteBtn: {
-        // 是否开启
         enable: true,
-
-        // 按钮文本
         label: '删除',
-
-        // 是否显示
         display: true,
-
-        // 是否禁用
         disabled: false,
-        // type
         type: 'danger',
-        // icon
-        icon: 'Delete',
-
-      },
+        icon: 'Delete'
+      }
     })
   }
 })
 
+// 内部响应式变量 localModel
+const localModel = ref({ ...props.modelValue })
+
+// 监听 props.modelValue 的变化，同步到 localModel
+watch(
+    () => props.modelValue,
+    (newVal) => {
+      // 避免直接修改 localModel，使用浅拷贝
+      if (JSON.stringify(newVal) !== JSON.stringify(localModel.value)) {
+        localModel.value = { ...newVal }
+      }
+    },
+    { deep: true }
+)
+
+// 监听 localModel 的变化，触发 update:modelValue 事件
+watch(
+    localModel,
+    (newVal) => {
+      // 避免直接修改 props.modelValue，使用浅拷贝
+      if (JSON.stringify(newVal) !== JSON.stringify(props.modelValue)) {
+        emit('update:modelValue', { ...newVal })
+      }
+    },
+    { deep: true }
+)
 
 /**
- * change事件
- * @param item
- * @param value
+ * change 事件处理
  */
-const handleChange = (item?: IColumn, value?: string) => {
-  if (item.change && typeof item.change === 'function') {
-    item.change(item, value);
-
+const handleChange = (item?: IColumn, value?: any) => {
+  if (item?.change && typeof item.change === 'function') {
+    item.change(item, value)
   }
 }
 
-// 根据 order 排序：order 数值越大，排列越靠前
+// 根据 order 排序 columns
 const sortedColumns = computed(() => {
-  let colums = props.columns.slice().sort((a, b) => a.order - b.order)
-
-  colums.forEach(c => {
-    c.display = true;
-  })
-  return colums;
+  const columns = props.columns.slice().sort((a, b) => a.order - b.order)
+  columns.forEach(c => c.display = true)
+  return columns
 })
 
-
-const addBtnHandle = () => {
-  emit("addBtnHandle")
-}
-const handleSearch = () => {
-  emit("handleSearch")
-}
-// 编辑按钮
-const deleteBtnHandle = () => {
-  emit("deleteHandle")
-}
-// 重置
+// 按钮事件
+const handleSearch = () => emit('handleSearch')
 const handleReset = () => {
-  emit("update:modelValue", {});
-  emit("handleReset");
+  localModel.value = {}
+  emit('update:modelValue', {})
+  emit('handleReset')
+}
+</script>
+
+<style scoped>
+.form-layout-container {
+  padding: 20px;
 }
 
-</script>
+/* 可以根据需求添加更多样式 */
+</style>

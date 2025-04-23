@@ -16,3 +16,4 @@ export * from "./components/c7-table/index";
 
 export * from "./components/c7-title/index";
 export * from "./components/c7-upload/index";
+export * from "./components/c7-radio/index";

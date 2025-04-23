@@ -14,7 +14,8 @@
     "docs:dev": "pnpm -C docs dev",
     "docs1:dev": "vitepress dev docs1",
     "docs:build": "pnpm -C docs build",
-    "c7-plus:build": "pnpm -C packages/c7-plus build"
+    "c7-plus:build": "pnpm -C packages/c7-plus build",
+    "c7-plus:publish": "pnpm -C packages/c7-plus publish"
   },
   "repository": {
     "type": "git",

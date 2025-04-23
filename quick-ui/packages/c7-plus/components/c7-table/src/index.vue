@@ -68,14 +68,14 @@
           :sortable="column.sortable"
           :bind="column.props"
       >
-        <template #default="scope" >
+        <template #default="scope">
           {{
-           state.getDictLabel(column.dictType, scope.row[column.prop])
+            state.getDictLabel(column.dictType, scope.row[column.prop])
           }}
         </template>
       </el-table-column>
     </template>
-    <el-table-column label="操作" order="99" prop="operate">
+    <el-table-column label="操作" order="99" prop="operate" width="150px">
       <template v-slot="scope">
         <slot name="operate" v-bind="scope">
           <!-- 默认展示 -->
@@ -222,7 +222,10 @@ const dataListSortChangeHandle = (sort: IObject) => {
 }
 
 const getDataList = () => {
+  state.dataForm = props.tableParam
   state.getDataList()
+  console.log(props.tableParam)
+  console.log(state.dataForm)
   console.log(state.dataList)
 }
 

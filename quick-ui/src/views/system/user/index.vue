@@ -1,61 +1,74 @@
 <template>
   <div class="app-container">
-    <qtable-search :columns="searchColumns" :modelValue="state.dataForm" @handle-reset="state.handleReset"
-                   @handle-search="state.getDataList"
-
-                   @add-btn-handle="addOrUpdateHandle()"
-                   add-btn-perms="system:user:add"
-                   del-btn-perms="system:user:remove"
-                   @deleteHandle="state.deleteHandle"
-    ></qtable-search>
-    <qtable v-loading="state.dataListLoading" :tableData="state.dataList" :columns="jsonColumns"
-            :page="state.page" :limit="state.limit" :total="state.total"
-            @pageSizeChangeHandle="state.pageSizeChangeHandle"
-            @pageCurrentChangeHandle="state.pageCurrentChangeHandle"
-            @selection-change="state.dataListSelectionChangeHandle" :table-props={selection:true}>
-      <!-- 自定义列, 可以通过 order 配置列的顺序 -->
-      <el-table-column label="操作" order="99" width="150px">
-        <template #default="scope">
-          <el-tooltip content="修改" placement="top">
-            <el-button link type="primary" icon="Edit" @click="addOrUpdateHandle(scope.row.id)"
-                       v-hasPermi="['system:user:edit','system:user:query']">修改
-            </el-button>
-          </el-tooltip>
-          <el-tooltip content="删除" placement="top">
-            <el-button link type="primary" icon="Delete" @click="state.deleteHandle(scope.row.id)"
-                       v-hasPermi="['system:user:remove']">删除
-            </el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </qtable>
-
+    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
+                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
+    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
+              :selection="true" @addBtnHandle="addBtnHandle">
+      <template #operate="scope">
+        <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"
+                   v-hasPermi="['system:user:edit','system:user:query']">修改
+        </el-button>
+        <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"
+                   v-hasPermi="['system:user:remove']">删除
+        </el-button>
+      </template>
+    </c7-table>
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="state.getDataList"></add-or-update>
-
-
+    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>
   </div>
+
+
 </template>
 
 
-<script setup name="sysuser">
-import tableView from "@/hooks/tableView";
+<script setup>
+import {c7Table, c7TableSearch} from "c7-plus";
 import {reactive, ref, toRefs} from "vue";
-
 import AddOrUpdate from "./add-or-update.vue";
 
-const view = reactive({
+// 搜索
+const searchParam = ref({});
+// 搜索字段
+const searchColumns = ref([
+
+  {
+    label: "用户账号",
+    prop: "userName",
+    type: "input",
+    placeholder: "请输入用户账号"
+  },
+
+
+  {
+    label: "用户昵称",
+    prop: "nickName",
+    type: "input",
+    placeholder: "请输入用户昵称"
+  },
+
+
+  {
+    label: "帐号状态",
+    prop: "status",
+    dictType: "COMMON_STATUS",
+    type: "select",
+    placeholder: "请输入帐号状态"
+  },
+
+
+]);
+
+
+// 列表
+const tableRef = ref();
+const tableProps = reactive({
   getDataListURL: "/sys/user/page",
   getDataListIsPage: true,
   deleteURL: "/sys/user",
   deleteIsBatch: true,
-  exportURL: "/system/sysuser/export",
-  dataForm: {}
-});
-const {proxy} = getCurrentInstance();
+  dataForm: searchParam
 
-const state = reactive({...tableView(view), ...toRefs(view)});
-
+})
 
 // 列表字段配置
 const jsonColumns = ref([
@@ -92,17 +105,11 @@ const jsonColumns = ref([
 
   },
 
-  // {
-  //   label: "用户性别",
-  //   prop: "sex",
-  //   dictType: "sys_user_sex",
-  //
-  // },
-
 
   {
     label: "帐号状态",
     prop: "status",
+    type: 'dict',
     dictType: "COMMON_STATUS",
 
   },
@@ -116,44 +123,15 @@ const jsonColumns = ref([
 
 
 ]);
-
-// 搜索字段配置
-const searchColumns = ref([
-
-  {
-    label: "用户账号",
-    prop: "userName",
-    type: "input",
-    placeholder: "请输入用户账号"
-  },
-
-
-  {
-    label: "用户昵称",
-    prop: "nickName",
-    type: "input",
-    placeholder: "请输入用户昵称"
-  },
-
-
-  {
-    label: "帐号状态",
-    prop: "status",
-    dictType: "COMMON_STATUS",
-    type: "dict",
-    placeholder: "请输入帐号状态"
-  },
-
-
-]);
-
 const addKey = ref(0);
 const addOrUpdateRef = ref();
-const addOrUpdateHandle = (id) => {
-
+const addBtnHandle = (id) => {
   addKey.value++;
   nextTick(() => {
     addOrUpdateRef.value.init(id);
   });
-};
+}
 </script>
+<style scoped lang="scss">
+
+</style>

@@ -74,6 +74,8 @@ export function useDict(...types: string[]): IDictHook & UseDictResult {
     const loading = ref(false)
 
     const loadOne = (type: string) => {
+        // 判断type 不为null 或者空
+        if (!type) return
         dicts.value[type] = []
 
         const cached = getStoredDict(type)

@@ -40,12 +40,8 @@ import ImagePreview from "@/components/ImagePreview"
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
-import qDictSelect from "@/components/q-dict-select/index.vue"
-// 日期
-import qDatePicker from "@/components/q-date-picker/index.vue"
+
 import formLayout from '@/components/form-layout/index.vue'
-import qtable from "@/components/qtable/index.vue";
-import qtableSearch from "@/components/qtableSearch/index.vue";
 
 
 const app = createApp(App)
@@ -70,22 +66,35 @@ app.component('FileUpload', FileUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 app.component('Editor', Editor)
-app.component('qDictSelect', qDictSelect)
-app.component("qDatePicker", qDatePicker);
 app.component('formLayout', formLayout)
-app.component('qtable', qtable)
-app.component("qtableSearch", qtableSearch);
 
 const pinia = createPinia();
 
 app.use(pinia); // 注册 Pinia
 // 全局注入
-import {getRequest, deleteRequest, getDictByType, postRequest} from "./service/provideSerivce";
+import {getRequest, deleteRequest, postRequest, openNewTab} from "./service/provideSerivce";
 import {createPinia} from "pinia";
+
 window.$postRequest = postRequest
 app.config.globalProperties.$getRequest = getRequest;
-app.config.globalProperties.$getDictByType = getDictByType;
 app.config.globalProperties.$deleteRequest = deleteRequest
+
+const c7Config = {
+    dictUrl: '/system/dict/type'
+}
+app.provide("c7Config", c7Config);
+app.config.globalProperties.$getRequest = getRequest;
+app.config.globalProperties.$postRequest = postRequest;
+app.config.globalProperties.$deleteRequest = deleteRequest
+app.config.globalProperties.$openNewTab = openNewTab
+if (typeof window !== 'undefined') {
+    // 在浏览器中运行的代码
+    window.$getRequest = getRequest;
+    window.$postRequest = postRequest;
+    window.$deleteRequest = deleteRequest
+    window.$openNewTab = openNewTab
+}
+
 app.use(router)
 app.use(store)
 app.use(plugins)

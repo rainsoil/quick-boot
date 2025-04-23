@@ -1,9 +1,7 @@
 <template>
 
-  <q-modal :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
-           @close="handleClose" @submit="submit">
-
-
+  <c7-dialog v-model="visibleRef" :footer="true" :title="(!dataForm.id)?'新增':'修改'" @submit="submit"
+             @close="visibleRef = false">
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" label-width="100px">
 
 
@@ -54,9 +52,8 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="用户性别" prop="sex">
-            <q-dict-select v-model="dataForm.sex" dictType="sys_user_sex"
-                           type="radio">
-            </q-dict-select>
+
+              <c7-radio dict-type="sys_user_sex" v-model="dataForm.sex"></c7-radio>
 
           </el-form-item>
         </el-col>
@@ -77,9 +74,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="帐号状态" prop="status">
-            <q-dict-select v-model="dataForm.status" dictType="COMMON_STATUS"
-                           type="radio">
-            </q-dict-select>
+            <c7-radio dict-type="COMMON_STATUS" v-model="dataForm.status"></c7-radio>
 
           </el-form-item>
         </el-col>
@@ -116,18 +111,20 @@
       </el-row>
 
     </el-form>
-  </q-modal>
+
+  </c7-dialog>
 </template>
 
 <script setup>
-import qModal from '@/components/qModal/index.vue'
-import {reactive, ref} from "vue";
+import {ref} from 'vue'
+
+import {c7Dialog, c7Radio} from "c7-plus";
 import baseService from "@/service/baseService.js";
 
-
+const visibleRef = ref(false)
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
-const visibleRef = ref(false);
+
 const dataForm = ref({
   id: "",
   userName: "",
@@ -142,10 +139,6 @@ const dataForm = ref({
 
 
 })
-const handleClose = () => {
-  visibleRef.value = false;
-};
-
 const validatePassword = (rule, value, callback) => {
 
   if (!dataForm.value.id && (value == '' || value.length == 0)) {
@@ -169,7 +162,6 @@ const rules = ref(
 
     }
 );
-
 // 初始化方法
 const init = (id) => {
   visibleRef.value = true;
@@ -191,7 +183,6 @@ const dataFormRef = ref()
 const submit = () => {
   dataFormRef.value.validate(valid => {
     if (valid) {
-
 
 
       if (dataForm.value.id) {
@@ -219,7 +210,10 @@ const getAllRoleHandler = () => {
     roleData.value = res.data
   })
 }
+
 defineExpose({
   init
 })
+
+
 </script>

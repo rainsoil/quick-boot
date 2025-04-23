@@ -2,7 +2,7 @@
 
   <c7-table-search :columns="tableSearchProps" ref="searchRef" v-model="searchParam"
                    @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
-  <c7-table :tableProps="tableProps" :columns="columns" ref="tableRef" @addBtnHandle="handle('新增')"
+  <c7-table :tableProps="tableProps" :columns="columns" ref="tableRef" @addBtnHandle="handle('新增')" :tableParam="searchParam"
             :selection="true">
     <template #operate="scope">
       <el-button type="primary" @click="tableRef.deleteBtnHandle(scope.row.id)">删除</el-button>

@@ -44,7 +44,8 @@ export default {
                 {text: "c7-preview", link: "/components/c7/preview"},
                 {text: "c7-dialog", link: "/components/c7/dialog"},
                 {text: "c7-search", link: "/components/c7/search"},
-                {text: "c7-table", link: "/components/c7/table"}
+                {text: "c7-table", link: "/components/c7/table"},
+                {text: "c7-radio", link: "/components/c7/radio"}
             ],
 
         },

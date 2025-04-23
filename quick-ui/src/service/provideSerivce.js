@@ -37,16 +37,15 @@ export function deleteRequest(path, params, headers) {
 }
 
 
-export function getDictByType(dictType) {
-    let  res = useDict().getDict(dictType);
-    console.log(res.value)
-    return res.value;
+
+export function openNewTab(path) {
+
 }
 
 export default {
     getRequest,
     deleteRequest,
-    getDictByType
+    openNewTab
 }
 
 

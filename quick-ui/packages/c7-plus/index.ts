@@ -12,6 +12,7 @@ import C7Layer from "./components/c7-layer";
 import c7Dialog from "./components/c7-dialog";
 import c7Table from "./components/c7-table";
 import c7TableSearch from "./components/c7-search";
+import C7Radio from "./components/c7-radio";
 
 export * from './types'
 export * from './components'
@@ -28,7 +29,8 @@ const components = [c7Button,
     C7Layer,
     c7Dialog,
     c7TableSearch,
-    c7Table];
+    c7Table,
+    C7Radio];
 const install = (app: App) => {
     components.forEach((comp) => {
         app.component(comp.name, comp);

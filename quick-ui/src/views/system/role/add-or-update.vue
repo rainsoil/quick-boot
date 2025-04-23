@@ -1,7 +1,7 @@
 <template>
 
-  <q-modal :visible="visibleRef" mode="dialog" :modalProps="{title: '角色管理', width: '50%'}" @close="handleClose"
-           @submit="submitDataScope">
+  <c7-dialog v-model="visibleRef" :footer="true" :title="(!dataForm.id)?'新增':'修改'" @submit="submitDataScope"
+             @close="visibleRef = false">
 
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" label-width="100px">
       <el-form-item label="角色名称" prop="roleName">
@@ -24,7 +24,7 @@
         <el-input-number v-model="dataForm.roleSort" controls-position="right" :min="0"/>
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <q-dict-select dict-type="sys_normal_disable" v-model="dataForm.status"/>
+        <c7-radio dict-type="sys_normal_disable" v-model="dataForm.status"></c7-radio>
       </el-form-item>
       <el-form-item label="菜单权限">
         <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event)">展开/折叠</el-checkbox>
@@ -46,15 +46,12 @@
         <el-input v-model="dataForm.remark" type="textarea" placeholder="请输入内容"></el-input>
       </el-form-item>
     </el-form>
-
-  </q-modal>
+  </c7-dialog>
 </template>
-
-<script setup>
-import qModal from '@/components/qModal/index.vue'
-import {reactive, ref} from "vue";
-import QDictSelect from "@/components/q-dict-select/index.vue";
+<script setup >
+import {c7Dialog, c7Radio} from "c7-plus";
 import baseService from "@/service/baseService.js";
+import {reactive, ref} from "vue";
 
 
 const {proxy} = getCurrentInstance();
