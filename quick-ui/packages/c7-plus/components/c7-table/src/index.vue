@@ -125,6 +125,14 @@ const props = defineProps({
       return {}
     }
   },
+  // 初始化参数(重置的时候不会被重置掉)
+  initParam: {
+    type: Object,
+    required: false,
+    default: () => {
+      return {}
+    }
+  },
   // 表格数据
   tableData: {
     type: Array,
@@ -222,7 +230,8 @@ const dataListSortChangeHandle = (sort: IObject) => {
 }
 
 const getDataList = () => {
-  state.dataForm = props.tableParam
+  console.log(props.tableParam, props.initParam, Object.assign(props.initParam, props.tableParam))
+  state.dataForm = props.tableParam;
   state.getDataList()
   console.log(props.tableParam)
   console.log(state.dataForm)
@@ -235,7 +244,8 @@ const sortedColumns = computed(() => {
 });
 // 重置
 const handleReset = () => {
-  state.handleReset()
+  console.log(props.initParam)
+  state.handleReset(props.initParam)
 }
 
 const addBtnHandle = () => {
