@@ -1,15 +1,11 @@
 <template>
   <div class="app-container">
-    <qtable-search :columns="searchColumns" :modelValue="state.dataForm" @handle-reset="state.handleReset"
-                   @handle-search="state.getDataList"
-
-                   @add-btn-handle="addOrUpdateHandle()"
-                   @deleteHandle="state.deleteHandle"
-                   add-btn-perms="quartz:sysjob:add"
-                   del-btn-perms="quartz:sysjob:remove"
-    >
-      <template #extra>
-        <el-col :span="1.5">
+    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
+                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
+    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
+              :selection="true" @addBtnHandle="addOrUpdateHandle()">
+      <template #appendButton>
+        <el-col :span="1.5" style="margin-left: 10px">
           <el-button
               type="primary"
               plain
@@ -22,89 +18,106 @@
 
         </el-col>
       </template>
-    </qtable-search>
-    <qtable v-loading="state.dataListLoading" :tableData="state.dataList" :columns="jsonColumns"
-            :page="state.page" :limit="state.limit" :total="state.total"
-            @pageSizeChangeHandle="state.pageSizeChangeHandle"
-            @pageCurrentChangeHandle="state.pageCurrentChangeHandle"
-            @selection-change="state.dataListSelectionChangeHandle" :table-props={selection:true}>
-      <!-- 自定义列, 可以通过 order 配置列的顺序 -->
-      <el-table-column label="操作" order="99" width="250px">
-        <template #default="scope">
-          <el-tooltip content="修改" placement="top">
-            <el-button link type="primary" icon="Edit" @click="addOrUpdateHandle(scope.row.id)"
-                       v-hasPermi="['quartz:sysjob:edit']">编辑
-            </el-button>
-          </el-tooltip>
+      <template #slot_status="scope">
 
-          <el-tooltip content="删除" placement="top">
-            <el-button link type="primary" icon="Delete" @click="state.deleteHandle(scope.row.id)"
-                       v-hasPermi="['quartz:sysjob:remove']">删除
-            </el-button>
-          </el-tooltip>
-
-
-          <el-tooltip content="任务详细" placement="top">
-            <el-button link type="primary" icon="View" @click="addOrUpdateHandle(scope.row.id,'2')"
-                       v-hasPermi="['quartz:sysjob:edit']">任务详细
-            </el-button>
-          </el-tooltip>
-
-          <el-tooltip content="修改" placement="top">
-            <el-button link type="primary" icon="CaretRight" @click="runHandle(scope.row.id)"
-                       v-hasPermi="['quartz:sysjob:edit']">执行一次
-            </el-button>
-          </el-tooltip>
-
-          <el-tooltip content="删除" placement="top">
-            <el-button link type="primary" icon="Operation" @click="sysJobLogHandler(scope.row.id)"
-                       v-hasPermi="['quartz:sysjob:remove']">调度日志
-            </el-button>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-
-      <template #status="{item}">
-
+        <!--        {{scope.row}}-->
         <el-switch
-            v-model="item.status"
+            v-model="scope.row.status"
             active-value="0"
             inactive-value="1"
-            @change="handleStatusChange(item)"
+            @change="handleStatusChange(scope.row)"
         ></el-switch>
       </template>
-    </qtable>
 
+
+      <template #operate="scope">
+        <el-button link type="primary" icon="Edit" @click="addOrUpdateHandle(scope.row.id)"
+                   v-hasPermi="['system:user:edit','system:user:query']">修改
+        </el-button>
+        <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"
+                   v-hasPermi="['system:user:remove']">删除
+        </el-button>
+        <el-tooltip content="任务详细" placement="top">
+          <el-button link type="primary" icon="View" @click="addOrUpdateHandle(scope.row.id,'2')"
+                     v-hasPermi="['quartz:sysjob:edit']">任务详细
+          </el-button>
+        </el-tooltip>
+
+        <el-tooltip content="修改" placement="top">
+          <el-button link type="primary" icon="CaretRight" @click="runHandle(scope.row.id)"
+                     v-hasPermi="['quartz:sysjob:edit']">执行一次
+          </el-button>
+        </el-tooltip>
+
+        <el-tooltip content="删除" placement="top">
+          <el-button link type="primary" icon="Operation" @click="sysJobLogHandler(scope.row.id)"
+                     v-hasPermi="['quartz:sysjob:remove']">调度日志
+          </el-button>
+        </el-tooltip>
+      </template>
+    </c7-table>
     <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="state.getDataList"></add-or-update>
+    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>
 
     <!-- 日志-->
-
     <sys-job-log :key="addKey" ref="sysJobLogRef"></sys-job-log>
   </div>
+
+
 </template>
 
 
-<script setup name="sysjob">
-import tableView from "@/hooks/tableView";
+<script setup>
+import {c7Table, c7TableSearch} from "c7-plus";
 import {reactive, ref, toRefs} from "vue";
-
 import AddOrUpdate from "./add-or-update.vue";
 import sysJobLog from '../sysjoblog/index.vue'
-import baseService from "@/service/baseService.js";
 
-const view = reactive({
+const {proxy} = getCurrentInstance();
+import baseService from "@/service/baseService.js";
+// 搜索
+const searchParam = ref({});
+// 搜索字段
+const searchColumns = ref([
+
+  {
+    label: "任务名称",
+    prop: "jobName",
+    type: "input",
+    placeholder: "请输入任务名称"
+  },
+
+
+  {
+    label: "任务组名",
+    prop: "jobGroup",
+    dictType: "sys_job_group",
+    type: "select",
+    placeholder: "请输入任务组名"
+  },
+
+
+  {
+    label: "状态",
+    prop: "status",
+    dictType: "sys_job_status",
+    type: "select",
+    placeholder: "请输入状态"
+  },
+
+
+]);
+
+
+// 列表
+const tableRef = ref();
+const tableProps = reactive({
   getDataListURL: "/quartz/sysjob/list",
   getDataListIsPage: true,
   deleteURL: "/quartz/sysjob",
-  deleteIsBatch: true,
-  exportURL: "/quartz/sysjob/export",
-  dataForm: {}
-});
-const {proxy} = getCurrentInstance();
+  deleteIsBatch: true
 
-const state = reactive({...tableView(view), ...toRefs(view)});
-
+})
 
 // 列表字段配置
 const jsonColumns = ref([
@@ -147,6 +160,7 @@ const jsonColumns = ref([
     label: "是否并发执行",
     prop: "concurrent",
     dictType: "sys_yes_no",
+    type: 'dict'
 
   },
 
@@ -155,44 +169,12 @@ const jsonColumns = ref([
     label: "状态",
     prop: "status",
     // dictType: "sys_job_status",
-    isSolt: true
+    isSlot: true,
 
   },
 
 
 ]);
-
-// 搜索字段配置
-const searchColumns = ref([
-
-  {
-    label: "任务名称",
-    prop: "jobName",
-    type: "input",
-    placeholder: "请输入任务名称"
-  },
-
-
-  {
-    label: "任务组名",
-    prop: "jobGroup",
-    dictType: "sys_job_group",
-    type: "dict",
-    placeholder: "请输入任务组名"
-  },
-
-
-  {
-    label: "状态",
-    prop: "status",
-    dictType: "sys_job_status",
-    type: "dict",
-    placeholder: "请输入状态"
-  },
-
-
-]);
-
 const addKey = ref(0);
 const addOrUpdateRef = ref();
 const addOrUpdateHandle = (id, type) => {
@@ -230,7 +212,7 @@ const handleStatusChange = (row) => {
         type: "success"
       });
     }).finally(() => {
-      state.getDataList();
+      tableRef.value.getDataList();
     })
   })
 
@@ -252,6 +234,7 @@ const runHandle = (id) => {
     })
   })
 }
+
 // 日志
 const sysJobLogRef = ref();
 const sysJobLogHandler = (jobId) => {

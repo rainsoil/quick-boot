@@ -1,7 +1,7 @@
 <template>
 
-  <q-modal :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
-           @close="handleClose" @submit="submit" :footer="getType === '1'">
+  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
+             @close="handleClose" @submit="submit" :footer="getType === '1'">
 
 
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" label-width="140px" :disabled="getType !== '1'">
@@ -17,9 +17,10 @@
 
         <el-col :span="12">
           <el-form-item label="任务组名" prop="jobGroup">
-            <q-dict-select v-model="dataForm.jobGroup" dictType="sys_job_group"
-                           type="select">
-            </q-dict-select>
+            <c7-select dict-type="sys_job_group" v-model="dataForm.jobGroup"
+                       placeholder="请选择任务组名">
+            </c7-select>
+
 
           </el-form-item>
         </el-col>
@@ -94,10 +95,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="计划执行错误策略" prop="misfirePolicy">
-            <q-dict-select v-model="dataForm.misfirePolicy" dictType="JOB_MISFIRE_POLICY"
-                           type="radio" width="80%">
-            </q-dict-select>
-
+            <c7-radio dict-type="JOB_MISFIRE_POLICY" v-model="dataForm.misfirePolicy"></c7-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -106,9 +104,8 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="是否并发执行" prop="concurrent">
-            <q-dict-select v-model="dataForm.concurrent" dictType="sys_yes_no"
-                           type="radio">
-            </q-dict-select>
+
+            <c7-radio dict-type="sys_yes_no" v-model="dataForm.concurrent"></c7-radio>
 
           </el-form-item>
         </el-col>
@@ -118,10 +115,8 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="状态" prop="status">
-            <q-dict-select v-model="dataForm.status" dictType="sys_job_status"
-                           type="select">
-            </q-dict-select>
 
+            <c7-radio dict-type="sys_job_status" v-model="dataForm.status"></c7-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -137,7 +132,7 @@
       </el-row>
 
     </el-form>
-  </q-modal>
+  </c7-dialog>
   <el-dialog title="Cron表达式生成器" v-model="openCron" append-to-body destroy-on-close>
     <crontab ref="crontabRef" @hide="openCron=false" @fill="crontabFill" :expression="expression"></crontab>
   </el-dialog>
@@ -145,7 +140,7 @@
 </template>
 
 <script setup>
-import qModal from '@/components/qModal/index.vue'
+import {c7Dialog, c7Table, c7Radio, c7Select} from 'c7-plus'
 import {reactive, ref} from "vue";
 import baseService from "@/service/baseService.js";
 import Crontab from '@/components/Crontab'
@@ -165,7 +160,7 @@ const dataForm = ref({
   status: "0",
   remark: "",
   params: "",
-  nextTime:""
+  nextTime: ""
 
 
 })

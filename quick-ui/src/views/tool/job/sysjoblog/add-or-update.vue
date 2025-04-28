@@ -1,7 +1,7 @@
 <template>
 
-  <q-modal :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
-           @close="handleClose" footer="false">
+  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
+             @close="handleClose" :footer="false">
 
 
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" label-width="100px" disabled="false">
@@ -20,9 +20,8 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="任务组名" prop="jobGroup">
-            <q-dict-select v-model="dataForm.jobGroup" dictType="sys_job_group"
-                           type="select">
-            </q-dict-select>
+
+            <c7-select dict-type="sys_job_group" v-model="dataForm.jobGroup"></c7-select>
 
           </el-form-item>
         </el-col>
@@ -60,9 +59,8 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="执行状态" prop="status">
+            <c7-select dict-type="sys_common_status" v-model="dataForm.status"></c7-select>
 
-            <q-dict-select v-model="dataForm.status" dictType="sys_common_status"
-                           type="select"></q-dict-select>
           </el-form-item>
         </el-col>
 
@@ -88,17 +86,15 @@
       </el-row>
 
 
-
-
     </el-form>
-  </q-modal>
+  </c7-dialog>
 </template>
 
 <script setup>
-import qModal from '@/components/qModal/index.vue'
+
+import {c7Dialog, c7Select} from 'c7-plus'
 import {reactive, ref} from "vue";
 import baseService from "@/service/baseService.js";
-import QDictSelect from "@/components/q-dict-select/index.vue";
 
 
 const {proxy} = getCurrentInstance();

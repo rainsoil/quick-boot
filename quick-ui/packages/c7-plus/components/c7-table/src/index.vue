@@ -231,7 +231,7 @@ const dataListSortChangeHandle = (sort: IObject) => {
 
 const getDataList = () => {
   console.log(props.tableParam, props.initParam, Object.assign(props.initParam, props.tableParam))
-  state.dataForm = props.tableParam;
+  state.dataForm = Object.assign(props.initParam, props.tableParam);
   state.getDataList()
   console.log(props.tableParam)
   console.log(state.dataForm)
