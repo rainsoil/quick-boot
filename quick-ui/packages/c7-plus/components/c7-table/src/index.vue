@@ -1,33 +1,33 @@
 <template>
   <el-row :gutter="10" class="mb8" v-if="props.buttons.enable">
     <!-- 新增按钮-->
-    <el-button v-if="props.buttons.addBtn.enable"
-               :type="props.buttons.addBtn.type"
+    <el-button v-if="props.buttons.addBtn && props.buttons.addBtn.enable"
+               :type="props.buttons.addBtn.type || 'primary'"
                plain
-               :icon="props.buttons.addBtn.icon"
-               :disabled="props.buttons.addBtn.disabled"
+               :icon="props.buttons.addBtn.icon || 'plus'"
+               :disabled="props.buttons.addBtn.disabled || false"
                @click="addBtnHandle()"
-    >{{ props.buttons.addBtn.label }}
+    >{{ props.buttons.addBtn.label || '新增' }}
     </el-button>
 
     <!-- 删除按钮 -->
-    <el-button v-if="props.buttons.deleteBtn.enable"
-               :type="props.buttons.deleteBtn.type"
+    <el-button v-if="props.buttons.deleteBtn &&  props.buttons.deleteBtn.enable"
+               :type="props.buttons.deleteBtn.type || 'danger'"
                plain
-               :icon="props.buttons.deleteBtn.icon"
-               :disabled="props.buttons.deleteBtn.disabled"
+               :icon="props.buttons.deleteBtn.icon || 'Delete'"
+               :disabled="props.buttons.deleteBtn.disabled || false"
                @click="state.deleteHandle()"
-    >{{ props.buttons.deleteBtn.label }}
+    >{{ props.buttons.deleteBtn.label || '删除' }}
     </el-button>
 
     <!-- 导出按钮 -->
-    <el-button v-if="props.buttons.exportBtn.enable"
-               :type="props.buttons.exportBtn.type"
+    <el-button v-if="props.buttons.exportBtn &&  props.buttons.exportBtn.enable"
+               :type="props.buttons.exportBtn.type || 'success' "
                plain
-               :icon="props.buttons.exportBtn.icon"
-               :disabled="props.buttons.exportBtn.disabled"
+               :icon="props.buttons.exportBtn.icon ||  'Download'"
+               :disabled="props.buttons.exportBtn.disabled || false"
                @click="exportHandle()"
-    >{{ props.buttons.exportBtn.label }}
+    >{{ props.buttons.exportBtn.label || '导出' }}
     </el-button>
 
     <!-- 按钮扩展-->
@@ -75,11 +75,11 @@
         </template>
       </el-table-column>
     </template>
-    <el-table-column label="操作" order="99" prop="operate" width="150px">
+    <el-table-column label="操作" order="99" prop="operate">
       <template v-slot="scope">
         <slot name="operate" v-bind="scope">
           <!-- 默认展示 -->
-          <el-button type="text" size="small" @click="deleteBtnHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="props.buttons.deleteBtn &&  props.buttons.deleteBtn.enable" type="text" size="small" @click="deleteBtnHandle(scope.row.id)">删除</el-button>
         </slot>
       </template>
     </el-table-column>
@@ -92,11 +92,20 @@
       @current-change="pageCurrentChangeHandle"
       :current-page="state.page"
       :page-sizes="[10, 20, 50, 100]"
+      background
       :page-size="state.limit"
       layout="total, sizes, prev, pager, next, jumper"
       :total="state.total">
   </el-pagination>
+  <el-pagination
+      current-page="1"
+      page-size="10"
 
+
+      layout="prev, pager, next, jumper"
+      :total="1000"
+
+  />
 
 </template>
 
@@ -193,7 +202,7 @@ const props = defineProps({
       },
       exportBtn: {
         // 是否开启
-        enable: true,
+        enable: false,
         // 按钮文本
         label: '导出',
         // 是否显示
@@ -261,6 +270,16 @@ const exportHandle = () => {
   state.exportHandle()
 }
 
+// 多选的数据
+const dataListSelections = () => {
+  return state.dataListSelections
+}
+
+// 多选的id集合
+const dataListSelectionsIds = () => {
+  return state.dataListSelectionsIds
+}
+
 defineExpose({
   getDataList,
   handleReset,
@@ -268,5 +287,7 @@ defineExpose({
   pageSizeChangeHandle,
   pageCurrentChangeHandle,
   dataListSortChangeHandle,
+  dataListSelections,
+  dataListSelectionsIds,
 })
 </script>

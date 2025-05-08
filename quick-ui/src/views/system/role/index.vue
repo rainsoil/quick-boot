@@ -30,17 +30,18 @@ import AddOrUpdate from "./add-or-update.vue";
 const searchParam = ref({});
 // 搜索字段
 const searchColumns = ref([
+  /**
+   {
+   prop: "roleName",
+   label: "角色名称",
 
-  {
-    prop: "roleName",
-    label: "角色名称",
+   },
+   {
+   prop: "roleKey",
+   label: "权限字符",
 
-  },
-  {
-    prop: "roleKey",
-    label: "权限字符",
-
-  },
+   },
+   */
   {
     prop: "status",
     label: "状态",

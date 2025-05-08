@@ -1,6 +1,6 @@
 <template>
 
-  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'" @close="handleClose"
+  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'" @close="visibleRef=false"
              @submit="submit">
 
     <el-form :model="dataForm" :rules="rules" ref="dataFormRef" label-width="100px">
@@ -112,22 +112,21 @@ const getInfo = (id) => {
 const submit = () => {
   dataFormRef.value.validate(valid => {
     if (valid) {
-      console.log(dataForm.value)
-      if (dataForm.value.id != undefined) {
-        // 修改
-        baseService.put("/system/dict/type", dataForm.value).then(res => {
-          proxy.$modal.msgSuccess("修改成功");
-          visibleRef.value = false;
-          emit("refreshDataList");
-        })
-      } else {
-        //保存
-        baseService.post("/system/dict/type", dataForm.value).then(res => {
-          proxy.$modal.msgSuccess("新增成功");
-          visibleRef.value = false;
-          emit("refreshDataList");
-        })
-      }
+      // if (dataForm.value.id != undefined) {
+      //   // 修改
+      //   baseService.put("/system/dict/type", dataForm.value).then(res => {
+      //     proxy.$modal.msgSuccess("修改成功");
+      //     visibleRef.value = false;
+      //     emit("refreshDataList");
+      //   })
+      // } else {
+      //   //保存
+      //   baseService.post("/system/dict/type", dataForm.value).then(res => {
+      //     proxy.$modal.msgSuccess("新增成功");
+      //     visibleRef.value = false;
+      //     emit("refreshDataList");
+      //   })
+      // }
     }
   });
 }

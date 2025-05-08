@@ -60,11 +60,16 @@ const props = defineProps({
   parentUrl: {
     type: String,
     default: ''
+  },
+  checkStrictly: {
+    type: Boolean,
+    default: false
   }
 });
 
 const props2 = {
   lazy: props.lazy,
+  checkStrictly: props.checkStrictly,
   lazyLoad(node, resolve) {
     const {level} = node
     console.log("node", node)
