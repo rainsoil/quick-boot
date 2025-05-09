@@ -144,7 +144,7 @@ public class SysMenuController {
 	 * @return 树形结果
 	 * @since 2024/11/19
 	 */
-	@GetMapping("tree")
+	@PostMapping("tree")
 	public List<Tree<Long>> tree(@RequestParam(value = "id", required = false) Long value) {
 
 		List<SysMenuDo> sysMenuDos = sysMenuService.listByUserId(LoginUserUtils.getUser().getId(), new SysMenuDo()

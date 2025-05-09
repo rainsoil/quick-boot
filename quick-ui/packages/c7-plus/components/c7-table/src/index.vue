@@ -79,7 +79,9 @@
       <template v-slot="scope">
         <slot name="operate" v-bind="scope">
           <!-- 默认展示 -->
-          <el-button v-if="props.buttons.deleteBtn &&  props.buttons.deleteBtn.enable" type="text" size="small" @click="deleteBtnHandle(scope.row.id)">删除</el-button>
+          <el-button v-if="props.buttons.deleteBtn &&  props.buttons.deleteBtn.enable" type="text" size="small"
+                     @click="deleteBtnHandle(scope.row.id)">删除
+          </el-button>
         </slot>
       </template>
     </el-table-column>
@@ -94,18 +96,12 @@
       :page-sizes="[10, 20, 50, 100]"
       background
       :page-size="state.limit"
+      prev-text="上一页"
+      next-text="下一页"
       layout="total, sizes, prev, pager, next, jumper"
       :total="state.total">
   </el-pagination>
-  <el-pagination
-      current-page="1"
-      page-size="10"
 
-
-      layout="prev, pager, next, jumper"
-      :total="1000"
-
-  />
 
 </template>
 

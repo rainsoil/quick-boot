@@ -13,7 +13,7 @@ import c7Dialog from "./components/c7-dialog";
 import c7Table from "./components/c7-table";
 import c7TableSearch from "./components/c7-search";
 import C7Radio from "./components/c7-radio";
-
+import 'element-plus/dist/index.css';
 export * from './types'
 export * from './components'
 export * from './hooks'
