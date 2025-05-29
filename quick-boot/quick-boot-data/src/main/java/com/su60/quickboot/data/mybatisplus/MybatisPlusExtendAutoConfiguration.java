@@ -49,12 +49,14 @@ public class MybatisPlusExtendAutoConfiguration {
 
 	/**
 	 * 添加分页插件
-	 * @return 插件
+	 *
 	 * @param plusExtentProperties 扩展配置文件
+	 * @return 插件
 	 */
 	@Bean
 	public MybatisPlusInterceptor mybatisPlusInterceptor(MybatisPlusExtentProperties plusExtentProperties) {
 		MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+
 		PaginationInnerInterceptor paginationInnerInterceptor = new PaginationInnerInterceptor();
 		if (null != plusExtentProperties.getPage() && plusExtentProperties.getPage()) {
 			if (null != plusExtentProperties.getMaxLimit()) {
@@ -64,7 +66,7 @@ public class MybatisPlusExtendAutoConfiguration {
 
 			interceptor.addInnerInterceptor(paginationInnerInterceptor);
 		}
-
+		interceptor.addInnerInterceptor(new WhereInterceptor());
 
 		return interceptor;
 	}

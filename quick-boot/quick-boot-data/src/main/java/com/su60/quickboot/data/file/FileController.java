@@ -1,7 +1,5 @@
 package com.su60.quickboot.data.file;
 
-import cn.hutool.core.io.FileTypeUtil;
-import cn.hutool.core.io.FileUtil;
 import com.su60.quickboot.common.core.R;
 import com.su60.quickboot.data.file.utils.FileTypeDetector;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,12 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * 文件控制层

@@ -9,6 +9,20 @@ export default {
                 {text: "tableView", link: "/guide/tableView"},
             ],
         },
+        {
+            text: "脚本",
+            items: [
+                {text: "数据库备份脚本", link: "/guide/installation"},
+                {text: "nginx日志备份", link: "/guide/quickstart"},
+            ],
+        },
+        {
+            text: "安全",
+            items: [
+                {text: "服务器配置", link: "/guide/installation"},
+                {text: "mysql配置", link: "/guide/quickstart"},
+            ],
+        },
         {text: "更新日志", link: "/updatelog/index"}
     ],
     //  标签介绍

@@ -2,6 +2,9 @@ package com.su60.quickboot.generator.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.druid.sql.ast.SQLExpr;
+import com.alibaba.druid.sql.ast.statement.SQLSelectItem;
+import com.alibaba.druid.sql.ast.statement.SQLSelectStatement;
 import com.su60.quickboot.common.core.PageInfo;
 import com.su60.quickboot.common.core.PageRequest;
 import com.su60.quickboot.common.exception.WarningException;
@@ -74,6 +77,8 @@ public class GenTableServiceImpl extends BaseServiceImpl2<GenTableMapper, GenTab
 		}
 		return true;
 	}
+
+
 
 	@Override
 	public PageInfo<GenTableDo> dbTables(GenTableDo tableDo) {
