@@ -4,87 +4,50 @@ Changelog of My Project.
 ## Unreleased
 ### No issue
 
-**feat(集成 flyway 并增加初始化脚本):**
+**feat(字典值处理):**
 
 
-[668889884d595e2](https://gitee.com/rainsoil/quick-boot/commit/668889884d595e2) luyanan *2024-12-20 15:07:43*
+[0b2969fc49c75fa](https://gitee.com/rainsoil/quickboot/commit/0b2969fc49c75fa) luyanan *2025-02-12 14:22:55*
 
-**feat(代码生成增加菜单sql生成):**
-
-
-[f8db5afffe1a873](https://gitee.com/rainsoil/quick-boot/commit/f8db5afffe1a873) luyanan *2024-12-20 06:17:35*
-
-**2 代码增加权限**
+**fix(ui): 字典值加载的bug**
 
 
-[2429d9701e235bc](https://gitee.com/rainsoil/quick-boot/commit/2429d9701e235bc) luyanan *2024-12-20 02:56:58*
+[8ecac1903739dad](https://gitee.com/rainsoil/quickboot/commit/8ecac1903739dad) luyanan *2025-02-11 15:43:44*
 
-**feat(包路径修改):**
+**fix(ui): 组件代码**
 
+ * 修改字典值多次加载的问题
 
-[971d7247e5547cf](https://gitee.com/rainsoil/quick-boot/commit/971d7247e5547cf) luyanan *2024-12-05 13:42:55*
+[2d9061f553bd072](https://gitee.com/rainsoil/quickboot/commit/2d9061f553bd072) luyanan *2025-02-10 15:31:27*
 
-**feat(包路径修改):**
-
-
-[e6775c045abca66](https://gitee.com/rainsoil/quick-boot/commit/e6775c045abca66) luyanan *2024-11-24 13:15:31*
-
-**fix(增加demo功能):**
+**fix(ui): 修改组件导入部分的代码**
 
 
-[308516b606ec00e](https://gitee.com/rainsoil/quick-boot/commit/308516b606ec00e) luyanan *2024-11-22 02:18:44*
+[67c38f13948ce10](https://gitee.com/rainsoil/quickboot/commit/67c38f13948ce10) luyanan *2025-02-06 09:31:19*
 
-**feat(增加登录日志和操作日志功能):**
-
-
-[a7e25e726b2fb65](https://gitee.com/rainsoil/quick-boot/commit/a7e25e726b2fb65) luyanan *2024-11-15 13:39:40*
-
-**fix(基础功能开发):**
+**feat(ui): 增加组件**
 
 
-[d0748dcc63f6ad1](https://gitee.com/rainsoil/quick-boot/commit/d0748dcc63f6ad1) luyanan *2024-11-11 12:33:56*
+[d55241207db03db](https://gitee.com/rainsoil/quickboot/commit/d55241207db03db) luyanan *2025-02-04 15:22:55*
 
-**代码生成器**
-
-
-[894d4fb1f0606d8](https://gitee.com/rainsoil/quick-boot/commit/894d4fb1f0606d8) 卢亚楠 *2024-10-10 13:16:06*
-
-**feat(init): init**
-
- * 初始化
-
-[468ecaa23a1f6aa](https://gitee.com/rainsoil/quick-boot/commit/468ecaa23a1f6aa) luyanan *2024-08-24 05:30:12*
-
-**feat(init): init**
-
- * 初始化
-
-[8dd1733b1e699e0](https://gitee.com/rainsoil/quick-boot/commit/8dd1733b1e699e0) luyanan *2024-08-11 14:35:57*
-
-**init**
+**feat(ui): 增加组件**
 
 
-[954ceb32ba5caf1](https://gitee.com/rainsoil/quick-boot/commit/954ceb32ba5caf1) luyanan *2024-08-07 09:10:41*
+[0045c575699e7e7](https://gitee.com/rainsoil/quickboot/commit/0045c575699e7e7) luyanan *2025-01-24 09:29:30*
 
-**代码生成器**
-
-
-[c2346bb51636383](https://gitee.com/rainsoil/quick-boot/commit/c2346bb51636383) 卢亚楠 *2024-07-26 10:44:47*
-
-**代码生成器**
+**文档**
 
 
-[ec121f516778c7e](https://gitee.com/rainsoil/quick-boot/commit/ec121f516778c7e) 卢亚楠 *2024-06-29 14:26:54*
+[6ab43e7086d827f](https://gitee.com/rainsoil/quickboot/commit/6ab43e7086d827f) luyanan *2025-01-23 14:21:21*
 
-**init**
+**feat(init): 基础功能开发**
 
 
-[9f55607a65a9cf2](https://gitee.com/rainsoil/quick-boot/commit/9f55607a65a9cf2) 卢亚楠 *2024-06-19 14:36:18*
+[2ce901cec7ce711](https://gitee.com/rainsoil/quickboot/commit/2ce901cec7ce711) luyanan *2025-01-09 14:26:28*
 
-**add LICENSE.**
+**feat(init): 基础功能开发**
 
- * Signed-off-by: luyanan &lt;luyanan0718@163.com&gt;
 
-[9181bd45c7e640d](https://gitee.com/rainsoil/quick-boot/commit/9181bd45c7e640d) luyanan *2024-06-19 14:35:17*
+[435473e96153b07](https://gitee.com/rainsoil/quickboot/commit/435473e96153b07) luyanan *2025-01-09 13:42:37*
 
 
