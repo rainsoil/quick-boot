@@ -66,7 +66,6 @@ public class MybatisPlusExtendAutoConfiguration {
 
 			interceptor.addInnerInterceptor(paginationInnerInterceptor);
 		}
-		interceptor.addInnerInterceptor(new WhereInterceptor());
 
 		return interceptor;
 	}

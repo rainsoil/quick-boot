@@ -235,12 +235,11 @@ const dataListSortChangeHandle = (sort: IObject) => {
 }
 
 const getDataList = () => {
-  console.log(props.tableParam, props.initParam, Object.assign(props.initParam, props.tableParam))
-  state.dataForm = Object.assign(props.initParam, props.tableParam);
+  console.log("props",props)
+  // console.log(props.tableParam, props.initParam, Object.assign(props.initParam, props.tableParam))
+  state.dataForm = Object.assign({}, props.initParam, props.tableParam);
+  console.log("state.dataForm", state.dataForm,props.initParam,props.tableParam)
   state.getDataList()
-  console.log(props.tableParam)
-  console.log(state.dataForm)
-  console.log(state.dataList)
 }
 
 // 排序列：这里只排序 JSON 列，因为插槽内容是直接渲染的
@@ -249,7 +248,7 @@ const sortedColumns = computed(() => {
 });
 // 重置
 const handleReset = () => {
-  console.log(props.initParam)
+  console.log("props.initParam", props.initParam)
   state.handleReset(props.initParam)
 }
 
