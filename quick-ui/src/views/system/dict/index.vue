@@ -12,7 +12,7 @@
         <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
                   :selection="true" @addBtnHandle="addBtnHandle">
           <template #dictType="scope">
-            <a @click="toData(scope.row)">{{ scope.row.dictType }}</a>
+            <el-link type="primary" @click="toData(scope.row)">{{ scope.row.dictType }}</el-link>
           </template>
           <template #operate="scope">
             <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"
@@ -44,7 +44,7 @@
 </template>
 <script setup>
 import {c7Table, c7TableSearch, c7SwitchForm} from "c7-plus";
-import {reactive, ref, toRefs,nextTick } from "vue";
+import {reactive, ref, toRefs, nextTick} from "vue";
 import AddOrUpdate from "./add-or-update.vue";
 import DataList from "@/views/system/dict/data.vue";
 // 搜索
