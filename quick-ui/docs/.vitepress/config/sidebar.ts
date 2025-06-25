@@ -5,7 +5,7 @@ export default {
             text: "指南",
             items: [
                 {text: "安装", link: "/guide/installation"},
-                {text: "快速开始", link: "/guide/quickstart"},
+                // {text: "快速开始", link: "/guide/quickstart"},
                 {text: "tableView", link: "/guide/tableView"},
             ],
         },
@@ -23,7 +23,7 @@ export default {
                 {text: "mysql配置", link: "/guide/quickstart"},
             ],
         },
-        {text: "更新日志", link: "/updatelog/index"}
+        // {text: "更新日志", link: "/updatelog/index"}
     ],
     //  标签介绍
     '/components/c7/': [

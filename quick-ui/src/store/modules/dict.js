@@ -1,38 +1,57 @@
-// stores/dict.js
-import {ref} from 'vue';
-import {getDicts} from '@/api/system/dict/data'
-export const useDictStore = defineStore('dict', () => {
-    const dictData = ref({});      // 存储字典数据：{ 字典类型: 字典项数组 }
-    const promises = ref({});      // 存储进行中的请求，避免重复调用
-
-    /**
-     * 获取字典数据
-     * @param {string} type 字典类型
-     */
-    const fetchDict = async (type) => {
-        // 已有缓存数据，直接返回
-        if (dictData.value[type]) return dictData.value[type];
-
-        // 相同类型请求正在进行，等待其结果
-        if (promises.value[type]) {
-            return await promises.value[type];
+const useDictStore = defineStore(
+    'dict',
+    {
+        state: () => ({
+            dict: new Array()
+        }),
+        actions: {
+            // 获取字典
+            getDict(_key) {
+                if (_key == null && _key == "") {
+                    return null;
+                }
+                try {
+                    for (let i = 0; i < this.dict.length; i++) {
+                        if (this.dict[i].key == _key) {
+                            return this.dict[i].value;
+                        }
+                    }
+                } catch (e) {
+                    return null;
+                }
+            },
+            // 设置字典
+            setDict(_key, value) {
+                if (_key !== null && _key !== "") {
+                    this.dict.push({
+                        key: _key,
+                        value: value
+                    });
+                }
+            },
+            // 删除字典
+            removeDict(_key) {
+                var bln = false;
+                try {
+                    for (let i = 0; i < this.dict.length; i++) {
+                        if (this.dict[i].key == _key) {
+                            this.dict.splice(i, 1);
+                            return true;
+                        }
+                    }
+                } catch (e) {
+                    bln = false;
+                }
+                return bln;
+            },
+            // 清空字典
+            cleanDict() {
+                this.dict = new Array();
+            },
+            // 初始字典
+            initDict() {
+            }
         }
+    })
 
-        try {
-            // 发起新请求并记录 Promise
-            const promise = getDicts(type);
-            promises.value[type] = promise;
-
-            const data = await promise;
-            dictData.value[type] = data.data; // 存入缓存
-            return data.data;
-        } catch (error) {
-            throw error; // 错误处理可按需扩展
-        } finally {
-            delete promises.value[type]; // 清理 Promise 记录
-        }
-    };
-
-    return { dictData, fetchDict };
-});
-export default useDictStore;
+export default useDictStore

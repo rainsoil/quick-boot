@@ -25,6 +25,8 @@
 import {c7Table, c7TableSearch} from "c7-plus";
 import {reactive, ref, toRefs} from "vue";
 import AddOrUpdate from "./add-or-update.vue";
+const { proxy } = getCurrentInstance();
+const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
 
 // 搜索
 const searchParam = ref({});

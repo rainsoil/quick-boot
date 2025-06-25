@@ -1,19 +1,19 @@
 ---
 layout: home
 hero:
-  name: quick-boot
-  text: 摸鱼、开发两不误
-  tagline: 简单，灵活，高效。不信你试试
+  name: quickboot
+  text:  全流程开发全家桶
+  tagline: 简单，灵活，高效
   image:
     src: logo.png
-    alt: quick-boot
+    alt: quickboot
   actions:
     - theme: brand
       text: Get Started
       link: /components/c7/
     - theme: alt
       text: View on GitHub
-      link: https://gitee.com/rainsoil/quick-ui
+      link: https://github.com/rainsoil/quick-boot
 features:
   - icon: 🌈
     title: 简单上手

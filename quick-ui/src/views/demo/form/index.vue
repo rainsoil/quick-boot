@@ -1,27 +1,65 @@
 <template>
 
+  <el-form :model="form">
 
-  <c7-checkbox v-model="choose" :data-list="dictList"></c7-checkbox>
+    <el-row>
 
-  <span>选中的数据:{{ choose}}</span>
+      <el-col :span="12">
+        <el-form-item label="选择字典值">
+
+
+          <el-input v-model="form.userId2"
+                    placeholder="请输入关键字搜索"
+                    clearable
+          >
+          </el-input>
+        </el-form-item>
+        <el-form-item label="选择字典值">
+
+          <c7Select
+              v-model="form.userId"
+              :fetch-data="() => getDicts(form.userId2)"
+              :fetch-params="{ }"
+              :data-formatter="dataFormatter"
+              placeholder="请输入关键字搜索"
+              clearable
+          >
+
+          </c7Select>
+          选中的数据: {{ form.userId }}
+        </el-form-item>
+
+      </el-col>
+
+    </el-row>
+
+  </el-form>
 
 </template>
 
 <script setup>
+import {ref} from 'vue'
+import c7Select from '../C7Select.vue'
+import {getDicts} from '@/api/system/dict/data'
 
-
-import {ref} from "vue";
-import {c7Checkbox} from "c7-plus";
-const choose = ref();
-const dictList = ref([{
-  label: "中学",
-  value: "0"
-},
+const form = ref({
+  userId: '',
+  userId2: 'sys_user_sex'
+})
+const dictData = ref([
   {
-    label: "小学",
-    value: "1"
+    label: '男',
+    value: '1'
   },
-
-
+  {
+    label: '女',
+    value: '2'
+  }
 ])
+
+const dataFormatter = (list) => {
+  console.log(list);
+  return list;
+}
+
 </script>

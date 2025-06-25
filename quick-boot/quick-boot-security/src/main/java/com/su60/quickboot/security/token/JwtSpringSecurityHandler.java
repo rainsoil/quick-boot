@@ -96,6 +96,9 @@ public class JwtSpringSecurityHandler implements SpringSecurityHandler, Serializ
 
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+		if (null == authentication) {
+			return;
+		}
 		UserDetails userDetails = JSON.parseObject(authentication.getPrincipal().toString(), UserDetails.class);
 		log.debug("{}退出成功", userDetails.getUsername());
 		ServletUtil.write(response, JSON.toJSONString(R.ok("退出成功")), "application/json;charset=utf-8");
