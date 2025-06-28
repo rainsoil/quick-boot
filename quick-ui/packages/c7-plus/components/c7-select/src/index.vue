@@ -45,7 +45,7 @@
 
 <script setup>
 import {ref, computed, onMounted, defineOptions} from 'vue'
-
+import {jsonGet} from '../../../utils/utils.js'
 // 定义组件名称
 defineOptions({name: 'c7Select'})
 
@@ -141,7 +141,7 @@ async function fetchAndUpdate(query) {
     const params = {...props.fetchParams, query}
     const result = await props.fetchData(params)
     // 提取并格式化列表
-    let list = get(result, props.resultKey, [])
+    let list = jsonGet(result, props.resultKey, [])
     if (props.dataFormatter) list = props.dataFormatter(list)
     options.value = Array.isArray(list) ? list : []
   } catch (err) {
@@ -167,11 +167,6 @@ function onChange(val) {
   emit('change', val)
 }
 
-// 简易深度取值函数：支持 'a.b.c' 格式
-function get(obj, path, defaultValue = undefined) {
-  if (!obj || typeof obj !== 'object') return defaultValue
-  return path.split('.').reduce((res, seg) => (res == null ? undefined : res[seg]), obj) ?? defaultValue
-}
 </script>
 
 <style scoped>
