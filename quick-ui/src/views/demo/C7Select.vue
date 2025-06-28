@@ -1,7 +1,7 @@
 <template>
   <el-select
       v-bind="$attrs"
-      v-model="selected"
+      v-model="selectedValue"
       :loading="loading"
       filterable
       @focus="handleLoad"
@@ -18,101 +18,98 @@
   </el-select>
 </template>
 
-<script>
-export default {
-  name: 'ElSelectAsync',
-  inheritAttrs: false,
-  props: {
-    modelValue: {
-      type: [String, Number, Array],
-      default: ''
-    },
-    fetchData: {
-      type: Function, // 修改为 Function
-      required: true
-    },
-    // 新增：数据处理回调函数
-    dataFormatter: {
-      type: Function,
-      default: null
-    },
-    labelKey: {
-      type: String,
-      default: 'label'
-    },
-    valueKey: {
-      type: String,
-      default: 'value'
-    },
-    autoLoad: {
-      type: Boolean,
-      default: true
-    },
-    fetchParams: {
-      type: Object,
-      default: () => ({})
-    }
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue'
+
+const props = defineProps({
+  modelValue: {
+    type: [String, Number, Array],
+    default: ''
   },
-  data() {
-    return {
-      options: [],
-      loading: false
-    };
+  fetchData: {
+    type: Function,
+    required: true
   },
-  computed: {
-    selected: {
-      get() {
-        return this.modelValue;
-      },
-      set(val) {
-        this.$emit('update:modelValue', val);
-      }
-    }
+  dataFormatter: {
+    type: Function,
+    default: null
   },
-  watch: {
-    fetchParams: {
-      handler() {
-        this.handleLoad();
-      },
-      deep: true
-    }
+  labelKey: {
+    type: String,
+    default: 'label'
   },
-  mounted() {
-    if (this.autoLoad) {
-      this.handleLoad();
-    }
+  valueKey: {
+    type: String,
+    default: 'value'
   },
-  methods: {
-    async handleLoad(query = '') {
-      console.log(this.fetchData)
-      this.loading = true;
-      try {
-        const params = {...this.fetchParams, query};
-        this.fetchData(params).then(res => {
-          let list = res.data;
-          // 如果传入了 dataFormatter，则对数据进行处理
-          if (this.dataFormatter && typeof this.dataFormatter === 'function') {
-            list = this.dataFormatter(list);
-          }
-          this.options = Array.isArray(list) ? list : [];
-        });
-      } catch (err) {
-        console.error('ElSelectAsync load error:', err);
-      } finally {
-        this.loading = false;
-      }
-    },
-    clearOptions() {
-      this.options = [];
-    },
-    visibleChange(open) {
-      if (open && !this.options.length) {
-        this.handleLoad();
-      }
-    },
-    onChange(val) {
-      this.$emit('change', val);
-    }
+  autoLoad: {
+    type: Boolean,
+    default: true
+  },
+  fetchParams: {
+    type: Object,
+    default: () => ({})
   }
-};
+})
+
+const emit = defineEmits(['update:modelValue', 'change'])
+
+const options = ref([])
+const loading = ref(false)
+
+// 计算属性处理双向绑定
+const selectedValue = computed({
+  get: () => props.modelValue,
+  set: (value) => emit('update:modelValue', value)
+})
+
+// 监听fetchParams变化
+watch(
+    () => props.fetchParams,
+    () => {
+      handleLoad()
+    },
+    { deep: true }
+)
+
+onMounted(() => {
+  if (props.autoLoad) {
+    handleLoad()
+  }
+})
+
+const handleLoad = async (query = '') => {
+  loading.value = true
+  try {
+    const params = { ...props.fetchParams, query }
+    let result = await props.fetchData(params)
+
+    // 处理返回数据
+    if (props.dataFormatter && typeof props.dataFormatter === 'function') {
+      result = props.dataFormatter(result)
+    }
+
+    // 确保数据是数组
+    options.value = Array.isArray(result) ? result : []
+  } catch (err) {
+    console.error('ElSelectAsync load error:', err)
+    options.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+const clearOptions = () => {
+  options.value = []
+}
+
+const visibleChange = (open) => {
+  if (open && !options.value.length) {
+    handleLoad()
+  }
+}
+
+const onChange = (val) => {
+  emit('change', val)
+}
 </script>
