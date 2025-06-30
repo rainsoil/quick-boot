@@ -49,7 +49,7 @@ export default {
         {
             text: '表单组件',
             items: [
-                {text: 'Button按钮', link: '/components/c7/button'},
+                {text: 'c7-button', link: '/components/c7/button'},
                 {text: 'c7-select', link: '/components/c7/select'},
                 {text: 'c7-date-picker', link: '/components/c7/datePicker'},
                 {text: "c7-checkbox", link: "/components/c7/checkbox"},

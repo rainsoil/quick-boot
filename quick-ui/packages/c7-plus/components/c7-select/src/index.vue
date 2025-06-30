@@ -45,7 +45,7 @@
 
 <script setup>
 import {ref, computed, onMounted, defineOptions} from 'vue'
-import {jsonGet} from '../../../utils/utils.js'
+import {jsonGet} from '../../../utils/utils.ts'
 // 定义组件名称
 defineOptions({name: 'c7Select'})
 
