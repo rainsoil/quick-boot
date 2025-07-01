@@ -130,7 +130,6 @@ function onFocusLoad() {
 
 // 核心：调用 fetchData 并更新 options 列表
 async function fetchAndUpdate(query) {
-  console.log('c7Select fetchAndUpdate:', query)
   if (!props.fetchData) {
     // 没有提供 fetchData，则使用静态 dataList
     options.value = props.dataList
