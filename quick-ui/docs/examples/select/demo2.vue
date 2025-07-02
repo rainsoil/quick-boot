@@ -36,7 +36,7 @@
 import {ref} from 'vue'
 import {c7Select} from "c7-plus";
 import axios from "axios";
-import {getSelectData} from './api.js'
+import {getSelectData} from '../api.js'
 
 const choose = ref("1");
 

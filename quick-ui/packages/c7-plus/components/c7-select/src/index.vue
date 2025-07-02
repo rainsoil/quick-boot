@@ -45,7 +45,8 @@
 
 <script setup>
 import {ref, computed, onMounted, defineOptions} from 'vue'
-import {jsonGet} from '../../../utils/utils.ts'
+import {useFetchOptions} from '../../../hooks/c7Hook.ts'
+
 // 定义组件名称
 defineOptions({name: 'c7Select'})
 
@@ -86,8 +87,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change', 'visibleChange'])
 
 // 本地状态：选项列表和加载状态
-const options = ref([])
-const loading = ref(false)
 
 // 组件挂载后自动加载数据（仅在非远程且 autoLoad=true 时）
 onMounted(() => {
@@ -127,29 +126,39 @@ function onFocusLoad() {
     fetchAndUpdate('')
   }
 }
+//
+// // 核心：调用 fetchData 并更新 options 列表
+// async function fetchAndUpdate(query) {
+//   if (!props.fetchData) {
+//     // 没有提供 fetchData，则使用静态 dataList
+//     options.value = props.dataList
+//     return
+//   }
+//   loading.value = true                          // 开始加载
+//   try {
+//     const params = {...props.fetchParams, query}
+//     const result = await props.fetchData(params)
+//     // 提取并格式化列表
+//     let list = jsonGet(result, props.resultKey, [])
+//     if (props.dataFormatter) list = props.dataFormatter(list)
+//     options.value = Array.isArray(list) ? list : []
+//   } catch (err) {
+//     console.error('c7Select load error:', err)
+//     options.value = []
+//   } finally {
+//     loading.value = false                      // 结束加载
+//   }
+// }
 
-// 核心：调用 fetchData 并更新 options 列表
-async function fetchAndUpdate(query) {
-  if (!props.fetchData) {
-    // 没有提供 fetchData，则使用静态 dataList
-    options.value = props.dataList
-    return
-  }
-  loading.value = true                          // 开始加载
-  try {
-    const params = {...props.fetchParams, query}
-    const result = await props.fetchData(params)
-    // 提取并格式化列表
-    let list = jsonGet(result, props.resultKey, [])
-    if (props.dataFormatter) list = props.dataFormatter(list)
-    options.value = Array.isArray(list) ? list : []
-  } catch (err) {
-    console.error('c7Select load error:', err)
-    options.value = []
-  } finally {
-    loading.value = false                      // 结束加载
-  }
-}
+// 使用抽取的 useFetchOptions hook
+const { options, loading, fetchAndUpdate } = useFetchOptions({
+  fetchData: props.fetchData,
+  fetchParams: props.fetchParams,
+  resultKey: props.resultKey,
+  dataFormatter: props.dataFormatter,
+  dataList: props.dataList
+})
+
 
 // 清空选项列表
 function clearOptions() {
