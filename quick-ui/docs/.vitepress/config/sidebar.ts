@@ -60,7 +60,9 @@ export default {
                 {text: "c7-search", link: "/components/c7/search"},
                 {text: "c7-table", link: "/components/c7/table"},
                 {text: "c7-radio", link: "/components/c7/radio"},
-                {text: "c7-switch-form", link: "/components/c7/switchForm"}
+                {text: "c7-switch-form", link: "/components/c7/switchForm"},
+                {text: "c7-crud", link: "/components/c7/c7Crud"},
+                {text: "c7-dict-tag", link: "/components/c7/c7tag"}
             ],
 
         },

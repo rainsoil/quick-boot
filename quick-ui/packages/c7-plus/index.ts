@@ -13,7 +13,10 @@ import c7Dialog from "./components/c7-dialog";
 import c7Table from "./components/c7-table";
 import c7TableSearch from "./components/c7-search";
 import C7Radio from "./components/c7-radio";
+import c7Crud from "./components/c7-crud";
+import c7DictTag from "./components/c7-dict-tag";
 import 'element-plus/dist/index.css';
+
 export * from './types'
 export * from './components'
 export * from './hooks'
@@ -30,7 +33,9 @@ const components = [c7Button,
     c7Dialog,
     c7TableSearch,
     c7Table,
-    C7Radio];
+    C7Radio,
+    c7Crud,
+    c7DictTag];
 const install = (app: App) => {
     components.forEach((comp) => {
         app.component(comp.name, comp);

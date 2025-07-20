@@ -22,3 +22,15 @@ export function getCascaderDataLazy(parentId) {
 export function parentNodeFetchFunction(value) {
     return axios.get("https://m1.apifoxmock.com/m1/4742948-4395863-default/mockapi/cascader/parentCode?value=" + value);
 }
+
+
+// crud列表
+export function getCrudData(param) {
+    console.log("getCrudData",param)
+    return axios.get("https://m1.apifoxmock.com/m1/4742948-4395863-default/crud/page", {
+        params: {
+
+            ...param
+        }
+    });
+}
