@@ -30,7 +30,11 @@ crud基础应用
     <template #default>
       <el-table-column label="id" prop="id"></el-table-column>
       <el-table-column label="名称" prop="name"></el-table-column>
-      <el-table-column label="性别" prop="sex"></el-table-column>
+      <el-table-column label="性别" prop="sex">
+        <template #default="scope">
+          <c7-dict-tag :options="sexDict" v-model="scope.row.sex"></c7-dict-tag>
+        </template>
+      </el-table-column>
     </template>
   </c7-crud>
 
@@ -38,13 +42,23 @@ crud基础应用
 
 <script setup>
 import {ref} from "vue";
-import {c7Crud} from "c7-plus";
+import {c7Crud,c7DictTag} from "c7-plus";
 import {getCrudData} from "../api.js";
 
 
 const addHandler = () => {
   alert("新增")
 }
+const sexDict = [
+  {
+    label: '男',
+    value: '0'
+  },
+  {
+    label: '女',
+    value: '1'
+  }
+]
 </script>
 
 <style scoped>

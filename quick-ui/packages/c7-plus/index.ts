@@ -15,8 +15,10 @@ import c7TableSearch from "./components/c7-search";
 import C7Radio from "./components/c7-radio";
 import c7Crud from "./components/c7-crud";
 import c7DictTag from "./components/c7-dict-tag";
+import  c7JsonForm from  './components/c7-json-form'
 import 'element-plus/dist/index.css';
-
+import ElementPlus from "element-plus";
+import zhCn from "element-plus/es/locale/lang/zh-cn";
 export * from './types'
 export * from './components'
 export * from './hooks'
@@ -35,11 +37,16 @@ const components = [c7Button,
     c7Table,
     C7Radio,
     c7Crud,
-    c7DictTag];
+    c7DictTag,
+    c7JsonForm];
 const install = (app: App) => {
+    app.use(ElementPlus, {
+        locale: zhCn,
+    })
     components.forEach((comp) => {
         app.component(comp.name, comp);
     });
+
 };
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue)

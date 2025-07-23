@@ -42,7 +42,7 @@ const props = defineProps({
     default: null,
   },
   // 当前的值
-  modelValue: [Number, String, Array],
+  value: [Number, String, Array],
   // 当未找到匹配的数据时，显示value
   showValue: {
     type: Boolean,

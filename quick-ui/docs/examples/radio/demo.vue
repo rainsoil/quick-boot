@@ -11,16 +11,6 @@
   </el-row>
 
 
-  <!----------->
-  <el-row :gutter="10">
-    <el-col :span="8">
-      <c7-radio  dict-type="sex" v-model="choose2"></c7-radio>
-    </el-col>
-
-    <el-col :span="8">
-      <span>选中的数据:{{ choose2 }}</span>
-    </el-col>
-  </el-row>
 </template>
 <script setup>
 import {c7Radio} from "c7-plus";
@@ -39,5 +29,5 @@ const dictList = ref([{
 
 
 ])
-const choose2 = ref();
+
 </script>
