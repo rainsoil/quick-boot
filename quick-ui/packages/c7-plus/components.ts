@@ -20,3 +20,4 @@ export * from "./components/c7-radio/index";
 export * from "./components/c7-crud/index";
 export * from './components/c7-dict-tag/index'
 export * from './components/c7-json-form/index'
+export * from './components/c7-json-table-column/index'

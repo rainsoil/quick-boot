@@ -5,10 +5,10 @@
 
   <c7-title label="预览图片,并指定大小"></c7-title>
 
-  <c7-preview :urls="imageUrl" width="100px" height="100px"></c7-preview>
+  <c7-preview :urls="imageUrl" width="100px" height="100"></c7-preview>
 
   <c7-title label="预览文件"></c7-title>
-  <c7-preview :urls="imageUrl" width="100px" height="100px" display-type="file"></c7-preview>
+  <c7-preview :urls="imageUrl" width="100px" height="100" display-type="file"></c7-preview>
 
 
   <c7-title label="预览图片"></c7-title>

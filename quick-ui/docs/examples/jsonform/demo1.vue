@@ -11,6 +11,10 @@
             v-model="formData"
             @form-change="handleFormChange"
         >
+
+          <template #slotTest>
+            <el-input v-model="formData.slot" placeholder="请输入自定义插槽内容"/>
+          </template>
         </c7-json-form>
         <el-form-item>
           <el-button type="primary" @click="submitForm">提交</el-button>
@@ -232,6 +236,13 @@ const columns = [
     ],
     placeholder: '请选择爱去的国家'
   },
+  {
+    label: '卡槽',
+    prop: 'slot',
+    type: 'slot',
+    span: 24,
+    slotName: 'slotTest'
+  }
 ]
 
 // 表单变化事件处理

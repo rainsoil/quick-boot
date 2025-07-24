@@ -44,6 +44,8 @@
       <template v-if="displayType === 'image'">
         <!-- 图片类型取第一个文件 -->
         <el-image
+            preview-teleported
+            close-on-press-escape
             :src="fileUrls[0]"
             :style="previewStyle"
             @click="coverDialogVisible = true"
@@ -52,6 +54,8 @@
       </template>
       <template v-else-if="displayType === 'video'">
         <el-image
+            preview-teleported
+            close-on-press-escape
             :src="defaultVideoImage"
             :style="previewStyle"
             @click="coverDialogVisible = true"
@@ -60,6 +64,8 @@
       </template>
       <template v-else-if="displayType === 'file'">
         <el-image
+            preview-teleported
+            close-on-press-escape
             :src="defaultFileImage"
             :style="previewStyle"
             @click="coverDialogVisible = true"
@@ -79,6 +85,8 @@
         <template v-for="(url, index) in fileUrls" :key="index">
           <template v-if="displayType === 'image'">
             <el-image
+                preview-teleported
+                close-on-press-escape
                 :src="url"
                 :style="previewStyle"
                 :preview-src-list="fileUrls"
@@ -88,6 +96,8 @@
           <template v-else-if="displayType === 'video'">
             <el-image
                 :src="defaultVideoImage"
+                preview-teleported
+                close-on-press-escape
                 :style="previewStyle"
                 @click="openVideoDialog(url)"
                 v-bind="$attrs"
@@ -111,6 +121,7 @@
 
     <!-- 视频播放对话框 -->
     <el-dialog
+        append-to-body
         v-model="videoDialogVisible"
         width="80%"
         title="视频预览"
@@ -131,10 +142,10 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import {ref, computed} from 'vue'
 
 defineOptions({
-  name:'c7Preview'
+  name: 'c7Preview'
 })
 const props = defineProps({
   // 以逗号分隔的文件 URL 列表
@@ -180,8 +191,10 @@ const props = defineProps({
 })
 
 // 将 urls 字符串按逗号分割为数组
-const fileUrls = computed(() =>
-    props.urls.split(',').map(url => url.trim()).filter(url => url)
+const fileUrls = computed(() => {
+      console.log(props.urls)
+      return props.urls ? props.urls.split(',').map(url => url.trim()).filter(url => url) : []
+    }
 )
 
 // 生成预览组件的样式对象
