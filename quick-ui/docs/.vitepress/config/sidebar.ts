@@ -64,7 +64,8 @@ export default {
                 {text: "c7-crud", link: "/components/c7/c7Crud"},
                 {text: "c7-dict-tag", link: "/components/c7/c7tag"},
                 {text: "c7-json-form", link: "/components/c7/jsonform"},
-                {text: "c7-json-table", link: "/components/c7/jsonTableColumn"},
+                {text: "c7-json-table-column", link: "/components/c7/jsonTableColumn"},
+                {text: "c7-json-table", link: "/components/c7/jsonTable"},
             ],
 
         },

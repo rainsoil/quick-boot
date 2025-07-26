@@ -5,6 +5,7 @@
     <!-- 表单容器 -->
     <el-card class="form-container">
       <el-form ref="form" :model="formData">
+        <el-row>
         <!-- 表单组件 -->
         <c7-json-form
             :columns="columns"
@@ -21,7 +22,7 @@
           <el-button @click="resetForm">重置</el-button>
         </el-form-item>
 
-
+        </el-row>
       </el-form>
 
     </el-card>
@@ -58,7 +59,7 @@ const columns = [
     label: '用户名',
     prop: 'username',
     type: 'input',
-    span: 12,
+    span: 8,
     required: true,
     rules: [
       {required: true, message: '用户名必填', trigger: 'blur'},
@@ -73,7 +74,7 @@ const columns = [
     label: '邮箱',
     prop: 'email',
     type: 'input',
-    span: 12,
+    span: 8,
     rules: [
       {required: true, message: '请输入邮箱地址', trigger: 'blur'},
       {type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change']}
@@ -84,7 +85,7 @@ const columns = [
     label: '密码',
     prop: 'password',
     type: 'input',
-    span: 12,
+    span: 8,
     required: true,
     rules: [
       {required: true, message: '密码必填', trigger: 'blur'},

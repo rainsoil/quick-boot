@@ -37,7 +37,6 @@
 <script lang="ts" setup>
 import { ref, watch} from 'vue'
 import {Plus} from '@element-plus/icons-vue'
-import {injectService} from '../../../service/injectService'
 
 defineOptions(
     {
@@ -88,12 +87,12 @@ const props = defineProps({
 });
 
 const number = ref(0);
-let loadingInstance;
+let loadingInstance : any;
 const emit = defineEmits();
 const uploadList = ref([]);
 
 // 上传前loading加载
-function handleBeforeUpload(file) {
+function handleBeforeUpload(file : any) {
 // 文件类型校验（根据后缀判断）
   if (props.fileType) {
     const allowedTypes = props.fileType.split(',').map(t => t.trim().toLowerCase())
@@ -125,7 +124,7 @@ const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
 // 删除图片
-function handleDelete(file) {
+function handleDelete(file: any) {
   const findex = fileList.value.map(f => f.name).indexOf(file.name);
   let deleteFile = fileList.value[findex].url;
   if (findex > -1 && uploadList.value.length === number.value) {
@@ -138,13 +137,13 @@ function handleDelete(file) {
       let deleteParams = {
         fileUrl: deleteFile
       }
-      injectService.postRequest(props.deleteUrl, deleteParams, props.headers).then(res => {
-        if (res.code === 200) {
-          ElMessage.success("删除成功")
-        } else {
-          ElMessage.error("删除失败")
-        }
-      });
+      // injectService.postRequest(props.deleteUrl, deleteParams, props.headers).then(res => {
+      //   if (res.code === 200) {
+      //     ElMessage.success("删除成功")
+      //   } else {
+      //     ElMessage.error("删除失败")
+      //   }
+      // });
       // console.log("调用接口去删除,参数为:{}", deleteParams)
     }
 

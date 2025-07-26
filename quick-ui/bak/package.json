@@ -2,10 +2,10 @@
   "name": "c7-plus",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "type": "module",
   "module": "./dist/es/index.js",
-  "types": "index.ts",
+  "types": "./dist/types/core/index.d.ts",
   "scripts": {
     "clean": "rimraf ../../dist",
     "build": "vite build"
