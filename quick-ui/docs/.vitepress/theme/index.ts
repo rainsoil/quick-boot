@@ -9,8 +9,6 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 import {NotFound, globals} from "../vitepress";
 import './styles/var.css'
-import {ref} from "vue";
-import { createPinia } from 'pinia';
 
 export default {
     ...theme,
@@ -27,9 +25,7 @@ export default {
         globals.forEach(([name, Comp]) => {
             app.component(name, Comp)
         })
-        const pinia = createPinia();
 
-        app.use(pinia); // 注册 Pinia
 
 
     },

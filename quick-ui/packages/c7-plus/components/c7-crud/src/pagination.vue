@@ -14,7 +14,7 @@
 
 <script setup>
 import {computed, onMounted, onUnmounted} from 'vue'
-import {scrollTo} from '../../../utils/scroll-to.js'
+// import {scrollTo} from '../../../utils/scroll-to.js'
 import 'element-plus/es/components/pagination/style/css'
 import {ElPagination} from 'element-plus'
 
@@ -39,7 +39,7 @@ const props = defineProps({
   },
   pagerCount: {
     type: Number,
-    default: document.body.clientWidth < 992 ? 5 : 7
+    default:  7
   },
   layout: {
     type: String,
@@ -62,11 +62,11 @@ const props = defineProps({
 // Emits
 const emit = defineEmits()
 
-// 响应式布局（移动端隐藏部分控件）
-const responsiveLayout = computed(() => {
-  const isMobile = document.body.clientWidth < 768
-  return isMobile ? 'prev, pager, next' : props.layout
-})
+// // 响应式布局（移动端隐藏部分控件）
+// const responsiveLayout = computed(() => {
+//   const isMobile = document.body.clientWidth < 768
+//   return isMobile ? 'prev, pager, next' : props.layout
+// })
 
 // 分页器状态
 const currentPage = computed({
@@ -113,18 +113,18 @@ function handleCurrentChange(val) {
   }
 }
 
-// 响应式调整 pagerCount
-const updatePagerCount = () => {
-  const newPagerCount = document.body.clientWidth < 992 ? 5 : 7
-  // 可通过 emit 更新父组件的 pagerCount 状态，或直接在 computed 中使用
-}
+// // 响应式调整 pagerCount
+// const updatePagerCount = () => {
+//   const newPagerCount = document.body.clientWidth < 992 ? 5 : 7
+//   // 可通过 emit 更新父组件的 pagerCount 状态，或直接在 computed 中使用
+// }
 
-onMounted(() => {
-  window.addEventListener('resize', updatePagerCount)
-})
-onUnmounted(() => {
-  window.removeEventListener('resize', updatePagerCount)
-})
+// onMounted(() => {
+//   window.addEventListener('resize', updatePagerCount)
+// })
+// onUnmounted(() => {
+//   window.removeEventListener('resize', updatePagerCount)
+// })
 </script>
 
 
