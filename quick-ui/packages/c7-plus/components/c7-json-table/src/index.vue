@@ -1,8 +1,3 @@
-<!--
-
-
--->
-
 <template>
   <c7-crud
       ref="crud"
@@ -11,7 +6,8 @@
       @clean-param="searchParam = {}"
       :init="init"
       :init-param="initParam"
-      :row-key="rowKey"
+      :rowsKey="rowsKey"
+      :totalKey="totalKey"
       :page-total="pageTotal"
       :page-page="pagePage"
       :page-limit="pageLimit"
@@ -24,34 +20,49 @@
       @update:search-param="val => searchParam = val"
       @update:show-search="val => showSearch = val"
   >
-
-    <!-- search-->
+    <!-- 搜索表单 -->
     <template #search>
       <el-form ref="form" :model="searchParam">
         <el-row>
-          <!-- 表单组件 -->
           <c7-json-form
               :columns="searchColumns"
               v-model="searchParam"
               @form-change="handleFormChange"
           >
-            <slot name="search"></slot>
-
-
+            <!-- 透传 c7-json-form 插槽 -->
+            <template
+                v-for="item in searchColumns"
+                #[slotName(item)]="slotProps"
+            >
+              <slot
+                  :name="slotName(item)"
+                  :item="item"
+                  :searchParam="searchParam"
+                  :modelValue="searchParam[item.prop]"
+              />
+            </template>
           </c7-json-form>
         </el-row>
       </el-form>
     </template>
+
+    <!-- 操作栏 -->
     <template #operate>
       <slot name="operate"></slot>
     </template>
+
+    <!-- 表格内容 -->
     <template #default>
-      <c7-json-table-column
-          :columns="tableColumns"
-      >
-        <!-- 自定义插槽列内容 -->
-        <template #default="{ row, index }">
-          <slot name="tableColumnSlot" :row="row" :index="index"/>
+      <c7-json-table-column :columns="tableColumns">
+        <!-- 透传 c7-json-table-column 插槽 -->
+        <template
+            v-for="item in tableColumns"
+            #[slotName(item)]="slotProps"
+        >
+          <slot
+              :name="slotName(item)"
+              v-bind="slotProps"
+          />
         </template>
       </c7-json-table-column>
     </template>
@@ -60,15 +71,18 @@
 
 <script setup lang="ts">
 import {ref} from "vue";
-// import {c7Crud, c7JsonForm, c7JsonTableColumn} from "c7-plus";
 import c7Crud from '../../c7-crud/index'
-import {TableColumnProps} from "../../c7-json-table-column/types/JsonTableColumnTypes.js";
+import c7JsonForm from "../../c7-json-form/index"
+import c7JsonTableColumn from "../../c7-json-table-column/index"
+import {TableColumnProps} from "../../c7-json-table-column/types/JsonTableColumnTypes";
 import {FormColumn} from "../../c7-json-form/types/JsonFormTypes";
-// 定义事件
-const emit = defineEmits(['handleFormChange'])
+
 defineOptions({
   name: 'c7JsonTable'
 })
+
+const emit = defineEmits(['handleFormChange'])
+
 const props = defineProps({
   init: {
     type: Boolean,
@@ -82,12 +96,10 @@ const props = defineProps({
     type: Function,
     required: true
   },
-  /* 行主键字段（用于多选返回主键集合） */
   rowKey: {
     type: String,
     default: 'id'
   },
-  /* 分页器配置 */
   pageTotal: {
     type: Number,
     required: true
@@ -120,7 +132,6 @@ const props = defineProps({
     type: Boolean,
     default: false
   },
-  /* 搜索区域控制 */
   showSearch: {
     type: Boolean,
     default: true
@@ -133,17 +144,14 @@ const props = defineProps({
     type: String,
     default: 'total'
   },
-  /* 新增 label 宽度参数 */
   labelWidth: {
     type: Number,
     default: 100
   },
-  /* 新增 searchParam 参数 */
   searchParam: {
     type: Object,
     default: () => ({})
   },
-  // 搜索字段
   searchColumns: {
     type: Array as () => FormColumn[],
     default: () => []
@@ -151,18 +159,21 @@ const props = defineProps({
   tableColumns: {
     type: Array as () => TableColumnProps[],
     default: () => []
-  },
+  }
 })
 
+// 内部搜索参数绑定
 const searchParam = ref({})
 
-
-// 表单变化事件处理
+// 表单 change 回调
 const handleFormChange = (data: Record<string, any>) => {
   emit("handleFormChange", data)
 }
+
+// 插槽命名处理函数
+const slotName = (item: { slotName?: string; prop: string }) =>
+    item.slotName || `slot_${item.prop}`
 </script>
 
 <style scoped>
-
 </style>

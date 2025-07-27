@@ -47,10 +47,10 @@
 
         <c7-preview :urls="row[item.prop]" width="100px" height="100px" cover-type="file"></c7-preview>
       </template>
-
       <!-- 当columnType为SLOT时透传插槽 -->
       <template v-else-if="item.columnType === ColumnEnumType.SLOT" #default="{ row, $index }">
-        <slot name="default" :row="row" :index="$index"/>
+        <slot   :name="item.slotName || ('slot_' + item.prop)"
+                :row="row" :index="$index"/>
       </template>
     </el-table-column>
   </template>
@@ -59,7 +59,8 @@
 <script setup lang="ts">
 import {computed, defineProps, defineEmits} from 'vue'
 import {ColumnEnumType, TableColumnProps} from '../types/JsonTableColumnTypes'
-import {c7DictTag, c7Preview} from 'c7-plus'
+import c7DictTag from '../../c7-dict-tag/index'
+import c7Preview from '../../c7-preview/index'
 
 defineOptions({
   name: 'c7JsonTableColumn'

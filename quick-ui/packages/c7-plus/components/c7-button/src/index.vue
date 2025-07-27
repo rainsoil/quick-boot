@@ -26,8 +26,8 @@
 
 </template>
 
-<script setup >
-import {ref, defineOptions, onMounted} from 'vue';
+<script setup>
+import {ref, defineOptions, onMounted, defineComponent} from 'vue';
 import pkg from 'lodash';
 import {ElMessage, ElMessageBox, FormInstance} from 'element-plus'
 import {jsonGet} from "../../../utils/utils.ts";
@@ -35,7 +35,7 @@ import {jsonGet} from "../../../utils/utils.ts";
 const {debounce} = pkg;
 
 
-defineOptions({
+defineComponent({
   name: 'c7Button'
 })
 // 成功之后的回调函数

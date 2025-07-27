@@ -206,5 +206,8 @@ export interface TableColumnProps {
 
     // 数据列表
     dictList: IObject[];
+
+    // 卡槽名称
+    slotName: string;
 }
 

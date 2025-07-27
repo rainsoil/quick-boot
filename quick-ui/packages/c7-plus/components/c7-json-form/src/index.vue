@@ -118,7 +118,17 @@
 <script setup lang="ts">
 import {computed, defineProps, ref, watch, defineEmits, PropType} from 'vue'
 import {IColumn, FormColumn} from '../types/JsonFormTypes'
-import {c7Select, c7Cascader, c7DatePicker, c7Checkbox, c7Upload,c7Radio} from 'c7-plus'
+// import {c7Select, c7Cascader, c7DatePicker, c7Checkbox, c7Upload,c7Radio} from 'c7-plus'
+// 原导入方式
+// import {c7Select, c7Cascader, c7DatePicker, c7Checkbox, c7Upload, c7Radio} from 'c7-plus'
+
+// 修改后的相对路径导入方式
+import c7Select from '../../c7-select/index'
+import c7Cascader from '../../c7-cascader/index'
+import c7DatePicker from '../../c7-date-picker/index'
+import c7Checkbox from '../../c7-checkbox/index'
+import c7Upload from '../../c7-upload/index'
+import c7Radio from '../../c7-radio/index'
 
 defineOptions({
   name: 'c7JsonForm'

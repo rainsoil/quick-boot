@@ -6,7 +6,7 @@ export default {
             items: [
                 {text: "安装", link: "/guide/installation"},
                 // {text: "快速开始", link: "/guide/quickstart"},
-                {text: "tableView", link: "/guide/tableView"},
+
             ],
         },
         {
@@ -32,13 +32,7 @@ export default {
             link: '/components/c7/index',
             items: []
         },
-        {
-            text: 'Hook',
-            items: [
-                {text: '表格Hook', link: '/components/c7/tableHook'},
-                {text: '字典Hook', link: '/components/c7/dictHook'},
-            ],
-        },
+
         {
             text: '布局组件',
             items: [
@@ -57,8 +51,6 @@ export default {
                 {text: "c7-upload", link: "/components/c7/upload"},
                 {text: "c7-preview", link: "/components/c7/preview"},
                 {text: "c7-dialog", link: "/components/c7/dialog"},
-                {text: "c7-search", link: "/components/c7/search"},
-                {text: "c7-table", link: "/components/c7/table"},
                 {text: "c7-radio", link: "/components/c7/radio"},
                 {text: "c7-switch-form", link: "/components/c7/switchForm"},
                 {text: "c7-crud", link: "/components/c7/c7Crud"},

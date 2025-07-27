@@ -5,12 +5,16 @@
     <el-table :data="tableData">
       <c7-json-table-column
           :columns="columns"
-
       >
+        <template #slotTest2="{ row, index }">
+          <span>id=>{{ row.id }}</span>
+        </template>
         <!-- 自定义插槽列内容 -->
-        <template #default="{ row, index }">
+        <template #slotTest="{ row, index }">
           <el-button @click="handleCustomAction(row, index)">操作{{ index }}</el-button>
         </template>
+
+
       </c7-json-table-column>
     </el-table>
 
@@ -85,7 +89,14 @@ const columns = [
   {
     columnType: "slot",
     label: '自定义操作',
-    width: 120
+    width: 120,
+    slotName: 'slotTest'
+  },
+  {
+    columnType: "slot",
+    label: '自定义卡槽',
+    width: 120,
+    slotName: 'slotTest2'
   }
 ]
 

@@ -11,13 +11,30 @@
         totalKey="data.data.total"
         :searchColumns="searchColumns"
         :tableColumns="tableColumns"
-
     >
 
+      <!-- 操作栏卡槽-->
 
       <template #operate>
 
         <el-button type="primary" @click="addHandler">新增</el-button>
+      </template>
+
+      <!-- 搜索栏卡槽-->
+      <template #slotTest="{ item ,searchParam}">
+        <el-select v-model="searchParam.status" placeholder="状态" clearable style="width: 200px">
+          <el-option label="启用" value="1"/>
+          <el-option label="禁用" value="0"/>
+        </el-select>
+      </template>
+      <!-- 自定义插槽列内容 -->
+      <template #customAction="{ row, index }">
+        <el-button @click="handleCustomAction(row, index)">操作{{ index }}</el-button>
+      </template>
+
+      <!-- 自定义插槽列内容 -->
+      <template #customAction2="{ row, index }">
+        <span>id=>{{ row.id }}</span>
       </template>
 
 
@@ -54,7 +71,7 @@ const searchColumns = [
     prop: 'name',
     type: 'input',
     placeholder: '请输入姓名',
-    span:12,
+    span: 12,
   },
   {
     label: '性别',
@@ -62,23 +79,51 @@ const searchColumns = [
     type: 'select',
     placeholder: '请选择性别',
     dataList: sexDict,
-    span:12,
+    span: 12,
+  },
+  {
+    label: '状态',
+    prop: 'status',
+    type: 'slot',
+    placeholder: '请选择状态',
+    span: 12,
+    slotName: 'slotTest'
   }
 ]
 const tableColumns = [
   {
     label: '姓名',
     prop: 'name',
-    type: 'text'
+    columnType: 'text'
   },
   {
     label: '性别',
     prop: 'sex',
-    type: 'tag',
-    options: sexDict
+    columnType: 'tag',
+    dictList: sexDict
+  },
+  {
+    label: 'id',
+    prop: 'id',
+    columnType: "text",
+  },
+  {
+    columnType: "slot",
+    label: '自定义操作',
+    width: 120,
+    slotName: 'customAction'
+  },
+  {
+    columnType: "slot",
+    label: '自定义卡槽',
+    width: 120,
+    slotName: 'customAction2'
   }
 ]
-
+// 自定义操作处理
+const handleCustomAction = (row, index) => {
+  alert(`点击了第${index}行操作按钮，数据：${JSON.stringify(row)}`)
+}
 </script>
 
 <style scoped>
