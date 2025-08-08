@@ -7,6 +7,30 @@
 jsonform/demo1
 :::
 
+## 不同类型表单字段
+
+展示各种表单字段类型的使用：
+
+:::demo
+jsonform/demo2
+:::
+
+## 表单验证和布局
+
+展示表单验证和布局的使用：
+
+:::demo
+jsonform/demo3
+:::
+
+## 自定义插槽
+
+展示自定义插槽的使用：
+
+:::demo
+jsonform/demo4
+:::
+
 ## c7-json-form 组件文档
 
 ### 属性

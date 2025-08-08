@@ -84,6 +84,30 @@ select/demo9
 select/demo10
 :::
 
+### 高级选择功能
+
+展示各种高级选择功能的使用：
+
+:::demo
+select/demo11
+:::
+
+### 复杂选择功能
+
+展示复杂选择功能的使用：
+
+:::demo
+select/demo12
+:::
+
+### 实际应用场景
+
+展示在实际应用中的使用场景：
+
+:::demo
+select/demo13
+:::
+
 
 
 
