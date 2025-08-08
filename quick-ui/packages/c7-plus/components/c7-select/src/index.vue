@@ -1,4 +1,6 @@
 <template>
+
+
   <el-select
       v-bind="$attrs"
       v-model="selectedValue"
@@ -21,8 +23,8 @@
         v-if="group"
     >
       <el-option
-          v-for="item in groupOptions.options"
-          :key="item[valueKey]"
+          v-for="(item, index) in groupOptions.options"
+          :key="`${item[valueKey]}-${index}`"
           :label="item[labelKey]"
           :value="item[valueKey]"
           :disabled="item.disabled ? true : false"
@@ -30,8 +32,8 @@
     </el-option-group>
     <el-option
         v-if="!group"
-        v-for="item in options"
-        :key="item[valueKey]"
+        v-for="(item, index) in options"
+        :key="`${item[valueKey]}-${index}`"
         :label="item[labelKey]"
         :value="item[valueKey]"
         :disabled="item.disabled ? true : false"
@@ -44,7 +46,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, defineOptions} from 'vue'
+import {ref, computed, onMounted, defineOptions, defineProps} from 'vue'
 import {useFetchOptions} from '../../../hooks/c7Hook.ts'
 
 // 定义组件名称
@@ -65,7 +67,12 @@ const props = defineProps({
   // 异步结果中列表数据所在的路径
   resultKey: {type: String, default: 'data'},
   // 静态数据列表，当 fetchData 为 null 时使用
-  dataList: {type: Array, default: () => []},
+  dataList: {type: Array, default: []},
+  // 数据
+  options: {
+    type: Array,
+    default: null,
+  },
   // 异步获取数据时的额外参数
   fetchParams: {type: Object, default: () => ({})},
   // 是否在组件挂载后自动加载数据（仅在非远程模式）
@@ -95,22 +102,34 @@ onMounted(() => {
   }
 })
 
+console.log(props)
+// 工具函数：标准化值（将字符串转为数组，用于多选模式）
+const normalizeValue = (value, multiple, separator) => {
+  if (!multiple) return value
+
+  if (typeof value === 'string') {
+    return value === '' ? [] : value.split(',')
+  }
+
+  if (Array.isArray(value)) return value
+
+  return value
+}
+
+// 工具函数：反标准化值（将数组转为字符串，用于输出）
+const denormalizeValue = (value, multiple, separator) => {
+  if (!multiple || !separator || !Array.isArray(value)) {
+    return value
+  }
+
+  return value.join(',')
+}
+
 // 计算属性：双向绑定处理，内部维护数组/字符串之间的相互转换
 const selectedValue = computed({
-  get: () => {
-    const val = props.modelValue
-    if (props.multiple) {
-      if (typeof val === 'string') return val === '' ? [] : val.split(',')
-      if (Array.isArray(val)) return val
-      return val
-    }
-    return val
-  },
+  get: () => normalizeValue(props.modelValue, props.multiple, props.separator),
   set: (value) => {
-    let payload = value
-    if (props.multiple && props.separator && Array.isArray(value)) {
-      payload = value.join(',')
-    }
+    const payload = denormalizeValue(value, props.multiple, props.separator)
     emit('update:modelValue', payload)
   }
 })
@@ -126,37 +145,16 @@ function onFocusLoad() {
     fetchAndUpdate('')
   }
 }
-//
-// // 核心：调用 fetchData 并更新 options 列表
-// async function fetchAndUpdate(query) {
-//   if (!props.fetchData) {
-//     // 没有提供 fetchData，则使用静态 dataList
-//     options.value = props.dataList
-//     return
-//   }
-//   loading.value = true                          // 开始加载
-//   try {
-//     const params = {...props.fetchParams, query}
-//     const result = await props.fetchData(params)
-//     // 提取并格式化列表
-//     let list = jsonGet(result, props.resultKey, [])
-//     if (props.dataFormatter) list = props.dataFormatter(list)
-//     options.value = Array.isArray(list) ? list : []
-//   } catch (err) {
-//     console.error('c7Select load error:', err)
-//     options.value = []
-//   } finally {
-//     loading.value = false                      // 结束加载
-//   }
-// }
+
+console.log(props.options)
 
 // 使用抽取的 useFetchOptions hook
-const { options, loading, fetchAndUpdate } = useFetchOptions({
+const {options, loading, fetchAndUpdate} = useFetchOptions({
   fetchData: props.fetchData,
   fetchParams: props.fetchParams,
   resultKey: props.resultKey,
   dataFormatter: props.dataFormatter,
-  dataList: props.dataList
+  dataList: props.options || props.dataList // 优先使用 options，兼容 dataList
 })
 
 

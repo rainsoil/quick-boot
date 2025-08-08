@@ -1,18 +1,43 @@
-# ct-title 标题(工具栏)
-> 标题工具栏
+# c7-title 标题组件
+
+一个简洁的标题组件，支持自定义标题文本、大小和颜色，并提供插槽功能。
 
 ## 基础用法
+
+最简单的使用方式，设置标题文本：
+
 :::demo
 c7Title/baseTitle
 :::
 
-## 增加色块
+## 自定义标题大小
+
+通过 `label-size` 属性设置标题大小，支持 h1-h6 或自定义像素值：
+
+:::demo
+c7Title/demo1
+:::
+
+## 自定义像素大小
+
+除了预设的 h1-h6 大小外，还可以使用自定义像素值：
+
+:::demo
+c7Title/demo2
+:::
+
+## 自定义标题颜色
+
+通过 `label-color` 属性设置标题下方的颜色块：
+
 :::demo
 c7Title/titleWithColorBlock
 :::
 
+## 使用插槽
 
-## 卡槽
+在标题右侧添加自定义内容：
+
 :::demo
 c7Title/titleWithSlots
 :::
@@ -21,14 +46,30 @@ c7Title/titleWithSlots
 
 | 属性名       | 说明           | 类型      | 可选值                           | 默认值  |
 | ------------ | -------------- | --------- | -------------------------------- | ------- |
-label | 标题 | String |    |
-backgroundColor | 背景色(为空则不显示) | String | 颜色 | `#f0f2f5`
-isShowColorBlock | 是否展示色块 | Boolean | true/false | false
-colorBlockColor | 色块颜色 | String | 颜色 | `#409eff`
-textSize| 字体大小|String | h1/h2/h3/h4/h5 | h2
-isBold| 是否字体加粗| Boolean | true/false | true
+| `label` | 标题文本 | String | - | `'默认标题'` |
+| `label-size` | 标题大小 | String | `'h1'` / `'h2'` / `'h3'` / `'h4'` / `'h5'` / `'h6'` 或自定义像素值 | `'h1'` |
+| `label-color` | 标题下方颜色块颜色 | String | 任意颜色值 | `''` |
+
+### label-size 大小对应关系
+
+| 值   | 字体大小 | 说明     |
+|------|----------|----------|
+| `h1` | 32px     | 一级标题 |
+| `h2` | 28px     | 二级标题 |
+| `h3` | 24px     | 三级标题 |
+| `h4` | 20px     | 四级标题 |
+| `h5` | 18px     | 五级标题 |
+| `h6` | 16px     | 六级标题 |
 
 ## Slots
-| 卡槽名 |  说明
-| ------ | ------- |
-| default | 标题右边区域
+
+| 插槽名 | 说明 |
+| ------ | ---- |
+| `default` | 标题右侧区域内容 |
+
+## 样式说明
+
+- 标题默认使用微软雅黑字体
+- 标题下方有 3px 的边框线
+- 当 `label-color` 为空时，不显示颜色块
+- 组件采用 flex 布局，标题在左侧，插槽内容在右侧

@@ -8,6 +8,30 @@
 jsonTableColumn/demo1
 :::
 
+### 不同类型列配置
+
+展示各种列类型的使用：
+
+:::demo
+jsonTableColumn/demo2
+:::
+
+### 表格高级功能
+
+展示表格的高级功能：
+
+:::demo
+jsonTableColumn/demo3
+:::
+
+### 动态列配置
+
+展示动态列配置的使用：
+
+:::demo
+jsonTableColumn/demo4
+:::
+
 ### Props
 | 属性名 | 类型 | 默认值 | 说明 |
 |-------|------|-------|------|

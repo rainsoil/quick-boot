@@ -5,12 +5,16 @@
         v-for="(item, index) in sortedColumns"
         :key="index"
     >
+
+
+
       <el-form-item
           :label="item.label"
           :prop="item.prop"
           :required="item.required ?? false"
           :rules="item.rules"
       >
+        {{ item.dataList }}
         <!-- 自定义插槽 -->
         <template v-if="item.type === 'slot'">
           <slot
@@ -46,7 +50,20 @@
             v-else-if="item.type === 'select'"
             v-model="formData[item.prop]"
             :placeholder="item.placeholder || '请输入' + item.label"
+            :options="item.dataList"
             :data-list="item.dataList"
+            :label-key="item.labelKey || 'label'"
+            :value-key="item.valueKey || 'value'"
+            :multiple="item.multiple || false"
+            :separator="item.separator === undefined ? true : item.separator"
+            :group="item.group || false"
+            :tag="item.tag || false"
+            :remote="item.remote || false"
+            :fetch-data="item.fetchData"
+            :fetch-params="item.fetchParams"
+            :result-key="item.resultKey || 'data'"
+            :data-formatter="item.dataFormatter"
+            :auto-load="item.autoLoad !== false"
             @change="handleChange(item, formData[item.prop])"
         />
 
@@ -63,9 +80,9 @@
 
         <!-- 日期选择器 -->
         <c7-date-picker
-            v-else-if="datePickerTypes.includes(item.type)"
+            v-else-if="item.type && datePickerTypes.includes(item.type as string)"
             v-model="formData[item.prop]"
-            :type="item.type"
+            :type="item.type as string"
             :value-format="item.valueFormat"
             :placeholder="item.placeholder || '请输入' + item.label"
             :format="item.format"
@@ -102,7 +119,7 @@
         />
         <!--radio -->
         <c7-radio
-            v-else-if="item.type === 'radio'"
+            v-else-if="String(item.type) === 'radio'"
             v-model="formData[item.prop]"
             :data-list="item.dataList"
             :separator="item.separator"
@@ -117,7 +134,7 @@
 
 <script setup lang="ts">
 import {computed, defineProps, ref, watch, defineEmits, PropType} from 'vue'
-import {IColumn, FormColumn} from '../types/JsonFormTypes'
+import {IColumn, FormColumn, IColumnEnum} from '../types/JsonFormTypes'
 // import {c7Select, c7Cascader, c7DatePicker, c7Checkbox, c7Upload,c7Radio} from 'c7-plus'
 // 原导入方式
 // import {c7Select, c7Cascader, c7DatePicker, c7Checkbox, c7Upload, c7Radio} from 'c7-plus'
@@ -199,6 +216,7 @@ const sortedColumns = computed(() => {
       .sort((a, b) => a.order - b.order)
 })
 
+console.log(sortedColumns)
 
 // 获取列跨度
 const getColumnSpan = (column: FormColumn) => {

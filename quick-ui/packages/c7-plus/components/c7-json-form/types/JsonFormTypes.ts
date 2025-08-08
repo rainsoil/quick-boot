@@ -17,6 +17,8 @@ export enum IColumnEnum {
     CASCADER = 'cascader',
     // 输入框类型
     UPLOAD = 'upload',
+    // 单选框类型
+    RADIO = 'radio',
 
     // 卡槽
     SLOT = 'slot'
@@ -123,6 +125,18 @@ export interface IColumn {
 
     // 删除的url
     deleteUrl?: string
+
+    // c7-select 相关属性
+    labelKey?: string           // 标签字段名
+    valueKey?: string           // 值字段名
+    group?: boolean             // 是否分组显示
+    tag?: boolean               // 是否允许创建标签
+    remote?: boolean            // 是否远程搜索
+    fetchData?: Function        // 异步获取数据的函数
+    fetchParams?: Record<string, any>  // 异步获取数据的参数
+    resultKey?: string          // 异步结果中列表数据所在的路径
+    dataFormatter?: Function    // 数据格式化回调
+    autoLoad?: boolean          // 是否自动加载数据
 }
 
 // 定义表单列类型

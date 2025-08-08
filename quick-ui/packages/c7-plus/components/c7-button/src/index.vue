@@ -1,44 +1,42 @@
 <!-- 对按钮的封装-->
 <template>
-
-
-  <el-button v-bind="$attrs" v-if="!clickFunction" :icon="icon" :type="type" :plain="plain">
-
-    <div v-if="$slots.default">
-      <slot></slot>
-    </div>
-
-    <div v-else>
-      {{ label }}
-    </div>
+  <el-button 
+    v-bind="$attrs" 
+    :icon="computedIcon" 
+    :type="computedType" 
+    :plain="computedPlain"
+    :loading="loading"
+    @click="handleClick"
+  >
+    <slot>{{ computedLabel }}</slot>
   </el-button>
-
-  <el-button v-bind="$attrs" v-if="clickFunction" @click="buttonClick" :loading="loading" :type="type" :icon="icon"
-             :plain="plain">
-
-    <div v-if="$slots.default">
-      <slot></slot>
-    </div>
-    <div v-else>
-      {{ label }}
-    </div>
-  </el-button>
-
 </template>
 
 <script setup>
-import {ref, defineOptions, onMounted, defineComponent} from 'vue';
+import {ref, computed, defineOptions} from 'vue';
 import pkg from 'lodash';
-import {ElMessage, ElMessageBox, FormInstance} from 'element-plus'
+import {ElMessage, ElMessageBox} from 'element-plus'
 import {jsonGet} from "../../../utils/utils.ts";
 
 const {debounce} = pkg;
 
-
-defineComponent({
+defineOptions({
   name: 'c7Button'
 })
-// 成功之后的回调函数
+
+// 按钮类型配置映射
+const buttonConfigs = {
+  add: { icon: 'Plus', label: '新增', type: 'primary', plain: true },
+  edit: { icon: 'Edit', label: '修改', type: 'success', plain: true },
+  delete: { icon: 'Delete', label: '删除', type: 'danger', plain: true },
+  query: { icon: 'Search', label: '查询', type: 'primary', plain: false },
+  refresh: { icon: 'Refresh', label: '重置', type: 'default', plain: false },
+  upload: { icon: 'Upload', label: '上传', type: 'info', plain: true },
+  download: { icon: 'Download', label: '下载', type: 'warning', plain: true },
+  submit: { icon: '', label: '确定', type: 'primary', plain: true },
+  cancel: { icon: '', label: '取消', type: 'info', plain: true }
+}
+
 const emit = defineEmits(["successCallback", "errorCallback"])
 
 const props = defineProps({
@@ -61,9 +59,14 @@ const props = defineProps({
     type: String,
     default: ''
   },
+  // 图标
+  icon: {
+    type: String,
+    default: ''
+  },
   // promise
   clickFunction: {type: Function, default: null},
-// 是否弹出确认框
+  // 是否弹出确认框
   confirm: {
     type: Boolean,
     default: false,
@@ -78,7 +81,6 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-
   // 成功之后提示信息(当isSuccessCallback为false的时候,才启动)
   successMessage: {
     type: String,
@@ -105,143 +107,144 @@ const props = defineProps({
     default: "msg",
   },
   // 是否进行参数校验
-  validate:
-      {
-        type: Boolean,
-        default: false,
-      },
+  validate: {
+    type: Boolean,
+    default: false,
+  },
   // 参数校验的ref
   validateRef: {
     type: Object,
     default: null,
   }
-
-
 })
-const icon = ref('');
-const plain = ref(props.plain);
 
-const type = ref(props.type)
-const label = ref(props.label);
-onMounted(() => {
-  if (props.btnType) {
-    plain.value = true;
+// 计算属性优化性能
+const buttonConfig = computed(() => buttonConfigs[props.btnType] || {})
 
-    if (props.btnType === 'add') {
-      icon.value = 'Plus'
-      label.value = '新增'
-      type.value = 'primary'
-    } else if (props.btnType === 'edit') {
-      icon.value = 'Edit'
-      label.value = '修改'
-      type.value = 'success'
-    } else if (props.btnType === 'delete') {
-      icon.value = 'Delete'
-      label.value = '删除'
-      type.value = 'danger'
-    } else if (props.btnType === 'query') {
-      icon.value = 'Search'
-      label.value = '查询'
-      plain.value = false;
-    } else if (props.btnType === 'refresh') {
-      icon.value = 'Refresh'
-      label.value = '重置'
-      plain.value = false;
-      type.value = ''
-    } else if (props.btnType === 'upload') {
-      icon.value = 'Upload'
-      label.value = '上传'
-      type.value = 'info'
-    } else if (props.btnType === 'download') {
-      icon.value = 'Download'
-      label.value = '下载'
-      type.value = 'warning'
-    } else if (props.btnType === 'submit') {
-      label.value = '确定'
-      type.value = 'primary'
-    } else if (props.btnType === 'cancel') {
-      label.value = '取消'
-      type.value = 'info'
-    }
-  }
+const computedIcon = computed(() => {
+  return props.icon || buttonConfig.value.icon || ''
+})
 
-});
-let isProcessing = ref(false); // 用于防止重复点击
+const computedType = computed(() => {
+  return buttonConfig.value.type || props.type
+})
 
-const buttonClick = debounce(() => {
-  if (isProcessing.value) return; // 如果已经有请求在处理，直接返回
+const computedLabel = computed(() => {
+  return buttonConfig.value.label || props.label
+})
+
+const computedPlain = computed(() => {
+  return buttonConfig.value.plain !== undefined ? buttonConfig.value.plain : props.plain
+})
+
+const loading = ref(false)
+let isProcessing = ref(false) // 用于防止重复点击
+
+// 统一的点击处理函数
+const handleClick = debounce(() => {
+  if (isProcessing.value || !props.clickFunction) return
 
   if (props.confirm) {
-    confirm();
+    showConfirmDialog()
   } else {
-    buttonClickHandler();
+    executeClickFunction()
   }
-}, 300); // 假设防抖间隔为300毫秒
-const confirm = () => {
+}, 300)
+
+// 确认对话框
+const showConfirmDialog = () => {
   ElMessageBox.confirm(props.confirmMessage, '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   }).then(() => {
-    buttonClickHandler();
+    executeClickFunction();
   }).catch(() => {
-    // 确认框取消时也需要重置状态
+    // 确认框取消时重置状态
     isProcessing.value = false;
   });
 }
-const loading = ref(false)
 
-// 按钮点击事件
-async function buttonClickHandler() {
+// 执行点击函数
+async function executeClickFunction() {
+  if (isProcessing.value) return
+  
+  isProcessing.value = true
   loading.value = true
+  
   try {
+    // 表单验证
     if (props.validate && props.validateRef) {
-      if (!props.validateRef) return
-
-      props.validateRef.validate((valid, fields) => {
-        if (valid) {
-          props.clickFunction()
-        } else {
-          emit('errorCallback', fields);
-        }
-      })
-
-    } else {
-      const result = await props.clickFunction()
-      if (result) {
-        if (props.checkSuccess(result)) {
-
-          // 成功回调
-          if (props.isSuccessCallback) {
-            emit('successCallback', result);
-          } else {
-            ElMessage.success(props.successMessage);
-
-          }
-        } else {
-          let msg = '';
-          if (props.errorMessageType === 'res') {
-            msg = jsonGet(result, props.errorMessage);
-          } else if (props.errorMessageType === 'msg') {
-            msg = props.errorMessage;
-          }
-          if (props.isErrorCallback) {
-            emit('errorCallback', result, msg);
-          } else {
-            ElMessage.error(msg);
-          }
-        }
-      }
+      const isValid = await validateForm()
+      if (!isValid) return
     }
 
+    // 执行业务逻辑
+    const result = await props.clickFunction()
+    
+    if (result && props.checkSuccess(result)) {
+      handleSuccess(result)
+    } else if (result) {
+      handleError(result)
+    }
 
   } catch (err) {
-    ElMessage.error(err);
+    console.error('Button click error:', err)
+    const errorMsg = err?.message || err || '操作失败'
+    
+    if (props.isErrorCallback) {
+      emit('errorCallback', err, errorMsg);
+    } else {
+      ElMessage.error(errorMsg);
+    }
   } finally {
-    loading.value = false                      // 结束加载
+    loading.value = false
+    isProcessing.value = false
   }
+}
 
+// 表单验证
+const validateForm = () => {
+  return new Promise((resolve) => {
+    if (!props.validateRef) {
+      resolve(false)
+      return
+    }
 
+    props.validateRef.validate((valid, fields) => {
+      if (valid) {
+        resolve(true)
+      } else {
+        emit('errorCallback', fields);
+        resolve(false)
+      }
+    })
+  })
+}
+
+// 处理成功响应
+const handleSuccess = (result) => {
+  if (props.isSuccessCallback) {
+    emit('successCallback', result);
+  } else if (props.successMessage) {
+    ElMessage.success(props.successMessage);
+  }
+}
+
+// 处理错误响应
+const handleError = (result) => {
+  let msg = '';
+  if (props.errorMessageType === 'res') {
+    msg = jsonGet(result, props.errorMessage) || '操作失败';
+  } else if (props.errorMessageType === 'msg') {
+    msg = props.errorMessage || '操作失败';
+  }
+  
+  if (props.isErrorCallback) {
+    emit('errorCallback', result, msg);
+  } else {
+    ElMessage.error(msg);
+  }
 }
 
 </script>

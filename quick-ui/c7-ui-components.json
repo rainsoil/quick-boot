@@ -1,0 +1,1370 @@
+{
+  "name": "c7-plus",
+  "displayName": "c7-plus",
+  "version": "1.0.0",
+  "description": "c7-plus",
+  "componentPrefix": "c7-",
+  "documentationUrlTemplate": "http://chu7.com",
+  "components": [
+    {
+      "name": "c7-button",
+      "description": "按钮组件，基于Element Plus的el-button封装，支持多种预设类型和异步操作。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-button type=\"primary\" label=\"确定\" @click=\"handleClick\"></c7-button>",
+      "docUrl": "docs/components/c7/button.md",
+      "props": [
+        {
+          "name": "type",
+          "type": "string",
+          "description": "按钮类型",
+          "defaultValue": "primary",
+          "required": false
+        },
+        {
+          "name": "btnType",
+          "type": "string",
+          "description": "预设按钮类型(add/edit/delete/query/refresh/upload/download/submit/cancel)",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "plain",
+          "type": "boolean",
+          "description": "是否为朴素按钮",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "description": "按钮内容",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "clickFunction",
+          "type": "function",
+          "description": "点击执行的异步函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "confirm",
+          "type": "boolean",
+          "description": "是否弹出确认框",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "confirmMessage",
+          "type": "string",
+          "description": "确认框提示内容",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "isSuccessCallback",
+          "type": "boolean",
+          "description": "是否开启成功之后回调",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "successMessage",
+          "type": "string",
+          "description": "成功之后提示信息",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "isErrorCallback",
+          "type": "boolean",
+          "description": "是否开启失败回调",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "checkSuccess",
+          "type": "function",
+          "description": "检查接口调用是否成功",
+          "defaultValue": "(res) => res.code === 200",
+          "required": false
+        },
+        {
+          "name": "errorMessageType",
+          "type": "string",
+          "description": "错误提示类型(msg/res)",
+          "defaultValue": "res",
+          "required": false
+        },
+        {
+          "name": "errorMessage",
+          "type": "string",
+          "description": "错误提示信息",
+          "defaultValue": "msg",
+          "required": false
+        },
+        {
+          "name": "validate",
+          "type": "boolean",
+          "description": "是否进行参数校验",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "validateRef",
+          "type": "object",
+          "description": "参数校验的ref",
+          "defaultValue": null,
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "successCallback",
+          "description": "成功回调事件",
+          "parameters": "result"
+        },
+        {
+          "name": "errorCallback",
+          "description": "错误回调事件",
+          "parameters": "result, message"
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "按钮内容插槽"
+        }
+      ]
+    },
+    {
+      "name": "c7-card",
+      "description": "卡片组件，支持展开收起功能和自定义色块。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-card label=\"标题\" :is-show-color-block=\"true\">内容</c7-card>",
+      "docUrl": "docs/components/c7/card.md",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "卡片标题",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "isShowColorBlock",
+          "type": "boolean",
+          "description": "是否展示色块",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "colorBlockColor",
+          "type": "string",
+          "description": "色块颜色",
+          "defaultValue": "#409eff",
+          "required": false
+        },
+        {
+          "name": "textSize",
+          "type": "string",
+          "description": "文本内容大小(h1/h2/h3/h4/h5)",
+          "defaultValue": "h2",
+          "required": false
+        },
+        {
+          "name": "isBold",
+          "type": "boolean",
+          "description": "是否加粗",
+          "defaultValue": true,
+          "required": false
+        }
+      ],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "卡片内容"
+        }
+      ]
+    },
+    {
+      "name": "c7-cascader",
+      "description": "级联选择器组件，支持静态数据、异步加载和懒加载。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-cascader v-model=\"value\" :data-list=\"options\"></c7-cascader>",
+      "docUrl": "docs/components/c7/cascader.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "array | string | number",
+          "description": "绑定值",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "fetchData",
+          "type": "function",
+          "description": "异步获取数据的函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "dataFormatter",
+          "type": "function",
+          "description": "数据格式化回调",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "labelKey",
+          "type": "string",
+          "description": "label字段名",
+          "defaultValue": "label",
+          "required": false
+        },
+        {
+          "name": "valueKey",
+          "type": "string",
+          "description": "value字段名",
+          "defaultValue": "value",
+          "required": false
+        },
+        {
+          "name": "resultKey",
+          "type": "string",
+          "description": "异步结果中列表数据所在的路径",
+          "defaultValue": "data",
+          "required": false
+        },
+        {
+          "name": "dataList",
+          "type": "array",
+          "description": "静态数据列表",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "fetchParams",
+          "type": "object",
+          "description": "异步获取数据时的额外参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "resultType",
+          "type": "number",
+          "description": "结果类型(1:数组 2:字符串 3:最后元素)",
+          "defaultValue": 1,
+          "required": false
+        },
+        {
+          "name": "lazy",
+          "type": "boolean",
+          "description": "是否懒加载",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "parentNodeFetchFunction",
+          "type": "function",
+          "description": "获取父级节点数据的函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "checkStrictly",
+          "type": "boolean",
+          "description": "是否严格的遵守父子节点不互相关联",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "rootParentId",
+          "type": "string",
+          "description": "根节点父级ID",
+          "defaultValue": "-1",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "绑定值变化时触发",
+          "parameters": "value"
+        }
+      ],
+      "slots": []
+    },
+    {
+      "name": "c7-checkbox",
+      "description": "复选框组件，支持全选功能和多种数据源。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-checkbox v-model=\"value\" :data-list=\"options\"></c7-checkbox>",
+      "docUrl": "docs/components/c7/checkbox.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "array | string",
+          "description": "绑定值",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "fetchData",
+          "type": "function",
+          "description": "异步加载数据函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "dataList",
+          "type": "array",
+          "description": "静态数据列表",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "fetchParams",
+          "type": "object",
+          "description": "异步请求参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "resultKey",
+          "type": "string",
+          "description": "异步返回结果中的数据路径",
+          "defaultValue": "data",
+          "required": false
+        },
+        {
+          "name": "dataFormatter",
+          "type": "function",
+          "description": "数据格式化函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "indeterminate",
+          "type": "boolean",
+          "description": "是否显示全选控件",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "separator",
+          "type": "boolean",
+          "description": "是否将数组转换为逗号分隔字符串",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "labelKey",
+          "type": "string",
+          "description": "数据项标签字段名",
+          "defaultValue": "label",
+          "required": false
+        },
+        {
+          "name": "valueKey",
+          "type": "string",
+          "description": "数据项值字段名",
+          "defaultValue": "value",
+          "required": false
+        },
+        {
+          "name": "button",
+          "type": "boolean",
+          "description": "是否使用按钮风格",
+          "defaultValue": false,
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "绑定值变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "change",
+          "description": "选择变化时触发",
+          "parameters": "value"
+        }
+      ],
+      "slots": []
+    },
+    {
+      "name": "c7-crud",
+      "description": "CRUD表格组件，集成搜索、表格和分页功能。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-crud :list-function=\"getList\" :page-total=\"total\">表格内容</c7-crud>",
+      "docUrl": "docs/components/c7/c7Crud.md",
+      "props": [
+        {
+          "name": "init",
+          "type": "boolean",
+          "description": "是否初始化时加载数据",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "initParam",
+          "type": "object",
+          "description": "初始化参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "listFunction",
+          "type": "function",
+          "description": "获取列表数据的函数",
+          "defaultValue": null,
+          "required": true
+        },
+        {
+          "name": "rowKey",
+          "type": "string",
+          "description": "行主键字段",
+          "defaultValue": "id",
+          "required": false
+        },
+        {
+          "name": "pageTotal",
+          "type": "number",
+          "description": "分页总数",
+          "defaultValue": null,
+          "required": true
+        },
+        {
+          "name": "pagePage",
+          "type": "number",
+          "description": "当前页码",
+          "defaultValue": 1,
+          "required": false
+        },
+        {
+          "name": "pageLimit",
+          "type": "number",
+          "description": "每页条数",
+          "defaultValue": 10,
+          "required": false
+        },
+        {
+          "name": "pageSizes",
+          "type": "array",
+          "description": "每页条数选项",
+          "defaultValue": "[10, 20, 30, 50]",
+          "required": false
+        },
+        {
+          "name": "pageLayout",
+          "type": "string",
+          "description": "分页器布局",
+          "defaultValue": "prev, pager, next, jumper",
+          "required": false
+        },
+        {
+          "name": "pageBackground",
+          "type": "boolean",
+          "description": "分页器是否有背景色",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "pageAutoScroll",
+          "type": "boolean",
+          "description": "分页器是否自动滚动",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "pageHidden",
+          "type": "boolean",
+          "description": "是否隐藏分页器",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "showSearch",
+          "type": "boolean",
+          "description": "是否显示搜索区域",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "rowsKey",
+          "type": "string",
+          "description": "数据行字段名",
+          "defaultValue": "rows",
+          "required": false
+        },
+        {
+          "name": "totalKey",
+          "type": "string",
+          "description": "总数字段名",
+          "defaultValue": "total",
+          "required": false
+        },
+        {
+          "name": "labelWidth",
+          "type": "number",
+          "description": "标签宽度",
+          "defaultValue": 100,
+          "required": false
+        },
+        {
+          "name": "searchParam",
+          "type": "object",
+          "description": "搜索参数",
+          "defaultValue": "{}",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:showSearch",
+          "description": "搜索区域显示状态变化",
+          "parameters": "value"
+        },
+        {
+          "name": "selection-change",
+          "description": "多选变化时触发",
+          "parameters": "selectedKeys"
+        },
+        {
+          "name": "update:searchParam",
+          "description": "搜索参数变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "cleanParam",
+          "description": "清空参数时触发",
+          "parameters": ""
+        }
+      ],
+      "slots": [
+        {
+          "name": "search",
+          "description": "搜索区域插槽"
+        },
+        {
+          "name": "operate",
+          "description": "操作栏插槽"
+        },
+        {
+          "name": "default",
+          "description": "表格内容插槽"
+        }
+      ]
+    },
+    {
+      "name": "c7-date-picker",
+      "description": "日期选择器组件，基于Element Plus封装，支持多种日期格式。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-date-picker v-model=\"date\" type=\"date\"></c7-date-picker>",
+      "docUrl": "docs/components/c7/datePicker.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | array | date",
+          "description": "绑定值",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "description": "日期类型",
+          "defaultValue": "date",
+          "required": false
+        },
+        {
+          "name": "format",
+          "type": "string",
+          "description": "显示格式",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "valueFormat",
+          "type": "string",
+          "description": "值格式",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "rangeMerge",
+          "type": "boolean",
+          "description": "是否合并范围值",
+          "defaultValue": true,
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "绑定值变化时触发",
+          "parameters": "value"
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "日期选择器内容"
+        }
+      ]
+    },
+    {
+      "name": "c7-dialog",
+      "description": "对话框组件，支持Dialog和Drawer两种模式。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-dialog v-model:visible=\"visible\" mode=\"dialog\">内容</c7-dialog>",
+      "docUrl": "docs/components/c7/dialog.md",
+      "props": [
+        {
+          "name": "footer",
+          "type": "boolean",
+          "description": "是否显示底部按钮",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "mode",
+          "type": "string",
+          "description": "显示模式(dialog/drawer)",
+          "defaultValue": "dialog",
+          "required": false
+        },
+        {
+          "name": "visible",
+          "type": "boolean",
+          "description": "是否显示",
+          "defaultValue": false,
+          "required": true
+        },
+        {
+          "name": "modalProps",
+          "type": "object",
+          "description": "模态框配置属性",
+          "defaultValue": "{}",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:visible",
+          "description": "显示状态变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "close",
+          "description": "关闭时触发",
+          "parameters": ""
+        },
+        {
+          "name": "submit",
+          "description": "确定按钮点击时触发",
+          "parameters": ""
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "对话框内容"
+        },
+        {
+          "name": "footer",
+          "description": "底部按钮区域"
+        }
+      ]
+    },
+    {
+      "name": "c7-dict-tag",
+      "description": "字典标签组件，用于显示字典数据的标签形式。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-dict-tag :options=\"dictOptions\" v-model=\"value\"></c7-dict-tag>",
+      "docUrl": "docs/components/c7/c7tag.md",
+      "props": [
+        {
+          "name": "options",
+          "type": "array",
+          "description": "字典数据选项",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "modelValue",
+          "type": "number | string | array",
+          "description": "当前的值",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "showValue",
+          "type": "boolean",
+          "description": "当未找到匹配的数据时，是否显示value",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "separator",
+          "type": "string",
+          "description": "分隔符",
+          "defaultValue": ",",
+          "required": false
+        },
+        {
+          "name": "size",
+          "type": "string",
+          "description": "标签大小",
+          "defaultValue": "default",
+          "required": false
+        }
+      ],
+      "events": [],
+      "slots": []
+    },
+    {
+      "name": "c7-json-form",
+      "description": "JSON表单组件，根据配置动态生成表单。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-json-form :columns=\"formColumns\" v-model=\"formData\"></c7-json-form>",
+      "docUrl": "docs/components/c7/jsonform.md",
+      "props": [
+        {
+          "name": "columns",
+          "type": "array",
+          "description": "表单列配置",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "modelValue",
+          "type": "object",
+          "description": "表单数据",
+          "defaultValue": "{}",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "表单数据变化时触发",
+          "parameters": "formData"
+        }
+      ],
+      "slots": [
+        {
+          "name": "slot_[prop]",
+          "description": "自定义插槽，prop为字段名"
+        }
+      ]
+    },
+    {
+      "name": "c7-json-table",
+      "description": "JSON表格组件，集成搜索、表格和分页的完整CRUD解决方案。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-json-table :list-function=\"getList\" :search-columns=\"searchColumns\" :table-columns=\"tableColumns\"></c7-json-table>",
+      "docUrl": "docs/components/c7/jsontable.md",
+      "props": [
+        {
+          "name": "init",
+          "type": "boolean",
+          "description": "是否初始化时加载数据",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "initParam",
+          "type": "object",
+          "description": "初始化参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "listFunction",
+          "type": "function",
+          "description": "获取列表数据的函数",
+          "defaultValue": null,
+          "required": true
+        },
+        {
+          "name": "rowKey",
+          "type": "string",
+          "description": "行主键字段",
+          "defaultValue": "id",
+          "required": false
+        },
+        {
+          "name": "pageTotal",
+          "type": "number",
+          "description": "分页总数",
+          "defaultValue": null,
+          "required": true
+        },
+        {
+          "name": "pagePage",
+          "type": "number",
+          "description": "当前页码",
+          "defaultValue": 1,
+          "required": false
+        },
+        {
+          "name": "pageLimit",
+          "type": "number",
+          "description": "每页条数",
+          "defaultValue": 10,
+          "required": false
+        },
+        {
+          "name": "pageSizes",
+          "type": "array",
+          "description": "每页条数选项",
+          "defaultValue": "[10, 20, 30, 50]",
+          "required": false
+        },
+        {
+          "name": "pageLayout",
+          "type": "string",
+          "description": "分页器布局",
+          "defaultValue": "prev, pager, next, jumper",
+          "required": false
+        },
+        {
+          "name": "pageBackground",
+          "type": "boolean",
+          "description": "分页器是否有背景色",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "pageAutoScroll",
+          "type": "boolean",
+          "description": "分页器是否自动滚动",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "pageHidden",
+          "type": "boolean",
+          "description": "是否隐藏分页器",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "showSearch",
+          "type": "boolean",
+          "description": "是否显示搜索区域",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "rowsKey",
+          "type": "string",
+          "description": "数据行字段名",
+          "defaultValue": "rows",
+          "required": false
+        },
+        {
+          "name": "totalKey",
+          "type": "string",
+          "description": "总数字段名",
+          "defaultValue": "total",
+          "required": false
+        },
+        {
+          "name": "labelWidth",
+          "type": "number",
+          "description": "标签宽度",
+          "defaultValue": 100,
+          "required": false
+        },
+        {
+          "name": "searchParam",
+          "type": "object",
+          "description": "搜索参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "searchColumns",
+          "type": "array",
+          "description": "搜索列配置",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "tableColumns",
+          "type": "array",
+          "description": "表格列配置",
+          "defaultValue": "[]",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "handleFormChange",
+          "description": "表单变化时触发",
+          "parameters": "data"
+        }
+      ],
+      "slots": [
+        {
+          "name": "operate",
+          "description": "操作栏插槽"
+        },
+        {
+          "name": "slot_[prop]",
+          "description": "自定义插槽，prop为字段名"
+        }
+      ]
+    },
+    {
+      "name": "c7-json-table-column",
+      "description": "JSON表格列组件，根据配置动态生成表格列。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-json-table-column :columns=\"tableColumns\"></c7-json-table-column>",
+      "docUrl": "docs/components/c7/jsonTableColumn.md",
+      "props": [
+        {
+          "name": "columns",
+          "type": "array",
+          "description": "表格列配置",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "modelValue",
+          "type": "object",
+          "description": "表格数据",
+          "defaultValue": "{}",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "表格数据变化时触发",
+          "parameters": "tableData"
+        }
+      ],
+      "slots": [
+        {
+          "name": "slot_[prop]",
+          "description": "自定义插槽，prop为字段名"
+        }
+      ]
+    },
+    {
+      "name": "c7-layer",
+      "description": "层级组件，提供带标题和关闭按钮的内容容器。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-layer title=\"标题\">内容</c7-layer>",
+      "docUrl": "docs/components/c7/layer.md",
+      "props": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "层级标题",
+          "defaultValue": "",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "close",
+          "description": "关闭时触发",
+          "parameters": ""
+        }
+      ],
+      "slots": [
+        {
+          "name": "default",
+          "description": "层级内容"
+        }
+      ]
+    },
+    {
+      "name": "c7-preview",
+      "description": "文件预览组件，支持图片、视频和文件的预览。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-preview urls=\"image1.jpg,image2.jpg\" width=\"200px\" height=\"200px\"></c7-preview>",
+      "docUrl": "docs/components/c7/preview.md",
+      "props": [
+        {
+          "name": "urls",
+          "type": "string",
+          "description": "以逗号分隔的文件URL列表",
+          "defaultValue": "",
+          "required": true
+        },
+        {
+          "name": "width",
+          "type": "string | number",
+          "description": "预览区域宽度",
+          "defaultValue": "200px",
+          "required": false
+        },
+        {
+          "name": "height",
+          "type": "string | number",
+          "description": "预览区域高度",
+          "defaultValue": "200px",
+          "required": false
+        },
+        {
+          "name": "displayType",
+          "type": "string",
+          "description": "文件显示类型(image/video/file)",
+          "defaultValue": "image",
+          "required": false
+        },
+        {
+          "name": "coverType",
+          "type": "string",
+          "description": "封面类型(None/button/file)",
+          "defaultValue": "None",
+          "required": false
+        },
+        {
+          "name": "buttonText",
+          "type": "string",
+          "description": "按钮显示的文本",
+          "defaultValue": "预览文件",
+          "required": false
+        },
+        {
+          "name": "defaultVideoImage",
+          "type": "string",
+          "description": "默认的视频缩略图",
+          "defaultValue": "https://via.placeholder.com/200?text=Video",
+          "required": false
+        },
+        {
+          "name": "defaultFileImage",
+          "type": "string",
+          "description": "默认的文件封面图",
+          "defaultValue": "https://via.placeholder.com/200?text=File",
+          "required": false
+        }
+      ],
+      "events": [],
+      "slots": []
+    },
+    {
+      "name": "c7-radio",
+      "description": "单选按钮组件，支持静态数据列表。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-radio v-model=\"value\" :data-list=\"options\"></c7-radio>",
+      "docUrl": "docs/components/c7/radio.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number",
+          "description": "绑定值",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "dataList",
+          "type": "array",
+          "description": "静态数据列表",
+          "defaultValue": "[]",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "绑定值变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "change",
+          "description": "选择变化时触发",
+          "parameters": "value"
+        }
+      ],
+      "slots": []
+    },
+    {
+      "name": "c7-select",
+      "description": "下拉选择组件，支持静态数据、异步加载、远程搜索和分组。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-select v-model=\"value\" :data-list=\"options\"></c7-select>",
+      "docUrl": "docs/components/c7/select.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string | number | array",
+          "description": "绑定值",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "fetchData",
+          "type": "function",
+          "description": "异步获取数据的函数",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "dataFormatter",
+          "type": "function",
+          "description": "数据格式化回调",
+          "defaultValue": null,
+          "required": false
+        },
+        {
+          "name": "labelKey",
+          "type": "string",
+          "description": "label字段名",
+          "defaultValue": "label",
+          "required": false
+        },
+        {
+          "name": "valueKey",
+          "type": "string",
+          "description": "value字段名",
+          "defaultValue": "value",
+          "required": false
+        },
+        {
+          "name": "resultKey",
+          "type": "string",
+          "description": "异步结果中列表数据所在的路径",
+          "defaultValue": "data",
+          "required": false
+        },
+        {
+          "name": "dataList",
+          "type": "array",
+          "description": "静态数据列表",
+          "defaultValue": "[]",
+          "required": false
+        },
+        {
+          "name": "fetchParams",
+          "type": "object",
+          "description": "异步获取数据时的额外参数",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "autoLoad",
+          "type": "boolean",
+          "description": "是否在组件挂载后自动加载数据",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "separator",
+          "type": "boolean",
+          "description": "多选模式下是否使用逗号分隔符来存储",
+          "defaultValue": true,
+          "required": false
+        },
+        {
+          "name": "multiple",
+          "type": "boolean",
+          "description": "是否开启多选模式",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "tag",
+          "type": "boolean",
+          "description": "是否开启tag模式",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "remote",
+          "type": "boolean",
+          "description": "是否远程搜索模式",
+          "defaultValue": false,
+          "required": false
+        },
+        {
+          "name": "group",
+          "type": "boolean",
+          "description": "是否开启分组",
+          "defaultValue": false,
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "绑定值变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "change",
+          "description": "选择变化时触发",
+          "parameters": "value"
+        },
+        {
+          "name": "visibleChange",
+          "description": "下拉面板显示/隐藏时触发",
+          "parameters": "open"
+        }
+      ],
+      "slots": [
+        {
+          "name": "label",
+          "description": "自定义选项标签"
+        }
+      ]
+    },
+    {
+      "name": "c7-switch-form",
+      "description": "表单切换组件，支持多页面内容的切换显示。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-switch-form :show-indexs=\"pages\" v-model=\"currentPage\"></c7-switch-form>",
+      "docUrl": "docs/components/c7/switchForm.md",
+      "props": [
+        {
+          "name": "showIndexs",
+          "type": "array",
+          "description": "显示索引配置",
+          "defaultValue": "[]",
+          "required": true
+        },
+        {
+          "name": "modelValue",
+          "type": "string",
+          "description": "当前显示的页面",
+          "defaultValue": "",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "当前页面变化时触发",
+          "parameters": "value"
+        }
+      ],
+      "slots": [
+        {
+          "name": "[name]",
+          "description": "页面内容插槽，name为页面名称"
+        }
+      ]
+    },
+    {
+      "name": "c7-title",
+      "description": "标题组件，支持自定义大小和颜色。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-title label=\"标题\" label-size=\"h2\" label-color=\"#409eff\"></c7-title>",
+      "docUrl": "docs/components/c7/c7Title.md",
+      "props": [
+        {
+          "name": "label",
+          "type": "string",
+          "description": "标题名称",
+          "defaultValue": "默认标题",
+          "required": false
+        },
+        {
+          "name": "labelSize",
+          "type": "string",
+          "description": "标题大小",
+          "defaultValue": "h1",
+          "required": false
+        },
+        {
+          "name": "labelColor",
+          "type": "string",
+          "description": "标题颜色",
+          "defaultValue": "",
+          "required": false
+        }
+      ],
+      "events": [],
+      "slots": [
+        {
+          "name": "default",
+          "description": "标题内容"
+        }
+      ]
+    },
+    {
+      "name": "c7-upload",
+      "description": "文件上传组件，支持图片预览、文件类型限制、大小限制等。",
+      "version": "c7-plus >=1.0.0",
+      "example": "<c7-upload v-model=\"files\" upload-url=\"/api/upload\" :limit=\"5\"></c7-upload>",
+      "docUrl": "docs/components/c7/upload.md",
+      "props": [
+        {
+          "name": "modelValue",
+          "type": "string",
+          "description": "上传文件的URL字符串（逗号分隔）",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "uploadUrl",
+          "type": "string",
+          "description": "上传接口地址",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "fileSize",
+          "type": "number",
+          "description": "文件大小限制（MB）",
+          "defaultValue": 5,
+          "required": false
+        },
+        {
+          "name": "fileType",
+          "type": "string",
+          "description": "允许上传的文件类型（后缀名，逗号分隔）",
+          "defaultValue": "jpg,png",
+          "required": false
+        },
+        {
+          "name": "limit",
+          "type": "number",
+          "description": "上传文件数量限制",
+          "defaultValue": 1,
+          "required": false
+        },
+        {
+          "name": "deleteUrl",
+          "type": "string",
+          "description": "删除文件的接口地址",
+          "defaultValue": "",
+          "required": false
+        },
+        {
+          "name": "headers",
+          "type": "object",
+          "description": "上传请求的头部信息",
+          "defaultValue": "{}",
+          "required": false
+        },
+        {
+          "name": "listType",
+          "type": "string",
+          "description": "文件列表显示类型",
+          "defaultValue": "picture-card",
+          "required": false
+        }
+      ],
+      "events": [
+        {
+          "name": "update:modelValue",
+          "description": "文件列表变化时触发",
+          "parameters": "fileUrls"
+        }
+      ],
+      "slots": []
+    }
+  ]
+}

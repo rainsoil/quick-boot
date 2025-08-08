@@ -1,17 +1,17 @@
 <template>
   <el-upload
       v-model:file-list="fileList"
-      :action="props.uploadUrl"
-      :list-type="props.listType"
+      :action="uploadUrl"
+      :list-type="listType"
       :on-preview="handlePictureCardPreview"
       :before-remove="handleDelete"
       :on-success="handleUploadSuccess"
       :before-upload="handleBeforeUpload"
       :on-error="handleError"
       :limit="limit"
-      :accept="fileType"
+      :accept="acceptTypes"
       :headers="headers"
-      :class="{ hide: fileList.length >= limit  } "
+      :class="{ hide: fileList.length >= limit }"
       :show-file-list="true"
   >
     <el-icon>
@@ -19,15 +19,10 @@
     </el-icon>
   </el-upload>
   <!-- 上传提示 -->
-  <div class="el-upload__tip">
-    请上传 xxx材料
-    <template v-if="fileSize">
-      大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
-    </template>
-    <template v-if="fileType">
-      格式为 <b style="color: #f56c6c">{{ fileType }}</b>
-    </template>
-    的文件
+  <div class="el-upload__tip" v-if="showTip">
+    <slot name="tip">
+      请上传{{ tipContent }}的文件
+    </slot>
   </div>
   <el-dialog v-model="dialogVisible">
     <el-image w-full :src="dialogImageUrl" alt="Preview Image" :preview-src-list="srcList"/>
@@ -35,19 +30,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch} from 'vue'
+import { ref, watch, computed} from 'vue'
 import {Plus} from '@element-plus/icons-vue'
+import {ElLoading, ElMessage, UploadProps, UploadUserFile} from 'element-plus'
 
-defineOptions(
-    {
-      name: 'c7Upload'
-    }
-)
+defineOptions({
+  name: 'c7Upload'
+})
 
 // 参数
 const props = defineProps({
-  modelValue: [String],
-  //  上传url
+  modelValue: [String, Array],
+  // 上传url
   uploadUrl: {
     type: String,
     default: ''
@@ -67,7 +61,6 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-
   // 删除文件的接口
   deleteUrl: {
     type: String,
@@ -75,154 +68,196 @@ const props = defineProps({
   },
   headers: {
     type: Object,
-    default: () => {
-      return {}
-    }
+    default: () => ({})
   },
   listType: {
     type: String,
     default: 'picture-card'
   },
-
+  // 是否显示提示信息
+  showTip: {
+    type: Boolean,
+    default: true
+  },
+  // 提示信息内容
+  tipText: {
+    type: String,
+    default: ''
+  }
 });
 
-const number = ref(0);
-let loadingInstance : any;
-const emit = defineEmits();
-const uploadList = ref([]);
+const emit = defineEmits(['update:modelValue'])
 
-// 上传前loading加载
-function handleBeforeUpload(file : any) {
-// 文件类型校验（根据后缀判断）
-  if (props.fileType) {
-    const allowedTypes = props.fileType.split(',').map(t => t.trim().toLowerCase())
-    const fileExtension = file.name.split('.').pop().toLowerCase()
-    if (!allowedTypes.includes(fileExtension)) {
-      ElMessage.error(`只允许上传 ${allowedTypes.join(', ')} 类型的文件`)
-      return false
-    }
+// 计算属性：提示内容
+const tipContent = computed(() => {
+  const parts = []
+  if (props.tipText) {
+    parts.push(props.tipText)
   }
-
   if (props.fileSize) {
-    const isLt = file.size / 1024 / 1024 < props.fileSize;
-    if (!isLt) {
-      ElMessage.error(`上传文件大小不能超过 ${props.fileSize} MB!`);
-      return false;
-    }
+    parts.push(`大小不超过 ${props.fileSize}MB`)
   }
-  loading("正在上传文件，请稍候...");
-  number.value++;
-}
+  if (props.fileType) {
+    parts.push(`格式为 ${props.fileType}`)
+  }
+  return parts.join('，')
+})
 
-import {ElLoading, ElMessage, UploadProps, UploadUserFile} from 'element-plus'
+// 计算属性：接受的文件类型
+const acceptTypes = computed(() => {
+  if (!props.fileType) return ''
+  return props.fileType.split(',').map(type => `.${type.trim()}`).join(',')
+})
 
-
-const srcList = ref([])
+const uploadCount = ref(0)
+let loadingInstance: any
+const uploadList = ref<UploadUserFile[]>([])
+const srcList = ref<string[]>([])
 const fileList = ref<UploadUserFile[]>([])
-
 const dialogImageUrl = ref('')
 const dialogVisible = ref(false)
 
-// 删除图片
-function handleDelete(file: any) {
-  const findex = fileList.value.map(f => f.name).indexOf(file.name);
-  let deleteFile = fileList.value[findex].url;
-  if (findex > -1 && uploadList.value.length === number.value) {
-
-    console.log(fileList.value, uploadList.value, findex)
-    fileList.value.splice(findex, 1);
-    emit("update:modelValue", listToString(fileList.value, ","));
-    // 这里调用后端接口 去删除
-    if (props.deleteUrl) {
-      let deleteParams = {
-        fileUrl: deleteFile
-      }
-      // injectService.postRequest(props.deleteUrl, deleteParams, props.headers).then(res => {
-      //   if (res.code === 200) {
-      //     ElMessage.success("删除成功")
-      //   } else {
-      //     ElMessage.error("删除失败")
-      //   }
-      // });
-      // console.log("调用接口去删除,参数为:{}", deleteParams)
+// 文件验证函数
+const validateFile = (file: File): boolean => {
+  const errors: string[] = []
+  
+  // 文件类型验证
+  if (props.fileType) {
+    const allowedTypes = props.fileType.split(',').map(t => t.trim().toLowerCase())
+    const fileExtension = file.name.split('.').pop()?.toLowerCase() || ''
+    if (!allowedTypes.includes(fileExtension)) {
+      errors.push(`文件类型必须是: ${allowedTypes.join(', ')}`)
     }
+  }
 
-    return false;
+  // 文件大小验证
+  if (props.fileSize) {
+    const fileSizeInMB = file.size / 1024 / 1024
+    if (fileSizeInMB > props.fileSize) {
+      errors.push(`文件大小不能超过 ${props.fileSize}MB`)
+    }
+  }
+
+  if (errors.length > 0) {
+    ElMessage.error(errors.join('；'))
+    return false
+  }
+
+  return true
+}
+
+// 上传前处理
+function handleBeforeUpload(file: File) {
+  if (!validateFile(file)) {
+    return false
+  }
+  
+  showLoading("正在上传文件，请稍候...")
+  uploadCount.value++
+  return true
+}
+
+// 删除文件
+function handleDelete(file: any) {
+  const fileIndex = fileList.value.findIndex(f => f.name === file.name)
+  if (fileIndex === -1) return true
+
+  const deleteFile = fileList.value[fileIndex]
+  
+  // 从文件列表中移除
+  fileList.value.splice(fileIndex, 1)
+  emit("update:modelValue", formatFileList(fileList.value))
+
+  // 调用删除接口（如果提供了删除URL）
+  if (props.deleteUrl && deleteFile.url) {
+    callDeleteAPI(deleteFile.url)
+  }
+
+  return false
+}
+
+// 调用删除API
+const callDeleteAPI = async (fileUrl: string) => {
+  try {
+    const deleteParams = { fileUrl }
+    // 这里需要根据实际的HTTP客户端进行调用
+    // const response = await httpClient.post(props.deleteUrl, deleteParams, { headers: props.headers })
+    // if (response.code === 200) {
+    //   ElMessage.success("删除成功")
+    // } else {
+    //   ElMessage.error("删除失败")
+    // }
+    console.log("调用删除接口，参数:", deleteParams)
+  } catch (error) {
+    console.error('删除文件失败:', error)
+    ElMessage.error("删除失败")
   }
 }
 
+// 预览图片
 const handlePictureCardPreview: UploadProps['onPreview'] = (uploadFile) => {
-  srcList.value = []
-  dialogImageUrl.value = uploadFile.url!
-  srcList.value.push(uploadFile.url!)
-  dialogVisible.value = true
+  if (uploadFile.url) {
+    dialogImageUrl.value = uploadFile.url
+    srcList.value = [uploadFile.url]
+    dialogVisible.value = true
+  }
 }
-watch(() => props.modelValue, val => {
+
+// 监听 modelValue 变化，同步到 fileList
+watch(() => props.modelValue, (val) => {
   if (val) {
-    // 首先将值转为数组
-    const list = Array.isArray(val) ? val : props.modelValue.split(",");
-    // 然后将数组转为对象数组
+    const list = Array.isArray(val) ? val : String(val).split(",")
     fileList.value = list.map(item => {
       if (typeof item === "string") {
-        item = {name: item, url: item};
+        return { name: item, url: item }
       }
-      return item;
-    });
+      return item
+    }).filter(item => item.url) // 过滤掉无效的文件
   } else {
-    fileList.value = [];
-    return [];
+    fileList.value = []
   }
-}, {deep: true, immediate: true});
+}, { deep: true, immediate: true })
 
 // 上传成功回调
-function handleUploadSuccess(res, file) {
+function handleUploadSuccess(res: any, file: any) {
+  uploadCount.value--
+  
   if (res.code === 200) {
-    uploadList.value.push({
-      name: res.data.fileName,
+    const newFile = {
+      name: res.data.fileName || file.name,
       url: res.data.url,
       fileId: res.data.id
-    })
-    console.log(uploadList.value, srcList)
-    uploadedSuccessfully();
-    console.log(uploadList.value, srcList)
-  } else {
-    number.value--;
-    closeLoading();
-    ElMessage.error(res.msg);
-    // proxy.$refs.imageUpload.handleRemove(file);
-    uploadedSuccessfully();
-  }
-}
-
-// 上传结束处理
-function uploadedSuccessfully() {
-  console.log("33", uploadList.value, fileList)
-  if (number.value > 0 && uploadList.value.length === number.value) {
-    console.log("11111")
-    fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value);
-    uploadList.value = [];
-    number.value = 0;
-    emit("update:modelValue", listToString(fileList.value, ","));
-
-    console.log("44", uploadList.value, fileList)
-    closeLoading();
-  }
-}
-
-// 对象转成指定字符串分隔
-function listToString(list, separator) {
-  let strs = "";
-  separator = separator || ",";
-  for (let i in list) {
-    if (undefined !== list[i].url && list[i].url.indexOf("blob:") !== 0) {
-      strs += list[i].url + separator;
     }
+    uploadList.value.push(newFile)
+    checkUploadComplete()
+  } else {
+    closeLoading()
+    ElMessage.error(res.msg || '上传失败')
+    checkUploadComplete()
   }
-  return strs != "" ? strs.substr(0, strs.length - 1) : "";
 }
 
-// 打开遮罩层
-function loading(content) {
+// 检查所有文件是否上传完成
+function checkUploadComplete() {
+  if (uploadCount.value === 0) {
+    // 合并已有文件和新上传的文件
+    fileList.value = [...fileList.value.filter(f => f.url && !f.url.startsWith('blob:')), ...uploadList.value]
+    uploadList.value = []
+    emit("update:modelValue", formatFileList(fileList.value))
+    closeLoading()
+  }
+}
+
+// 格式化文件列表为字符串
+function formatFileList(list: UploadUserFile[]): string {
+  return list
+    .filter(item => item.url && !item.url.startsWith('blob:'))
+    .map(item => item.url)
+    .join(',')
+}
+
+// 显示加载状态
+function showLoading(content: string) {
   loadingInstance = ElLoading.service({
     lock: true,
     text: content,
@@ -230,12 +265,20 @@ function loading(content) {
   })
 }
 
-function  handleError(error){
-  console.log(error)
+// 上传错误处理
+function handleError(error: any) {
+  uploadCount.value--
+  closeLoading()
+  console.error('上传错误:', error)
+  ElMessage.error('上传失败，请重试')
 }
 
-// 关闭遮罩层
+// 关闭加载状态
 function closeLoading() {
-  loadingInstance.close();
+  if (loadingInstance) {
+    loadingInstance.close()
+    loadingInstance = null
+  }
 }
 </script>
+

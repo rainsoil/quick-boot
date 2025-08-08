@@ -2,7 +2,32 @@
 
 ## 基础用法
 
+:::demo
+jsontable/demo
+:::
 
+### 基础表格功能
+
+展示基础表格功能的使用：
+
+:::demo
+jsontable/demo1
+:::
+
+### 高级表格功能
+
+展示高级表格功能的使用：
+
+:::demo
+jsontable/demo2
+:::
+
+### 复杂表格功能
+
+展示复杂表格功能的使用：
+
+:::demo
+jsontable/demo3
 :::demo
 jsontable/demo
 :::

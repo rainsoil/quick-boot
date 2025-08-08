@@ -12,13 +12,16 @@
   </el-row>
 
 
+
+
+
 </template>
 <script setup>
-import {ref} from 'vue'
+import {ref, toRefs} from 'vue'
 import {c7Select} from "c7-plus";
 
 const choose = ref();
-const dictList = ref([{
+const dictList = toRefs([{
   label: "中学",
   value: "0"
 },

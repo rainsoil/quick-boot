@@ -53,11 +53,12 @@
 
     <!-- 表格内容 -->
     <template #default>
-      <c7-json-table-column :columns="tableColumns">
+      <c7-json-table-column :columns="tableColumns" >
         <!-- 透传 c7-json-table-column 插槽 -->
         <template
             v-for="item in tableColumns"
             #[slotName(item)]="slotProps"
+
         >
           <slot
               :name="slotName(item)"

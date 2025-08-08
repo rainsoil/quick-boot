@@ -66,6 +66,7 @@ const values = computed(() => {
 });
 
 const unmatch = computed(() => {
+  console.log(props.options)
   unmatchArray.value = [];
   // 没有value不显示
   if (props.modelValue === null || typeof props.modelValue === 'undefined' || props.modelValue === '' || props.options.length === 0) return false

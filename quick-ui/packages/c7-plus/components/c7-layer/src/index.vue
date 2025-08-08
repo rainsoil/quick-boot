@@ -1,80 +1,222 @@
 <template>
-  <div class="layer-inside-wrap">
-    <div class="layer-inside-head">
-      <div class="title" @click="$emit('close')">
+  <div class="c7-layer" :class="layerClass">
+    <div class="layer-header">
+      <div class="layer-title" @click="handleBack" v-if="showBack">
         <el-icon :size="22">
-          <back />
+          <Back/>
         </el-icon>
-        {{ title }}
+        <slot name="title">{{ title }}</slot>
       </div>
-      <div class="close" @click="$emit('close')">
-        <el-icon :size="22"><close /></el-icon>
+      <div class="layer-title" v-else>
+        <slot name="title">{{ title }}</slot>
+      </div>
+      <div class="layer-close" @click="handleClose">
+        <el-icon :size="22">
+          <Close/>
+        </el-icon>
       </div>
     </div>
-    <div class="layer-inside-cont">
-      <slot></slot>
+    <div class="layer-content">
+      <slot/>
+    </div>
+    <div class="layer-footer" v-if="$slots.footer">
+      <slot name="footer"/>
     </div>
   </div>
 </template>
-<script>
-import { defineComponent, ref ,defineOptions } from 'vue'
+<script setup>
+import {computed, defineOptions} from 'vue'
+import {Back, Close} from '@element-plus/icons-vue'
+
 defineOptions({
   name: 'c7Layer'
 })
-export default defineComponent({
-  props: {
-    title:{
-      type:String,
-      default:''
-    }
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: ''
   },
-  emits: ['close'],
-  setup(props, ctx) {
+  showBack: {
+    type: Boolean,
+    default: true
+  },
+  theme: {
+    type: String,
+    default: 'default',
+    validator: (value) => ['default', 'primary', 'success', 'warning', 'danger'].includes(value)
+  },
+  size: {
+    type: String,
+    default: 'medium',
+    validator: (value) => ['small', 'medium', 'large'].includes(value)
   }
 })
+
+const emit = defineEmits(['close', 'back'])
+
+// 计算样式类
+const layerClass = computed(() => ({
+  [`theme-${props.theme}`]: true,
+  [`size-${props.size}`]: true
+}))
+
+// 处理返回事件
+const handleBack = () => {
+  emit('back')
+}
+
+// 处理关闭事件
+const handleClose = () => {
+  emit('close')
+}
 </script>
 
 <style lang="scss" scoped>
-.layer-inside-wrap{
+.c7-layer {
   background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
   z-index: 99;
-  .layer-inside-head{
+
+  .layer-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 25px;
-    line-height: 55px;
+    min-height: 55px;
     padding: 0 20px;
     box-sizing: border-box;
-    border-bottom: 1px solid #ededed;
-    cursor: pointer;
-    i{
-      vertical-align: -5px;
-    }
-    .title{
-      font-weight: bold;
-      color: var(--el-color-primary);
-      font-size:18px;
-      i{
-        margin-right: 5px;
-        cursor: pointer;
+    border-bottom: 1px solid var(--el-border-color-light);
+
+    .layer-title {
+      display: flex;
+      align-items: center;
+      font-weight: 600;
+      color: var(--el-text-color-primary);
+      font-size: 16px;
+      cursor: pointer;
+      transition: color 0.3s;
+
+      &:hover {
+        color: var(--el-color-primary);
+      }
+
+      .el-icon {
+        margin-right: 8px;
+        transition: transform 0.3s;
+      }
+
+      &:hover .el-icon {
+        transform: translateX(-2px);
       }
     }
-    .close{
+
+    .layer-close {
       cursor: pointer;
-      color: var(--el-color-primary);
+      color: var(--el-text-color-regular);
+      transition: color 0.3s;
+      padding: 4px;
+      border-radius: 4px;
+
+      &:hover {
+        color: var(--el-color-danger);
+        background-color: var(--el-color-danger-light-9);
+      }
     }
   }
-  .layer-inside-cont{
-    padding: 20px 20px;
+
+  .layer-content {
+    padding: 20px;
     box-sizing: border-box;
     background-color: #fff;
   }
-  .layer-inside-foot{
-    padding: 20px 20px 30px;
+
+  .layer-footer {
+    padding: 16px 20px;
     box-sizing: border-box;
-    text-align: center;
-    background-color: #fff;
+    text-align: right;
+    background-color: var(--el-bg-color-page);
+    border-top: 1px solid var(--el-border-color-light);
+    border-radius: 0 0 8px 8px;
+  }
+
+  // 主题样式
+  &.theme-primary .layer-header .layer-title {
+    color: var(--el-color-primary);
+  }
+
+  &.theme-success .layer-header .layer-title {
+    color: var(--el-color-success);
+  }
+
+  &.theme-warning .layer-header .layer-title {
+    color: var(--el-color-warning);
+  }
+
+  &.theme-danger .layer-header .layer-title {
+    color: var(--el-color-danger);
+  }
+
+  // 尺寸样式
+  &.size-small {
+    .layer-header {
+      min-height: 45px;
+      padding: 0 16px;
+
+      .layer-title {
+        font-size: 14px;
+      }
+    }
+
+    .layer-content {
+      padding: 16px;
+    }
+
+    .layer-footer {
+      padding: 12px 16px;
+    }
+  }
+
+  &.size-large {
+    .layer-header {
+      min-height: 65px;
+      padding: 0 24px;
+
+      .layer-title {
+        font-size: 18px;
+      }
+    }
+
+    .layer-content {
+      padding: 24px;
+    }
+
+    .layer-footer {
+      padding: 20px 24px;
+    }
+  }
+}
+
+// 响应式设计
+@media (max-width: 768px) {
+  .c7-layer {
+    margin: 10px;
+
+    .layer-header {
+      padding: 0 16px;
+
+      .layer-title {
+        font-size: 14px;
+      }
+    }
+
+    .layer-content {
+      padding: 16px;
+    }
+
+    .layer-footer {
+      padding: 12px 16px;
+    }
   }
 }
 </style>

@@ -23,7 +23,17 @@ import 'element-plus/dist/index.css';
 import ElementPlus from "element-plus";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 
+// 导出组件
 export * from './components'
+
+// 导出类型定义
+export * from './types'
+
+// 导出工具函数
+export * from './utils'
+
+// 导出 hooks
+export * from './hooks'
 const components = [c7Button,
     c7Card,
     c7Title,

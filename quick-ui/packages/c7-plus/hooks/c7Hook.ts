@@ -1,5 +1,5 @@
 // hooks/useFetchOptions.ts
-import {ref} from 'vue'
+import {ref, unref} from 'vue'
 import {jsonGet} from '../utils/utils'
 
 export function useFetchOptions({
@@ -12,13 +12,25 @@ export function useFetchOptions({
                                     fetchDataCallBack = null
 
                                 }) {
+    // 工具函数：安全解包响应式数据
+    const safeUnwrap = (data) => {
+        try {
+            const unwrapped = unref(data)
+            return Array.isArray(unwrapped) ? unwrapped : []
+        } catch (error) {
+            console.warn('useFetchOptions: 数据解包失败', error)
+            return []
+        }
+    }
     const options = ref([])
     const loading = ref(false)
     let fetchAndUpdate = null;
+    console.log('useFetchOptions', fetchData, fetchParams, resultKey, dataFormatter, dataList, lazy)
     if (!lazy) {
         fetchAndUpdate = async (query = '') => {
             if (!fetchData) {
-                options.value = dataList
+                // 修复：安全解包响应式数据，确保 dataList 是数组
+                options.value = safeUnwrap(dataList)
                 return
             }
 

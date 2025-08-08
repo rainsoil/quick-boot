@@ -1,20 +1,22 @@
 <template>
   <div class="app-container">
-    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
-                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
-    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
-              :selection="true" @addBtnHandle="addBtnHandle">
-      <template #operate="scope">
-        <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"
-                   v-hasPermi="['system:user:edit','system:user:query']">修改
-        </el-button>
-        <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"
-                   v-hasPermi="['system:user:remove']">删除
-        </el-button>
-      </template>
-    </c7-table>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>
+    <!--    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"-->
+    <!--                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>-->
+    <!--    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"-->
+    <!--              :selection="true" @addBtnHandle="addBtnHandle">-->
+    <!--      <template #operate="scope">-->
+    <!--        <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"-->
+    <!--                   v-hasPermi="['system:user:edit','system:user:query']">修改-->
+    <!--        </el-button>-->
+    <!--        <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"-->
+    <!--                   v-hasPermi="['system:user:remove']">删除-->
+    <!--        </el-button>-->
+    <!--      </template>-->
+    <!--    </c7-table>-->
+    <!--    &lt;!&ndash; 弹窗, 新增 / 修改 &ndash;&gt;-->
+    <!--    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>-->
+    <c7-json-table :listFunction="param =>listUser(param)" :tableColumns="tableColumns" :searchColumns="searchColumns"
+                   rowsKey="data.records" totalKey="data.total"></c7-json-table>
   </div>
 
 
@@ -22,12 +24,15 @@
 
 
 <script setup>
-import {c7Table, c7TableSearch} from "c7-plus";
+import {c7JsonTable} from "c7-plus";
 import {reactive, ref, toRefs} from "vue";
 import AddOrUpdate from "./add-or-update.vue";
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
+import {listUser} from '@/api/system/user.js'
 
+const {proxy} = getCurrentInstance();
+const {sys_normal_disable, sys_user_sex} = proxy.useDict("sys_normal_disable", "sys_user_sex");
+
+console.log(ref(sys_normal_disable))
 // 搜索
 const searchParam = ref({});
 // 搜索字段
@@ -52,7 +57,7 @@ const searchColumns = ref([
   {
     label: "帐号状态",
     prop: "status",
-    dictType: "COMMON_STATUS",
+    dataList: sys_normal_disable,
     type: "select",
     placeholder: "请输入帐号状态"
   },
@@ -61,19 +66,8 @@ const searchColumns = ref([
 ]);
 
 
-// 列表
-const tableRef = ref();
-const tableProps = reactive({
-  getDataListURL: "/sys/user/page",
-  getDataListIsPage: true,
-  deleteURL: "/sys/user",
-  deleteIsBatch: true,
-  dataForm: searchParam
-
-})
-
 // 列表字段配置
-const jsonColumns = ref([
+const tableColumns = ref([
 
   {
     label: "用户账号",
@@ -111,9 +105,8 @@ const jsonColumns = ref([
   {
     label: "帐号状态",
     prop: "status",
-    type: 'dict',
-    dictType: "COMMON_STATUS",
-
+    columnType: 'tag',
+    dictList: sys_normal_disable,
   },
 
 
