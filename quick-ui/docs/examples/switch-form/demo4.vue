@@ -243,8 +243,6 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { c7SwitchForm } from 'c7-plus'
-
 // 本地类型定义
 interface SwitchConfig {
   name: string                    // 页面名称（必需）

@@ -132,8 +132,6 @@
 
 <script setup lang="ts">
 import {ref, computed} from 'vue'
-import {c7Upload} from 'c7-plus'
-
 // 本地定义文件类型常量（避免导入问题）
 const FILE_TYPES = {
   IMAGE: {

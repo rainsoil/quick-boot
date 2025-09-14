@@ -15,8 +15,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7Cascader, c7Title } from "c7-plus"
-  
   const selectedValue = ref([])
   
   // 模拟获取原始数据

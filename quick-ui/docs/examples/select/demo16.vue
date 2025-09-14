@@ -111,8 +111,6 @@ options.value = unref(dataList) || []
 
 <script setup>
 import { ref, toRef } from 'vue'
-import { c7Select, c7JsonForm } from 'c7-plus'
-
 // 普通数组数据
 const normalData = [
   { label: '选项1', value: 'option1' },

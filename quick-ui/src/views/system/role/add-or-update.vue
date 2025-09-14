@@ -24,7 +24,7 @@
         <el-input-number v-model="dataForm.roleSort" controls-position="right" :min="0"/>
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <c7-radio dict-type="sys_normal_disable" v-model="dataForm.status"></c7-radio>
+        <c7-radio :dataList="sys_normal_disable" v-model="dataForm.status"></c7-radio>
       </el-form-item>
       <el-form-item label="菜单权限">
         <el-checkbox v-model="menuExpand" @change="handleCheckedTreeExpand($event)">展开/折叠</el-checkbox>
@@ -49,13 +49,16 @@
   </c7-dialog>
 </template>
 <script setup >
-import {c7Dialog, c7Radio} from "c7-plus";
+import {C7Dialog, C7Radio} from "@/components/c7";
 import baseService from "@/service/baseService.js";
-import {reactive, ref} from "vue";
-
+import {reactive, ref, getCurrentInstance, nextTick} from "vue";
 
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
+
+// 获取字典数据
+const dictData = proxy.useDict("sys_normal_disable");
+const sys_normal_disable = dictData.sys_normal_disable;
 
 const visibleRef = ref(false);
 
@@ -161,7 +164,7 @@ const submitDataScope = () => {
       if (dataForm.value.id != undefined) {
         // 修改
         baseService.put("/system/role", dataForm.value).then(res => {
-          proxy.$modal.msgSuccess("新增成功");
+          proxy.$modal.msgSuccess("修改成功");
           visibleRef.value = false;
           emit("refreshDataList");
         })

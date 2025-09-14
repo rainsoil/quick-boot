@@ -99,8 +99,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { c7Select, c7JsonForm } from 'c7-plus'
-
 // 原始测试数据（包含重复值）
 const testData = ref([
   { label: '选项1', value: 'option1' },

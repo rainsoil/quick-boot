@@ -58,8 +58,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Select } from 'c7-plus'
-
 // 用户选择器
 const selectedUser = ref('')
 const handleUserChange = (value) => {

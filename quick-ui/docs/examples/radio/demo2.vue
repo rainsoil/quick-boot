@@ -53,8 +53,6 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { c7Radio } from 'c7-plus'
-
 // 表单验证
 const formRef = ref(null)
 const form = ref({

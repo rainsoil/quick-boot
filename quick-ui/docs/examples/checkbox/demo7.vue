@@ -14,8 +14,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7Checkbox, c7Title } from "c7-plus"
-  
   const selectedValues = ref('')
   
   // 模拟异步数据获取

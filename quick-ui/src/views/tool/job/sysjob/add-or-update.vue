@@ -1,6 +1,6 @@
 <template>
 
-  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
+  <C7Dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
              @close="handleClose" @submit="submit" :footer="getType === '1'">
 
 
@@ -17,11 +17,9 @@
 
         <el-col :span="12">
           <el-form-item label="任务组名" prop="jobGroup">
-            <c7-select dict-type="sys_job_group" v-model="dataForm.jobGroup"
+            <C7Select :dataList="dictData.sys_job_group?.value || []" v-model="dataForm.jobGroup"
                        placeholder="请选择任务组名">
-            </c7-select>
-
-
+            </C7Select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -81,7 +79,7 @@
         </el-col>
       </el-row>
 
-      <el-row>
+      <el-row v-if="getType === '2'">
         <el-col :span="20">
           <el-form-item label="下次执行时间" prop="nextTime">
             <el-input v-model="dataForm.nextTime" type="textarea"
@@ -95,7 +93,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="计划执行错误策略" prop="misfirePolicy">
-            <c7-radio dict-type="JOB_MISFIRE_POLICY" v-model="dataForm.misfirePolicy"></c7-radio>
+            <C7Radio :dataList="dictData.JOB_MISFIRE_POLICY?.value || []" v-model="dataForm.misfirePolicy"></C7Radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -104,9 +102,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="是否并发执行" prop="concurrent">
-
-            <c7-radio dict-type="sys_yes_no" v-model="dataForm.concurrent"></c7-radio>
-
+            <C7Radio :dataList="dictData.sys_yes_no?.value || []" v-model="dataForm.concurrent"></C7Radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -115,8 +111,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="状态" prop="status">
-
-            <c7-radio dict-type="sys_job_status" v-model="dataForm.status"></c7-radio>
+            <C7Radio :dataList="dictData.sys_job_status?.value || []" v-model="dataForm.status"></C7Radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -132,22 +127,24 @@
       </el-row>
 
     </el-form>
-  </c7-dialog>
+  </C7Dialog>
   <el-dialog title="Cron表达式生成器" v-model="openCron" append-to-body destroy-on-close>
-    <crontab ref="crontabRef" @hide="openCron=false" @fill="crontabFill" :expression="expression"></crontab>
+    <Crontab ref="crontabRef" @hide="openCron=false" @fill="crontabFill" :expression="expression"></Crontab>
   </el-dialog>
 
 </template>
 
 <script setup>
-import {c7Dialog, c7Table, c7Radio, c7Select} from 'c7-plus'
-import {reactive, ref} from "vue";
+import {C7Dialog, C7Radio, C7Select} from "@/components/c7"
+import {reactive, ref, getCurrentInstance} from "vue";
 import baseService from "@/service/baseService.js";
 import Crontab from '@/components/Crontab'
 
-
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
+
+// 获取字典数据
+const dictData = proxy.useDict("sys_job_group", "sys_job_status", "sys_yes_no", "JOB_MISFIRE_POLICY");
 const visibleRef = ref(false);
 const dataForm = ref({
   id: undefined,

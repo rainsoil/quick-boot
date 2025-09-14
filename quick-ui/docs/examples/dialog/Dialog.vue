@@ -13,13 +13,11 @@
     <span>1111</span>
   </c7-dialog>
 
-
 </template>
 
 <script setup>
 import  {ref} from  'vue'
 const  visible = ref(false)
-import {c7Dialog} from "c7-plus";
 const  open = () => {
   visible.value = true
 }

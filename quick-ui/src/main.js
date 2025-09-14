@@ -11,7 +11,8 @@ import App from './App'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
-import c7Plus from 'c7-plus'
+// 导入C7组件库
+import C7Components from '@/components/c7'
 // 加载组件
 // 注册指令
 import plugins from './plugins' // plugins
@@ -24,6 +25,7 @@ import './permission' // permission control
 
 import {useDict} from '@/utils/dict'
 import {parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels} from '@/utils/ruoyi'
+import {createPinia} from "pinia";
 
 // 分页组件
 import Pagination from '@/components/Pagination'
@@ -43,12 +45,13 @@ import DictTag from '@/components/DictTag'
 
 import formLayout from '@/components/form-layout/index.vue'
 
+// 全局注入
+import {getRequest, deleteRequest, postRequest, openNewTab} from "./service/provideSerivce";
 
 const app = createApp(App)
 
 // 全局方法挂载
 app.config.globalProperties.useDict = useDict
-
 
 app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
@@ -69,11 +72,7 @@ app.component('Editor', Editor)
 app.component('formLayout', formLayout)
 
 const pinia = createPinia();
-
 app.use(pinia); // 注册 Pinia
-// 全局注入
-import {getRequest, deleteRequest, postRequest, openNewTab} from "./service/provideSerivce";
-import {createPinia} from "pinia";
 
 window.$postRequest = postRequest
 app.config.globalProperties.$getRequest = getRequest;
@@ -99,7 +98,7 @@ app.use(router)
 app.use(store)
 app.use(plugins)
 app.use(elementIcons)
-app.use(c7Plus)
+app.use(C7Components)
 app.component('svg-icon', SvgIcon)
 
 

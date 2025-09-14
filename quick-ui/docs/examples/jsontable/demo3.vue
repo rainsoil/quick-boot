@@ -45,8 +45,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7JsonTable } from 'c7-plus'
-
 // 搜索参数
 const searchParam = ref({
   name: '',

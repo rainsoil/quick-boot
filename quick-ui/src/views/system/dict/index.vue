@@ -1,30 +1,63 @@
 <template>
   <div class="app-container">
-
     <c7-switch-form
         :showIndexs="showIndexs"
         v-model="showIndex"
         @update:modelValue="console.log($event)"
     >
       <template #list>
-        <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
-                         @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
-        <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
-                  :selection="true" @addBtnHandle="addBtnHandle">
+        <!-- 字典管理表格 -->
+        <c7-json-table
+            ref="tableRef"
+            :listFunction="listDict"
+            :tableColumns="tableColumns"
+            :searchColumns="searchColumns"
+            :tableProps="tableProps"
+            rowsKey="data.records"
+            totalKey="data.total"
+            @addBtnHandle="handleAdd"
+            @editBtnHandle="handleEdit"
+            @deleteBtnHandle="handleDelete"
+            @refreshDataList="refreshData"
+        >
           <template #dictType="scope">
             <el-link type="primary" @click="toData(scope.row)">{{ scope.row.dictType }}</el-link>
           </template>
-          <template #operate="scope">
-            <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"
-                       v-hasPermi="['system:user:edit','system:user:query']">修改
-            </el-button>
-            <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"
-                       v-hasPermi="['system:user:remove']">删除
-            </el-button>
+          <template #table-operate="scope">
+            <!-- 使用 c7-button-group 和 c7-button 组件 -->
+            <c7-button-group :maxVisible="1" mode="auto" trigger="click" >
+              <c7-button btnType="edit" @click="handleEdit(scope.row)" />
+              <c7-button 
+                type="success" 
+                icon="Plus" 
+                @click="toData(scope.row)"
+              >
+                字典项
+              </c7-button>
+              <c7-button 
+                btnType="delete" 
+                :confirm="true"
+                :confirmMessage="`确定删除字典类型${scope.row.dictType}吗？`"
+                @click="handleDelete(scope.row.id)" 
+              />
+              <c7-button 
+                type="warning" 
+                icon="View" 
+                @click="handleView(scope.row)"
+              >
+                查看
+              </c7-button>
+              <c7-button 
+                type="info" 
+                icon="CopyDocument" 
+                @click="handleCopy(scope.row)"
+              >
+                复制
+              </c7-button>
+            </c7-button-group>
           </template>
+        </c7-json-table>
 
-
-        </c7-table>
         <!-- 弹窗, 新增 / 修改 -->
         <add-or-update ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>
       </template>
@@ -36,19 +69,15 @@
       </template>
 
     </c7-switch-form>
-
-
   </div>
-
-
 </template>
 <script setup>
-import {c7Table, c7TableSearch, c7SwitchForm} from "c7-plus";
-import {reactive, ref, toRefs, nextTick} from "vue";
+import {C7JsonTable, C7Button, C7SwitchForm, C7ButtonGroup} from "@/components/c7";
+import {reactive, ref, toRefs, nextTick, getCurrentInstance} from "vue";
+import {ElMessage, ElMessageBox} from 'element-plus';
 import AddOrUpdate from "./add-or-update.vue";
+import {listType as listDict, delType as delDict} from '@/api/system/dict/type.js';
 import DataList from "@/views/system/dict/data.vue";
-// 搜索
-const searchParam = ref({});
 // 搜索字段
 const searchColumns = ref([
 
@@ -73,58 +102,128 @@ const searchColumns = ref([
 ]);
 
 
-// 列表
+// 获取当前实例和字典数据
+const {proxy} = getCurrentInstance();
+const dictData = proxy.useDict("sys_normal_disable");
+const sys_normal_disable = dictData.sys_normal_disable;
+
+// 表格引用
 const tableRef = ref();
-const tableProps = reactive({
-  getDataListURL: "/system/dict/type/page",
-  getDataListIsPage: true,
-  deleteURL: "/system/dict/type",
-  deleteIsBatch: true,
-  dataForm: searchParam
-
-})
-
-// 列表字段配置
-const jsonColumns = ref([
-
-  {
-    prop: "dictName",
-    label: "字典名称",
-
-  },
-  {
-    prop: "dictType",
-    label: "字典类型",
-    isSlot: true,
-    slotName: "dictType"
-  },
-  {
-    prop: "status",
-    label: "状态",
-    type: 'dict',
-    dictType: "sys_normal_disable"
-  },
-
-  {
-    prop: "remark",
-    label: "备注",
-    "show-overflow-tooltip": true,
-  },
-  {
-    prop: "createTime",
-    label: "创建时间",
-  },
-
-]);
-const addKey = ref(0);
 const addOrUpdateRef = ref();
-const addBtnHandle = (id) => {
+const addKey = ref(0);
+
+// 表格列配置
+const tableColumns = ref([
+  {
+    label: "字典名称",
+    prop: "dictName",
+    showOverflowTooltip: true
+  },
+  {
+    label: "字典类型",
+    prop: "dictType",
+    columnType: 'slot',
+    slotName: 'dictType',
+    showOverflowTooltip: true
+  },
+  {
+    label: "状态",
+    prop: "status",
+    columnType: 'tag',
+    dictList: sys_normal_disable
+  },
+  {
+    label: "备注",
+    prop: "remark",
+    showOverflowTooltip: true
+  },
+  {
+    label: "创建时间",
+    prop: "createTime"
+  },
+  {
+    label: "操作",
+    prop: "table-operate",
+    width: 250,
+    fixed: "right"
+  }
+]);
+
+// 表格配置
+const tableProps = ref({
+  selection: true,
+  showAdd: true,
+  showEdit: true,
+  showDelete: true,
+  showRefresh: true
+});
+
+// 事件处理函数
+const handleAdd = () => {
   addKey.value++;
   nextTick(() => {
-    addOrUpdateRef.value.init(id);
+    addOrUpdateRef.value.init();
   });
-}
+};
 
+const handleEdit = (row) => {
+  addKey.value++;
+  nextTick(() => {
+    addOrUpdateRef.value.init(row.id);
+  });
+};
+
+const handleDelete = async (dictIdOrRows) => {
+  try {
+    let ids = [];
+    let message = '';
+
+    // 判断参数类型
+    if (Array.isArray(dictIdOrRows)) {
+      // 来自表格组件的批量删除
+      ids = dictIdOrRows.map(row => row.id);
+      message = `是否确认删除选中的${ids.length}个字典？`;
+    } else {
+      // 来自操作列的单个删除
+      ids = [dictIdOrRows];
+      message = `是否确认删除字典编号为"${dictIdOrRows}"的数据项？`;
+    }
+
+    await ElMessageBox.confirm(message, '系统提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+
+    // 批量删除
+    for (const id of ids) {
+      await delDict(id);
+    }
+
+    ElMessage.success('删除成功');
+    refreshData();
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败');
+    }
+  }
+};
+
+const refreshData = () => {
+  tableRef.value?.getDataList();
+};
+
+// 查看字典详情
+const handleView = (row) => {
+  ElMessage.info(`查看字典: ${row.dictType}`);
+  // 这里可以添加查看详情的逻辑
+};
+
+// 复制字典
+const handleCopy = (row) => {
+  ElMessage.success(`复制字典: ${row.dictType}`);
+  // 这里可以添加复制字典的逻辑
+};
 const showIndexs = ref([{
   title: '列表',
   name: 'list',
@@ -136,9 +235,10 @@ const showIndexs = ref([{
     header: true,
     closeIndex: 'list'
   }])
-
 const showIndex = ref("list")
 const dataRef = ref();
+
+// 跳转到字典项管理页面
 const toData = (row) => {
   addKey.value++;
   showIndex.value = "data";
@@ -147,6 +247,7 @@ const toData = (row) => {
     dataRef.value.init(row.dictType);
   })
 }
+
 </script>
 
 <style scoped>

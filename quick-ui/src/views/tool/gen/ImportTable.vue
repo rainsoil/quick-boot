@@ -1,124 +1,93 @@
 <!--导入表 -->
 <template>
-
-  <c7-dialog :visible="visibleRef" mode="dialog" title="导入表" @close="visibleRef = false"
-             :footer="true">
+  <C7Dialog :visible="visibleRef" mode="dialog" title="导入表" @close="visibleRef = false"
+             :footer="true" @submit="batchImport">
     <div class="app-container">
-      <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
-                       @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
-      <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
-                :buttons="buttons"
-                :selection="true">
-        <template #appendButton>
-          <c7-button label="导入" type="primary" @click="batchImport" :clickEvent="true">
-
-          </c7-button>
+      <C7JsonTable
+        ref="tableRef"
+        :listFunction="getDataList"
+        :searchColumns="searchColumns"
+        :tableColumns="tableColumns"
+        :tableProps="tableProps"
+        row-key="tableName"
+        @selection-change="handleSelectionChange"
+      >
+        <template #operate>
+          <C7Button type="primary" @click="batchImport">
+            导入
+          </C7Button>
         </template>
-        <template #operate="scope">
-        </template>
-      </c7-table>
-
+      </C7JsonTable>
     </div>
-  </c7-dialog>
-
-
+  </C7Dialog>
 </template>
 
 <script setup>
-import {c7Dialog, c7Table, c7TableSearch, c7Button} from 'c7-plus'
-
-const visibleRef = ref(false);
-
-import {reactive, ref, toRefs, nextTick} from "vue";
+import {C7Dialog, C7Button, C7JsonTable} from "@/components/c7"
+import {reactive, ref, toRefs, nextTick, getCurrentInstance} from "vue";
 import baseService from "@/service/baseService.js";
+
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
+const visibleRef = ref(false);
 
-// 搜索
-const searchParam = ref({});
-// 搜索字段
-const searchColumns = ref([
-  {
-    prop: "tableName",
-    label: "表名称"
-
-  },
-
-  {
-    prop: "tableComment",
-    label: "表注释"
-
-  },
-  /**
-   {
-   prop: "roleKey",
-   label: "权限字符",
-
-   },
-   {
-   prop: "status",
-   label: "状态",
-   type: 'select',
-   dictType: "sys_normal_disable",
-
-   },
-
-   */
-]);
-
-
-// 列表
+// 数据相关
 const tableRef = ref();
-const tableProps = reactive({
-  getDataListURL: "/generator/gentable/dbTables",
-  getDataListIsPage: true,
-  createdIsNeed: false,
-  deleteIsBatchKey:"tableName"
+const selectedIds = ref([]);
 
-})
-
-// 列表字段配置
-const jsonColumns = ref([
-  {
-    prop: "tableName",
-    label: "表名称"
-
-  },
-  {
-    prop: "tableComment",
-    label: "表注释"
-
-  },
-
+// 搜索字段配置
+const searchColumns = ref([
+  { label: "表名称", prop: "tableName", type: "input", placeholder: "请输入表名称" },
+  { label: "表注释", prop: "tableComment", type: "input", placeholder: "请输入表注释" }
 ]);
 
-// 按钮
-const buttons = ref({
-  enable: true,
-  addBtn: {
-    enable: false,
-  },
-  deleteBtn: {
-    enable: false,
-  },
-  exportBtn: {
-    enable: false,
-  },
-})
+// 表格列配置
+const tableColumns = ref([
+  { label: "表名称", prop: "tableName", width: 200 },
+  { label: "表注释", prop: "tableComment", width: 250, showOverflowTooltip: true }
+]);
+
+// 表格属性配置
+const tableProps = ref({
+  selection: true,
+  showAdd: false,
+  showEdit: false,
+  showDelete: false,
+  showRefresh: true,
+  showExport: false,
+  showImport: false
+});
+
+// 获取数据列表
+const getDataList = async (params) => {
+  try {
+    const response = await baseService.get("/generator/gentable/dbTables", params);
+    return response;
+  } catch (error) {
+    console.error('获取数据列表失败:', error);
+    return { rows: [], total: 0 };
+  }
+};
+
+// 选择变化处理
+const handleSelectionChange = (selection) => {
+  selectedIds.value = selection.map(item => item.tableName);
+};
 const init = () => {
   visibleRef.value = true;
   nextTick(() => {
-    tableRef.value.getDataList();
+    if (tableRef.value) {
+      tableRef.value.getDataList();
+    }
   })
 }
 
 const batchImport = () => {
-  let ids = tableRef.value.dataListSelectionsIds();
-  if (ids.length == 0) {
+  if (selectedIds.value.length == 0) {
     proxy.$modal.msgError(`请先选中!`);
     return false;
   }
-  baseService.post("/generator/gentable/importTable", ids).then(res => {
+  baseService.post("/generator/gentable/importTable", selectedIds.value).then(res => {
     proxy.$modal.msgSuccess("操作成功");
     visibleRef.value = false;
     emit("refreshDataList");

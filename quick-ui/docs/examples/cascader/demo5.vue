@@ -5,25 +5,20 @@
 
 <template>
 
-
-
   <c7Title label="静态数据"></c7Title>
   <p>结果类型(resultType) 为数组 </p>
   <c7-cascader :data-list="dictList" v-model="choose"></c7-cascader>
   <p>选中的数据:{{ choose }}</p>
-
 
   <c7Title label="静态数据"></c7Title>
   <p>结果类型(resultType) 为用逗号隔开 </p>
   <c7-cascader :data-list="dictList" v-model="choose2" :resultType=2></c7-cascader>
   <p>选中的数据:{{ choose2 }}</p>
 
-
   <c7Title label="静态数据"></c7Title>
   <p>结果类型(resultType) 为最后一个元素 </p>
   <c7-cascader :data-list="dictList" v-model="choose3" :resultType=3></c7-cascader>
   <p>选中的数据:{{ choose3 }}</p>
-
 
   <c7Title label="动态数据(非懒加载)"></c7Title>
   <p>结果类型(resultType) 为最后一个元素 </p>
@@ -37,9 +32,7 @@
                :parentNodeFetchFunction="(value) =>parentNodeFetchFunction(value)"
                lazy></c7-cascader>
 
-
   <p>选中的数据:{{ choose5 }}</p>
-
 
   <c7Title label="动态数据(懒加载)"></c7Title>
   <p>结果类型(resultType) 用,隔开 </p>
@@ -47,27 +40,20 @@
                :parentNodeFetchFunction="(value) =>parentNodeFetchFunction(value)"
                lazy></c7-cascader>
 
-
   <p>选中的数据:{{ choose6 }}</p>
-
-
 
 </template>
 
 <script setup>
-import {c7Cascader, c7Title} from "c7-plus";
 import {getCascaderData, getCascaderDataLazy, parentNodeFetchFunction} from '../api.js'
 import {ref, onMounted} from 'vue'
 
 const choose = ref(["1", "2", "3"]);
 const choose2 = ref("1,2,3");
 
-
 const choose3 = ref("3");
 
-
 const choose4 = ref("3");
-
 
 const choose5 = ref("5");
 
@@ -106,7 +92,6 @@ const dictList = [
       },
     ],
   }]
-
 
 </script>
 

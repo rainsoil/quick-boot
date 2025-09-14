@@ -15,7 +15,6 @@
   </el-row>
   <el-row :gutter="10" style="margin-top: 20px">
 
-
     <el-col :span="12">
       <c7-select v-model="choose2"
                  :fetchData="() =>getSelectData()"
@@ -30,11 +29,9 @@
 
   </el-row>
 
-
 </template>
 <script setup>
 import {ref} from 'vue'
-import {c7Select} from "c7-plus";
 import axios from "axios";
 import {getSelectData} from '../api.js'
 

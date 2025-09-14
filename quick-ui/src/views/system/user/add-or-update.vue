@@ -52,9 +52,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="用户性别" prop="sex">
-
-              <c7-radio dict-type="sys_user_sex" v-model="dataForm.sex"></c7-radio>
-
+            <c7-radio :dataList="sys_user_sex" v-model="dataForm.sex"></c7-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -74,8 +72,7 @@
       <el-row>
         <el-col :span="20">
           <el-form-item label="帐号状态" prop="status">
-            <c7-radio dict-type="COMMON_STATUS" v-model="dataForm.status"></c7-radio>
-
+            <c7-radio :dataList="sys_normal_disable" v-model="dataForm.status"></c7-radio>
           </el-form-item>
         </el-col>
       </el-row>
@@ -116,14 +113,19 @@
 </template>
 
 <script setup>
-import {ref} from 'vue'
+import {ref, getCurrentInstance} from 'vue'
 
-import {c7Dialog, c7Radio} from "c7-plus";
+import {C7Dialog, C7Radio} from "@/components/c7";
 import baseService from "@/service/baseService.js";
 
 const visibleRef = ref(false)
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
+
+// 获取字典数据
+const dictData = proxy.useDict("sys_user_sex", "sys_normal_disable");
+const sys_user_sex = dictData.sys_user_sex;
+const sys_normal_disable = dictData.sys_normal_disable;
 
 const dataForm = ref({
   id: "",

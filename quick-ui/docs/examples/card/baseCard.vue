@@ -4,6 +4,4 @@
   </c7-card>
 </template>
 <script setup>
-import {c7Card} from "c7-plus";
-
 </script>

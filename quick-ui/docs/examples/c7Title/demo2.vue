@@ -7,5 +7,4 @@
     </div>
   </template>
   <script lang="ts" setup>
-  import {c7Title} from "c7-plus";
   </script>

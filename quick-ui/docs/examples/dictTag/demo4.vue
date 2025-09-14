@@ -10,7 +10,6 @@
   </template>
   
   <script setup>
-  import {c7DictTag} from 'c7-plus'
   import {ref} from 'vue'
   
   const unmatchValue = ref(['1', '3', '5', '999'])

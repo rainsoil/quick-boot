@@ -115,8 +115,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Select } from 'c7-plus'
-
 // 分组选择
 const groupValue = ref('')
 const handleGroupChange = (value) => {

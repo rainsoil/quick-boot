@@ -67,8 +67,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7DatePicker, c7Title } from "c7-plus"
-  
   const value1 = ref('2024-01-01')
   const value2 = ref('2024-01-01,2024-12-31')
   const value3 = ref(['2024-01-01', '2024-12-31'])

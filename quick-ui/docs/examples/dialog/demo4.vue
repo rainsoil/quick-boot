@@ -60,8 +60,6 @@
   
   <script setup>
   import { ref, reactive } from 'vue'
-  import { c7Dialog, c7Title } from "c7-plus"
-  
   const dialog1Visible = ref(false)
   const dialog2Visible = ref(false)
   const dialog3Visible = ref(false)

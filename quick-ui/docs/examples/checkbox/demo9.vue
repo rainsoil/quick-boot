@@ -52,8 +52,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7Checkbox, c7Title } from "c7-plus"
-  
   const value1 = ref('')
   const value2 = ref([])
   const value3 = ref('')

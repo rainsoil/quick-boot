@@ -1,7 +1,6 @@
 <!--select 默认值 -->
 <template>
 
-
   <el-row :gutter="10">
     <el-col :span="8">
       <c7-select :data-list="colors" v-model="choose" :separator="false">
@@ -19,12 +18,9 @@
     </el-col>
   </el-row>
 
-
 </template>
 <script setup>
 import {ref} from 'vue'
-import {c7Select} from "c7-plus";
-
 const choose = ref([])
 
 const colors = [

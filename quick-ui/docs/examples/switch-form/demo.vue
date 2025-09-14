@@ -23,7 +23,6 @@
   </c7-switch-form>
 </template>
 <script setup>
-import {c7SwitchForm} from 'c7-plus'
 import {ref} from 'vue'
 
 const showIndexs = ref([

@@ -1,95 +1,148 @@
 <template>
   <div class="app-container">
-    <!--    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"-->
-    <!--                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>-->
-    <!--    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"-->
-    <!--              :selection="true" @addBtnHandle="addBtnHandle">-->
-    <!--      <template #operate="scope">-->
-    <!--        <el-button link type="primary" icon="Edit" @click="addBtnHandle(scope.row.id)"-->
-    <!--                   v-hasPermi="['system:user:edit','system:user:query']">修改-->
-    <!--        </el-button>-->
-    <!--        <el-button link type="primary" icon="Delete" @click="tableRef.deleteBtnHandle(scope.row.id)"-->
-    <!--                   v-hasPermi="['system:user:remove']">删除-->
-    <!--        </el-button>-->
-    <!--      </template>-->
-    <!--    </c7-table>-->
-    <!--    &lt;!&ndash; 弹窗, 新增 / 修改 &ndash;&gt;-->
-    <!--    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>-->
-    <c7-json-table :listFunction="param =>listUser(param)" :tableColumns="tableColumns" :searchColumns="searchColumns"
-                   rowsKey="data.records" totalKey="data.total"></c7-json-table>
+    <!-- 用户管理表格 -->
+    <c7-json-table 
+      ref="tableRef"
+      :listFunction="listUser" 
+      :tableColumns="tableColumns" 
+      :searchColumns="searchColumns"
+      :tableProps="tableProps"
+      rowsKey="data.records" 
+      totalKey="data.total"
+      @addBtnHandle="handleAdd"
+      @editBtnHandle="handleEdit"
+      @deleteBtnHandle="handleDelete"
+      @refreshDataList="refreshData"
+    >
+      <!-- 操作列插槽 -->
+      <template #table-operate="scope">
+        <c7-button 
+          type="primary" 
+          link 
+          icon="Edit" 
+          @click="handleEdit(scope.row)"
+        >
+          修改
+        </c7-button>
+        <el-dropdown trigger="click" @command="(command) => handleDropdownCommand(command, scope.row)">
+          <c7-button type="info" link icon="MoreFilled">
+            更多
+          </c7-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item command="delete" icon="Delete">
+                删除
+              </el-dropdown-item>
+              <el-dropdown-item command="resetPwd" icon="Key">
+                重置密码
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </template>
+    </c7-json-table>
+
+    <!-- 新增/编辑用户弹窗 -->
+    <add-or-update 
+      :key="addKey" 
+      ref="addOrUpdateRef" 
+      @refreshDataList="refreshData"
+    />
   </div>
-
-
 </template>
 
 
 <script setup>
-import {c7JsonTable} from "c7-plus";
-import {reactive, ref, toRefs} from "vue";
+import { C7JsonTable, C7Button } from "@/components/c7";
+import { ref, getCurrentInstance, nextTick } from "vue";
+import { ElMessage, ElMessageBox } from 'element-plus';
 import AddOrUpdate from "./add-or-update.vue";
-import {listUser} from '@/api/system/user.js'
+import { listUser, delUser, resetUserPwd } from '@/api/system/user.js';
 
-const {proxy} = getCurrentInstance();
-const {sys_normal_disable, sys_user_sex} = proxy.useDict("sys_normal_disable", "sys_user_sex");
+// 获取当前实例和字典数据
+const { proxy } = getCurrentInstance();
+const dictData = proxy.useDict("sys_normal_disable", "sys_user_sex");
+const sys_normal_disable = dictData.sys_normal_disable;
+const sys_user_sex = dictData.sys_user_sex;
 
-console.log(ref(sys_normal_disable))
-// 搜索
-const searchParam = ref({});
-// 搜索字段
+// 表格引用
+const tableRef = ref();
+const addOrUpdateRef = ref();
+const addKey = ref(0);
+
+// 表格配置
+const tableProps = ref({
+  selection: true,
+  showAdd: true,
+  showEdit: true,
+  showDelete: true,
+  showRefresh: true,
+  showExport: true,
+  showImport: true,
+  border: true,
+  stripe: true,
+  height: 'auto'
+});
+
+// 搜索字段配置
 const searchColumns = ref([
-
   {
     label: "用户账号",
     prop: "userName",
     type: "input",
-    placeholder: "请输入用户账号"
+    placeholder: "请输入用户账号",
+    clearable: true
   },
-
-
   {
-    label: "用户昵称",
+    label: "用户昵称", 
     prop: "nickName",
     type: "input",
-    placeholder: "请输入用户昵称"
+    placeholder: "请输入用户昵称",
+    clearable: true
   },
-
-
+  {
+    label: "手机号码",
+    prop: "phonenumber", 
+    type: "input",
+    placeholder: "请输入手机号码",
+    clearable: true
+  },
   {
     label: "帐号状态",
     prop: "status",
-    dataList: sys_normal_disable,
     type: "select",
-    placeholder: "请输入帐号状态"
+    placeholder: "请选择帐号状态",
+    dataList: sys_normal_disable,
+    clearable: true
   },
-
-
+  {
+    label: "创建时间",
+    prop: "createTime",
+    type: "daterange",
+    placeholder: ["开始日期", "结束日期"]
+  }
 ]);
 
-
-// 列表字段配置
+// 表格列配置
 const tableColumns = ref([
-
   {
     label: "用户账号",
     prop: "userName",
 
+    showOverflowTooltip: true
   },
-
-
   {
     label: "用户昵称",
-    prop: "nickName",
+    prop: "nickName", 
 
+    showOverflowTooltip: true
   },
-
-
   {
     label: "用户邮箱",
     prop: "email",
 
+    showOverflowTooltip: true
   },
-
-
   {
     label: "手机号码",
     prop: "phonenumber",
@@ -99,33 +152,119 @@ const tableColumns = ref([
     label: "角色",
     prop: "roleNames",
 
+    showOverflowTooltip: true
   },
-
-
   {
     label: "帐号状态",
     prop: "status",
     columnType: 'tag',
     dictList: sys_normal_disable,
+
   },
-
-
   {
-    label: "最后登录时间",
+    label: "创建时间",
+    prop: "createTime",
+
+  },
+  {
+    label: "最后登录时间", 
     prop: "loginDate",
 
   },
-
-
+  {
+    label: "操作",
+    prop: "table-operate",
+    width: 160,
+    fixed: "right"
+  }
 ]);
-const addKey = ref(0);
-const addOrUpdateRef = ref();
-const addBtnHandle = (id) => {
+
+// 事件处理函数
+const handleAdd = () => {
   addKey.value++;
   nextTick(() => {
-    addOrUpdateRef.value.init(id);
+    addOrUpdateRef.value.init();
   });
-}
+};
+
+const handleEdit = (row) => {
+  addKey.value++;
+  nextTick(() => {
+    addOrUpdateRef.value.init(row.id);
+  });
+};
+
+const handleDelete = async (userIdOrRows) => {
+  try {
+    let ids = [];
+    let message = '';
+    
+    // 判断参数类型
+    if (Array.isArray(userIdOrRows)) {
+      // 来自表格组件的批量删除
+      ids = userIdOrRows.map(row => row.id);
+      message = `是否确认删除选中的${ids.length}个用户？`;
+    } else {
+      // 来自操作列的单个删除
+      ids = [userIdOrRows];
+      message = `是否确认删除用户编号为"${userIdOrRows}"的数据项？`;
+    }
+    
+    await ElMessageBox.confirm(message, '系统提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+    
+    // 批量删除
+    for (const id of ids) {
+      await delUser(id);
+    }
+    
+    ElMessage.success('删除成功');
+    refreshData();
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('删除失败');
+    }
+  }
+};
+
+const handleResetPwd = async (row) => {
+  try {
+    await ElMessageBox.confirm(
+      '是否确认重置用户"' + row.userName + '"的密码？',
+      '系统提示',
+      {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }
+    );
+    await resetUserPwd(row.id);
+    ElMessage.success('重置成功');
+  } catch (error) {
+    if (error !== 'cancel') {
+      ElMessage.error('重置失败');
+    }
+  }
+};
+
+// 处理下拉菜单命令
+const handleDropdownCommand = (command, row) => {
+  switch (command) {
+    case 'delete':
+      handleDelete(row.id);
+      break;
+    case 'resetPwd':
+      handleResetPwd(row);
+      break;
+  }
+};
+
+const refreshData = () => {
+  tableRef.value?.getDataList();
+};
 </script>
 <style scoped lang="scss">
 

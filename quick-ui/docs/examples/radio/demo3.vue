@@ -71,8 +71,6 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { c7Radio } from 'c7-plus'
-
 // 多级联动
 const selectedProvince = ref('')
 const selectedCity = ref('')

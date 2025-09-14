@@ -29,8 +29,6 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { c7JsonForm } from "c7-plus"
-
 // 表单数据模型
 const formData = ref({
   username: '',

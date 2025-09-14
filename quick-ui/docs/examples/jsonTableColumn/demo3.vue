@@ -62,8 +62,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7JsonTableColumn } from 'c7-plus'
-
 // 示例数据
 const tableData = ref([
   {

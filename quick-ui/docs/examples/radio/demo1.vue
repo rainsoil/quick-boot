@@ -38,8 +38,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Radio } from 'c7-plus'
-
 // 基础选项
 const basicOptions = ref([
   { label: '选项1', value: 'option1' },

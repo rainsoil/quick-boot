@@ -71,8 +71,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Preview } from 'c7-plus'
-
 // 单个视频URL
 const singleVideoUrl = ref('https://www.w3schools.com/html/mov_bbb.mp4')
 

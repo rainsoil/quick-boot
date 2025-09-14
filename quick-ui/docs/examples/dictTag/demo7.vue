@@ -15,8 +15,6 @@
   
   <script setup>
   import { ref, computed } from 'vue'
-  import { c7DictTag } from 'c7-plus'
-  
   const userStatus = ref('1')
   const showTag = computed(() => userStatus.value !== '0')
   

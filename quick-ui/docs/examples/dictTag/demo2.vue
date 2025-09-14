@@ -9,7 +9,6 @@
   </template>
   
   <script setup>
-  import {c7DictTag} from 'c7-plus'
   import {ref} from 'vue'
   
   const arrayValue = ref(['1', '3', '5'])

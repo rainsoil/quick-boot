@@ -14,12 +14,10 @@
 
   <c7Button :clickFunction="buttonClickHandler" btn-type="download">下载</c7Button>
 
-
 </template>
 
 <script setup>
 import {ref} from 'vue'
-import {c7Button} from "c7-plus";
 import {apiClick, apiClick2} from './api.js'
 
 const buttonClickHandler = () => {

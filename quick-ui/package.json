@@ -13,9 +13,7 @@
     "deploy": "zsh scripts/gh-pages.sh",
     "docs:dev": "pnpm -C docs dev",
     "docs1:dev": "vitepress dev docs1",
-    "docs:build": "pnpm -C docs build",
-    "c7-plus:build": "pnpm -C packages/c7-plus build",
-    "c7-plus:publish": "pnpm -C packages/c7-plus publish"
+    "docs:build": "pnpm -C docs build"
   },
   "repository": {
     "type": "git",
@@ -52,7 +50,6 @@
     "vite-plugin-svg-icons": "2.0.1",
     "vitepress": "^1.6.2",
     "vitepress-theme-demoblock": "^3.0.5",
-    "@vue/shared": "^3.4.29",
-    "c7-plus": "workspace:*"
+    "@vue/shared": "^3.4.29"
   }
 }

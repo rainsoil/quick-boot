@@ -168,7 +168,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Layer } from 'c7-plus'
 import { SuccessFilled } from '@element-plus/icons-vue'
 
 // 当前显示的弹层

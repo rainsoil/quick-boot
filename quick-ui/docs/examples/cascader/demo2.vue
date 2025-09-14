@@ -6,11 +6,9 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7Cascader} from "c7-plus";
 import {getCascaderData} from '../api.js'
 
 const choose = ref();
-
 
 </script>
 

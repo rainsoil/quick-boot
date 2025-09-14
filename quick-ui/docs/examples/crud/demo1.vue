@@ -5,7 +5,6 @@ crud基础应用
 
 <template>
 
-
   <c7-crud
       ref="crud"
       :list-function="(param) =>getCrudData(param)"
@@ -29,7 +28,6 @@ crud基础应用
         ></c7-select>
       </el-form-item>
 
-
     </template>
 
     <template #operate>
@@ -52,7 +50,6 @@ crud基础应用
 
 <script setup>
 import {ref} from "vue";
-import {c7Crud, c7Select, c7DictTag} from "c7-plus";
 import {getCrudData} from "../api.js";
 
 const searchParam = ref({

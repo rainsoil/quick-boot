@@ -85,8 +85,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Upload } from 'c7-plus'
-
 const headers = ref({
   'Authorization': 'Bearer xxxx'
 })

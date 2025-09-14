@@ -43,8 +43,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7DictTag } from 'c7-plus'
-  
   // 用户状态
   const userStatus = ref('1')
   const statusOptions = ref([

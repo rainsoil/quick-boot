@@ -27,7 +27,6 @@
               </div>
             </template>
 
-
           </c7-json-form>
 
           <el-form-item>
@@ -47,7 +46,6 @@
 
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import { c7JsonForm } from "c7-plus"
 import { Plus } from '@element-plus/icons-vue'
 
 // 表单数据模型

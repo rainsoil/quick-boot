@@ -5,9 +5,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7Button} from "c7-plus";
-
-
 </script>
 
 <style scoped>

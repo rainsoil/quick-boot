@@ -85,7 +85,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { c7Button } from 'c7-plus'
 import type { ButtonPresetType } from 'c7-plus'
 
 // 按钮类型数组

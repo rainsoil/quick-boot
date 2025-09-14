@@ -16,7 +16,6 @@
 </template>
 <script setup>
 import {ref} from 'vue'
-import {c7Select} from "c7-plus";
 
 const choose = ref("0");
 const dictList = ref([{

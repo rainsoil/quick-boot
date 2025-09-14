@@ -12,7 +12,6 @@
 
 <script setup>
 import {reactive, ref} from 'vue'
-import {c7Button} from 'c7-plus'
 
 const handleSubmit = async () => {
   // 异步操作

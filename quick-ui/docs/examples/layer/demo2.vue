@@ -150,8 +150,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Layer } from 'c7-plus'
-
 // 当前显示的弹层
 const currentLayer = ref('')
 

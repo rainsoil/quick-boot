@@ -9,7 +9,6 @@
   </template>
   
   <script setup>
-  import {c7DictTag} from 'c7-plus'
   import {ref} from 'vue'
   
   const customValue = ref(['1', '2'])

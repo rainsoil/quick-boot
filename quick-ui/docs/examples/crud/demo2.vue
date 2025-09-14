@@ -5,7 +5,6 @@ crud基础应用
 
 <template>
 
-
   <c7-crud
       ref="crud"
       :list-function="(param) =>getCrudData(param)"
@@ -18,7 +17,6 @@ crud基础应用
       <el-form-item label="名称" prop="name">
         <el-input placeholder="请输入名称" v-model="queryParams.name"></el-input>
       </el-form-item>
-
 
     </template>
 
@@ -42,9 +40,7 @@ crud基础应用
 
 <script setup>
 import {ref} from "vue";
-import {c7Crud,c7DictTag} from "c7-plus";
 import {getCrudData} from "../api.js";
-
 
 const addHandler = () => {
   alert("新增")

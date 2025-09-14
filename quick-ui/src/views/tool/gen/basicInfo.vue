@@ -56,15 +56,13 @@
 
       <el-col :span="12">
         <el-form-item label="权限校验" prop="verifyPermission">
-
-          <c7-radio :dict-type="sys_yes_no" v-model="dataForm.verifyPermission"></c7-radio>
-
+          <c7-radio :dataList="dictData.sys_yes_no?.value || []" v-model="dataForm.verifyPermission"></c7-radio>
         </el-form-item>
       </el-col>
 
       <el-col :span="12">
         <el-form-item label="上级菜单" prop="parentId">
-          <c7-cascader api="/system/menu/tree" v-model="dataForm.parentId" result-type="3"
+          <c7-cascader :fetchData="getMenuTree" v-model="dataForm.parentId" result-type="3"
                        :checkStrictly="true"></c7-cascader>
           <!--          <q-dict-select v-model="dataForm.parentId" type="cascader" dic-url="/system/menu/tree" check-strictly="true">-->
           <!--          </q-dict-select>-->
@@ -87,9 +85,9 @@
 
 <script setup>
 
-import {ref} from "vue";
+import {ref, getCurrentInstance} from "vue";
 import baseService from "@/service/baseService.js";
-import {c7Select, c7Radio, c7Cascader} from "c7-plus";
+import {C7Select, C7Radio, C7Cascader} from "@/components/c7";
 
 const dataFormRef = ref();
 // 表单
@@ -105,6 +103,7 @@ const dataForm = ref({
   parentId: "0"
 })
 const {proxy} = getCurrentInstance();
+const dictData = proxy.useDict("sys_yes_no");
 const genTypeDict = ref([
   {label: "zip压缩包", value: "0"},
   {label: "自定义路径", value: "1"}
@@ -132,6 +131,17 @@ const submit = () => {
     }
   });
 }
+
+// 获取菜单树数据
+const getMenuTree = async (params) => {
+  try {
+    const response = await baseService.post("/system/menu/tree", params);
+    return response;
+  } catch (error) {
+    console.error('获取菜单树失败:', error);
+    return { data: [] };
+  }
+};
 
 // 获取详情
 const getInfo = (tableId) => {

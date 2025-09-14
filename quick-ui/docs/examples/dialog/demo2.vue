@@ -66,8 +66,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7Dialog, c7Title } from "c7-plus"
-  
   const drawer1Visible = ref(false)
   const drawer2Visible = ref(false)
   const drawer3Visible = ref(false)

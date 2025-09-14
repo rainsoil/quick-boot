@@ -64,7 +64,7 @@
 
 
 <script setup>
-import {c7Dialog, c7Select, c7Radio} from 'c7-plus'
+import {C7Dialog, C7Select, C7Radio} from "@/components/c7"
 import {reactive, ref} from "vue";
 import baseService from "@/service/baseService.js";
 

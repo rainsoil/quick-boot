@@ -1,7 +1,6 @@
 <template>
   <div>
 
-
     <c7-json-table
         ref="crud"
         :list-function="(param) =>getCrudData(param)"
@@ -37,17 +36,14 @@
         <span>id=>{{ row.id }}</span>
       </template>
 
-
     </c7-json-table>
   </div>
 
 </template>
 
 <script setup>
-import {c7JsonTable, c7Select} from 'c7-plus'
 import {getCrudData} from "../api.js";
 import {ref} from "vue";
-
 
 const searchParam = ref({
   name: ''

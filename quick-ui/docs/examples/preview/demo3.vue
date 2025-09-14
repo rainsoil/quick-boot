@@ -72,8 +72,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Preview } from 'c7-plus'
-
 // 单个文件URL
 const singleFileUrl = ref('https://www.w3.org/TR/PNG/iso_8859-1.txt')
 

@@ -1,6 +1,6 @@
 <template>
 
-  <c7-dialog :visible="visibleRef" mode="dialog" title="查看" width="80%" :footer="false"
+  <C7Dialog :visible="visibleRef" mode="dialog" title="查看" width="80%" :footer="false"
              @close="handleClose">
 
 
@@ -61,33 +61,28 @@
       </el-row>
 
     </el-form>
-  </c7-dialog>
+  </C7Dialog>
 </template>
 
 <script setup>
-import {c7Dialog} from 'c7-plus'
-import {reactive, ref} from "vue";
-import baseService from "@/service/baseService.js";
-
+import {C7Dialog} from "@/components/c7"
+import {reactive, ref, getCurrentInstance} from "vue";
+import { getLogininfor } from '@/api/system/logininfor.js';
 
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);
 const visibleRef = ref(false);
 const dataForm = ref({
-  id: "",
-  method: "",
-  requestMethod: "",
-  operName: "",
-  operUrl: "",
-  operIp: "",
-  operLocation: "",
-  operParam: "",
-  jsonResult: "",
+  infoId: "",
+  userName: "",
+  ipaddr: "",
+  loginLocation: "",
+  browser: "",
+  os: "",
   status: "",
-  operTime: "",
-  costTime: "",
-
-
+  msg: "",
+  loginTime: "",
+  clientId: ""
 })
 const handleClose = () => {
   visibleRef.value = false;
@@ -105,16 +100,20 @@ const rules = ref(
 const init = (id) => {
   visibleRef.value = true;
   if (id) {
-    dataForm.value.id = id;
+    dataForm.value.infoId = id;
     getInfo(id);
   }
-
 }
 // 根据id查询详情
 const getInfo = (id) => {
-  baseService.get("/system/syslogininfor/" + id).then(res => {
+  console.log('获取登录信息详情，ID:', id);
+  getLogininfor(id).then(res => {
+    console.log('登录信息详情响应:', res);
     dataForm.value = res.data;
-  })
+  }).catch(error => {
+    console.error('获取登录信息详情失败:', error);
+    proxy.$message.error('获取详情失败');
+  });
 }
 const dataFormRef = ref()
 

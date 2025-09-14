@@ -1,67 +1,73 @@
 <template>
   <div class="app-container">
-    <c7-table-search :columns="searchColumns" ref="searchRef" v-model="searchParam"
-                     @handleSearch="tableRef.getDataList()" @handleReset="tableRef.handleReset()"></c7-table-search>
-    <c7-table :tableProps="tableProps" :columns="jsonColumns" ref="tableRef" :tableParam="searchParam"
-              :buttons="buttons"
-              :selection="false" @addBtnHandle="addBtnHandle">
+    <!-- 操作日志表格 -->
+    <C7JsonTable
+      ref="tableRef"
+      :listFunction="listOperlog"
+      :tableColumns="tableColumns"
+      :searchColumns="searchColumns"
+      :tableProps="tableProps"
+      rowsKey="data.records"
+      totalKey="data.total"
+      @addBtnHandle="handleView"
+      @refreshDataList="refreshData"
+    >
+      <template #status="scope">
+        <span :style="scope.row.status != 200 ? 'color: red':''">{{ scope.row.status }}</span>
+      </template>
+      <template #table-operate="scope">
+        <C7Button
+          type="primary"
+          link
+          icon="View"
+          @click="handleView(scope.row)"
+        >
+          查看
+        </C7Button>
+      </template>
+    </C7JsonTable>
 
-      <template #status="{item}">
-        <span :style="item.status !=200 ? 'color: red':''">{{ item.status }}</span>
-      </template>
-      <template #operate="scope">
-        <el-button link type="primary" icon="View" @click="addBtnHandle(scope.row.id)"
-                   v-hasPermi="['system:operlog:query']">查看
-        </el-button>
-      </template>
-    </c7-table>
-    <!-- 弹窗, 新增 / 修改 -->
-    <add-or-update :key="addKey" ref="addOrUpdateRef" @refreshDataList="tableRef.getDataList()"></add-or-update>
+    <!-- 查看详情弹窗 -->
+    <add-or-update 
+      :key="addKey" 
+      ref="addOrUpdateRef" 
+      @refreshDataList="refreshData"
+    />
   </div>
-
-
 </template>
 
 
 <script setup lang="ts">
-import {reactive, ref, nextTick} from "vue";
-
+import { reactive, ref, nextTick } from "vue";
+import { C7JsonTable, C7Button } from '@/components/c7';
 import AddOrUpdate from "./add-or-update.vue";
+import { listOperlog } from '@/api/system/operlog.js';
 
-// 按钮配置
-const buttons = ref({
-  enable: false,
-})
-// 搜索
-const searchParam = ref({});
-// 搜索字段
+// 表格引用
+const tableRef = ref();
+const addOrUpdateRef = ref();
+const addKey = ref(0);
+
+// 搜索字段配置
 const searchColumns = ref([
-
-
   {
     label: "方法名称",
     prop: "method",
     type: "input",
     placeholder: "请输入方法名称"
   },
-
-
   {
     label: "操作人员",
     prop: "operName",
     type: "input",
     placeholder: "请输入操作人员"
   },
-
-
   {
     label: "请求URL",
     prop: "operUrl",
     type: "input",
     placeholder: "请输入请求URL"
   },
-
-
   {
     label: "主机地址",
     prop: "operIp",
@@ -71,10 +77,9 @@ const searchColumns = ref([
   {
     label: "状态",
     prop: "status",
-    type: "dict",
-    dictType: "sys_common_status",
+    type: "select",
+    dictType: "sys_common_status"
   },
-
   {
     label: "操作时间",
     prop: "operTimes",
@@ -84,86 +89,89 @@ const searchColumns = ref([
     startPlaceholder: "开始日期",
     endPlaceholder: "结束日期",
     valueFormat: "YYYY-MM-DD"
-
   }
-
 ]);
 
-
-// 列表
-const tableRef = ref();
-const tableProps = reactive({
-  getDataListURL: "/system/sysoperlog/list",
-  getDataListIsPage: true,
-  deleteURL: "/system/sysoperlog",
-  deleteIsBatch: true,
-  dataForm: searchParam
-
-})
-
-// 列表字段配置
-const jsonColumns = ref([
-
+// 表格列配置
+const tableColumns = ref([
+  {
+    label: "日志编号",
+    prop: "operId",
+    width: 100
+  },
+  {
+    label: "系统模块",
+    prop: "title",
+    showOverflowTooltip: true
+  },
+  {
+    label: "操作类型",
+    prop: "businessType",
+    width: 100
+  },
   {
     label: "方法名称",
     prop: "method",
-    showOverflowTooltip: true,
+    showOverflowTooltip: true
   },
-
+  {
+    label: "请求方式",
+    prop: "requestMethod",
+    width: 100
+  },
   {
     label: "操作人员",
     prop: "operName",
-
-    width: "120px",
+    width: 120
   },
-
-
-  {
-    label: "请求URL",
-    prop: "operUrl",
-    showOverflowTooltip: true,
-    formatter: (item, row) => {
-      return row.requestMethod + " " + row.operUrl;
-    }
-
-  },
-
-
   {
     label: "主机地址",
     prop: "operIp",
-    width: "130px",
-
-  }
-  ,
-
+    width: 130
+  },
   {
     label: "状态码",
     prop: "status",
-    width: "80px",
-    isSolt: true
+    width: 80
   },
   {
     label: "操作时间",
     prop: "operTime",
-    width: "170px",
-
+    width: 170
   },
   {
     label: "耗时",
     prop: "costTime",
-    width: "60px",
+    width: 60
+  },
+  {
+    label: "操作",
+    prop: "table-operate",
+    width: 100,
+    fixed: "right"
   }
-
 ]);
-const addKey = ref(0);
-const addOrUpdateRef = ref();
-const addBtnHandle = (id) => {
+
+// 表格配置
+const tableProps = ref({
+  selection: false,
+  showAdd: false,
+  showEdit: false,
+  showDelete: false,
+  showRefresh: true
+});
+
+// 事件处理函数
+const handleView = (row) => {
   addKey.value++;
   nextTick(() => {
-    addOrUpdateRef.value.init(id);
+    addOrUpdateRef.value.init(row.id);
   });
-}
+};
+
+const refreshData = () => {
+  tableRef.value?.getDataList();
+};
 
 </script>
 

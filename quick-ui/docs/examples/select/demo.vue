@@ -1,6 +1,5 @@
 <template>
 
-
   <el-row :gutter="10">
     <el-col :span="8">
       <c7-select :data-list="dictList" v-model="choose"></c7-select>
@@ -11,15 +10,9 @@
     </el-col>
   </el-row>
 
-
-
-
-
 </template>
 <script setup>
 import {ref, toRefs} from 'vue'
-import {c7Select} from "c7-plus";
-
 const choose = ref();
 const dictList = toRefs([{
   label: "中学",
@@ -29,7 +22,6 @@ const dictList = toRefs([{
     label: "小学",
     value: "1"
   },
-
 
 ])
 

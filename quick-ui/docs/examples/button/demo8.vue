@@ -35,8 +35,6 @@
 
 <script setup>
 import { ref, reactive } from 'vue'
-import { c7Button } from 'c7-plus'
-
 const formRef = ref()
 const form = reactive({
   name: ''

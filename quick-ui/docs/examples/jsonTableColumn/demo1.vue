@@ -14,7 +14,6 @@
           <el-button @click="handleCustomAction(row, index)">操作{{ index }}</el-button>
         </template>
 
-
       </c7-json-table-column>
     </el-table>
 
@@ -23,8 +22,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7JsonTableColumn} from 'c7-plus'
-
 // 示例数据
 const tableData = ref([
   {

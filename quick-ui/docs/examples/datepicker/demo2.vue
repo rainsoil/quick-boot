@@ -15,7 +15,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7DatePicker} from "c7-plus";
 const value2 = ref('')
 </script>
 

@@ -50,8 +50,6 @@
   
   <script setup>
   import { ref } from 'vue'
-  import { c7DatePicker, c7Title } from "c7-plus"
-  
   const yearValue = ref('')
   const monthValue = ref('')
   const datetimeValue = ref('')

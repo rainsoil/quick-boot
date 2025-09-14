@@ -11,7 +11,6 @@
 <script setup>
 import {ref} from 'vue'
 import {getSelectData} from '../api.js'
-import {c7Checkbox} from "c7-plus";
 // 组件内 setup
 const selectedValues = ref('')
 

@@ -136,8 +136,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7SwitchForm } from 'c7-plus'
-
 // 简单页面切换
 const currentPage = ref('home')
 const handlePageChange = (pageName) => {

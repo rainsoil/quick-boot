@@ -1,6 +1,6 @@
 <template>
 
-  <c7-dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
+  <C7Dialog :visible="visibleRef" mode="dialog" :title="(!dataForm.id)?'新增':'修改'"
              @close="handleClose" :footer="false">
 
 
@@ -21,7 +21,7 @@
         <el-col :span="10">
           <el-form-item label="任务组名" prop="jobGroup">
 
-            <c7-select dict-type="sys_job_group" v-model="dataForm.jobGroup"></c7-select>
+            <C7Select dict-type="sys_job_group" v-model="dataForm.jobGroup"></C7Select>
 
           </el-form-item>
         </el-col>
@@ -59,7 +59,7 @@
       <el-row>
         <el-col :span="10">
           <el-form-item label="执行状态" prop="status">
-            <c7-select dict-type="sys_common_status" v-model="dataForm.status"></c7-select>
+            <C7Select dict-type="sys_common_status" v-model="dataForm.status"></C7Select>
 
           </el-form-item>
         </el-col>
@@ -87,15 +87,14 @@
 
 
     </el-form>
-  </c7-dialog>
+  </C7Dialog>
 </template>
 
 <script setup>
 
-import {c7Dialog, c7Select} from 'c7-plus'
-import {reactive, ref} from "vue";
+import {C7Dialog, C7Select} from "@/components/c7"
+import {reactive, ref, getCurrentInstance} from "vue";
 import baseService from "@/service/baseService.js";
-
 
 const {proxy} = getCurrentInstance();
 const emit = defineEmits(["refreshDataList"]);

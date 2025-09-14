@@ -142,8 +142,6 @@ const options: Option[] = [
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { c7Select } from 'c7-plus'
-
 // 定义 Option 类型（本地）
 interface Option {
   label: string

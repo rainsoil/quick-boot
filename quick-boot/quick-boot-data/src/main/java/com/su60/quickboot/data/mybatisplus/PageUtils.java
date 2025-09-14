@@ -1,6 +1,7 @@
 package com.su60.quickboot.data.mybatisplus;
 
 import cn.hutool.core.lang.Opt;
+import cn.hutool.core.util.StrUtil;
 import com.su60.quickboot.common.core.PageInfo;
 import com.su60.quickboot.common.core.PageRequest;
 import com.su60.quickboot.data.spring.SpringContextHolder;
@@ -34,7 +35,14 @@ public class PageUtils {
 			request = SpringContextHolder.getRequest();
 		}
 		String page = request.getParameter("page");
+		if (StrUtil.isBlank(page)) {
+			page = request.getParameter("pageNum");
+
+		}
 		String limit = request.getParameter("limit");
+		if (StrUtil.isBlank(limit)){
+			limit = request.getParameter("pageSize");
+		}
 
 		PageRequest<T> pageRequest = new PageRequest<>();
 		pageRequest.setCurrent(Opt.ofNullable(page).map(Long::parseLong).orElse(0L));

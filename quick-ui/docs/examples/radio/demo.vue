@@ -10,12 +10,9 @@
     </el-col>
   </el-row>
 
-
 </template>
 <script setup>
-import {c7Radio} from "c7-plus";
 import {ref} from "vue";
-
 
 const choose = ref();
 const dictList = ref([{
@@ -26,7 +23,6 @@ const dictList = ref([{
     label: "小学",
     value: "1"
   },
-
 
 ])
 

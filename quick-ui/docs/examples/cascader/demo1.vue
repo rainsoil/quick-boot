@@ -6,8 +6,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7Cascader} from "c7-plus";
-
 const choose = ref();
 
 const dictList = [

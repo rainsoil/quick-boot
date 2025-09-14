@@ -15,13 +15,10 @@
     <c7Button :clickFunction="buttonClickHandler" btn-type="cancel"></c7Button>
   </el-form>
 
-
 </template>
 
 <script setup>
 import {reactive, ref} from 'vue'
-import {c7Button} from "c7-plus";
-
 const userRef = ref();
 
 const form = ref({
@@ -38,11 +35,9 @@ const rules = reactive({
   ]
 })
 
-
 const submit = () => {
   userRef.value.validate(valid => {
     if (valid) {
-
 
       alert("点击成功")
     }

@@ -32,7 +32,6 @@ tag demo
 </template>
 
 <script setup>
-import {c7DictTag} from 'c7-plus'
 import {ref} from 'vue'
 
 const defaultValue = ref('1')
@@ -42,7 +41,6 @@ const successValue = ref('3')
 const infoValue = ref('4')
 const warningValue = ref('5')
 const dangerValue = ref('6')
-
 
 const dictList = ref([
   {
@@ -78,7 +76,6 @@ const dictList = ref([
 ])
 
 </script>
-
 
 <style scoped>
 

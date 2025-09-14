@@ -56,8 +56,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Preview } from 'c7-plus'
-
 // 多张图片URL
 const imageUrls = ref([
   'https://via.placeholder.com/400x300/409EFF/FFFFFF?text=图片1',

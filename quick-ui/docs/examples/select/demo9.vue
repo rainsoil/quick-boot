@@ -1,9 +1,7 @@
 <!-- select 使用函数-->
 <template>
 
-
   <el-row :gutter="10" style="margin-top: 20px">
-
 
     <el-col :span="12" >
       <c7-select v-model="choose2"
@@ -20,11 +18,9 @@
 
   </el-row>
 
-
 </template>
 <script setup>
 import {ref} from 'vue'
-import {c7Select} from "c7-plus";
 import axios from "axios";
 
 const choose = ref("1");

@@ -43,8 +43,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Select, c7JsonForm } from 'c7-plus'
-
 // 包含重复值的数据列表
 const duplicateDataList = ref([
   { label: '选项1', value: 'option1' },

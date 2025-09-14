@@ -20,7 +20,6 @@
   </div>
 </template>
 <script setup>
-import {c7Title} from "c7-plus";
 import {ref} from 'vue';
 
 const searchText = ref('');

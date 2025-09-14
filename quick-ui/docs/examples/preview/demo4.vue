@@ -82,8 +82,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Preview } from 'c7-plus'
-
 // 混合文件类型URL
 const mixedUrls = ref([
   'https://via.placeholder.com/400x300/409EFF/FFFFFF?text=图片',

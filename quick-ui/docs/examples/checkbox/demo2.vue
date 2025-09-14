@@ -10,7 +10,6 @@
 
   <span>选中的数据(结果用,隔开):{{ selectedValues }}</span>
 
-
   <c7Checkbox
       v-model="selectedValues2"
       :separator="false"
@@ -26,7 +25,6 @@
 
 <script setup>
 import {ref} from 'vue'
-import {c7Checkbox} from "c7-plus";
 // 组件内 setup
 const selectedValues = ref('')
 

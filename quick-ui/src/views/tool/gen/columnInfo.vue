@@ -99,7 +99,7 @@
 
 <script setup name="gentablecolumn">
 import {reactive, ref, toRefs} from "vue";
-import {c7Select} from 'c7-plus'
+import {C7Select} from "@/components/c7"
 import baseService from "@/service/baseService.js";
 
 const {proxy} = getCurrentInstance();

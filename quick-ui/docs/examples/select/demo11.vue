@@ -86,8 +86,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { c7Select } from 'c7-plus'
-
 // 异步数据加载
 const asyncValue = ref('')
 const handleAsyncChange = (value) => {
