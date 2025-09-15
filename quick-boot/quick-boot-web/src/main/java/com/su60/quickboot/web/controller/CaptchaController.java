@@ -2,8 +2,8 @@ package com.su60.quickboot.web.controller;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.su60.quickboot.common.core.R;
-import com.su60.quickboot.security.captcha.CaptchaService;
-import com.su60.quickboot.security.captcha.CaptchaVo;
+import com.su60.quickboot.common.captcha.CaptchaService;
+import com.su60.quickboot.common.captcha.CaptchaVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

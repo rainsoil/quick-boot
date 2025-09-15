@@ -25,10 +25,5 @@
 			<version>${project.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.su60.quickboot.security</groupId>
-			<artifactId>quick-boot-security</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 </project>

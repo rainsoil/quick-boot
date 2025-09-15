@@ -4,7 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.su60.quickboot.common.bean.BeanConvertUtils;
 import com.su60.quickboot.common.exception.WarningException;
-import com.su60.quickboot.security.password.PasswordEncoder;
+import com.su60.quickboot.common.security.PasswordEncoder;
 import com.su60.quickboot.system.entity.SysUserEntity;
 import com.su60.quickboot.system.dos.SysUserDo;
 import com.su60.quickboot.system.entity.SysUserRoleEntity;

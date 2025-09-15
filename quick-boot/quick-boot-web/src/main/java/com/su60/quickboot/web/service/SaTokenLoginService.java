@@ -5,7 +5,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.su60.quickboot.common.bean.BeanConvertUtils;
 import com.su60.quickboot.core.security.LoginUser;
 import com.su60.quickboot.core.security.LoginUserUtils;
-import com.su60.quickboot.security.password.PasswordEncoder;
+import com.su60.quickboot.common.security.PasswordEncoder;
 import com.su60.quickboot.system.dos.SysRoleDo;
 import com.su60.quickboot.system.dos.SysUserDo;
 import com.su60.quickboot.system.service.ISysMenuService;

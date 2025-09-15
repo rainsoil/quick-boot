@@ -1,4 +1,4 @@
-package com.su60.quickboot.security.captcha;
+package com.su60.quickboot.common.captcha;
 
 /**
  * 验证码类型枚举

@@ -11,12 +11,9 @@
 	<modules>
 		<module>quick-boot-common</module>
 		<module>quick-boot-data</module>
-		<module>quick-boot-security</module>
 		<module>quick-boot-core</module>
 		<module>quick-boot-system</module>
 		<module>quick-boot-web</module>
-
-
 	</modules>
 
 	<properties>
