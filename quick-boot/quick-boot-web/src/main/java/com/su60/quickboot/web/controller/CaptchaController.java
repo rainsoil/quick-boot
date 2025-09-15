@@ -1,7 +1,9 @@
-package com.su60.quickboot.security.captcha;
+package com.su60.quickboot.web.controller;
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import com.su60.quickboot.common.core.R;
-import jakarta.annotation.security.PermitAll;
+import com.su60.quickboot.security.captcha.CaptchaService;
+import com.su60.quickboot.security.captcha.CaptchaVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +29,7 @@ public class CaptchaController {
 	 * @since 2024/07/17
 	 */
 
-	@PermitAll
+	@SaIgnore
 	@GetMapping("captchaImage")
 	public R<CaptchaVo> create() {
 		CaptchaVo captchaVo = captchaService.create();

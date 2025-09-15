@@ -14,7 +14,7 @@ import com.su60.quickboot.system.service.ISysDictDataService;
 import com.su60.quickboot.system.service.ISysDictTypeService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,7 +54,7 @@ public class SysDictControllr {
 	 * @return 分页数据
 	 * @since 2024/10/11
 	 */
-	@PreAuthorize("hasAuthority('system:dict:list')")
+	@SaCheckPermission("system:dict:list")
 	@GetMapping("type/page")
 	public PageInfo<SysDictTypeDo> typePage(SysDictTypeDo sysDictTypeDo) {
 
@@ -81,7 +81,7 @@ public class SysDictControllr {
 	 * @return 字典信息
 	 * @since 2024/10/12
 	 */
-	@PreAuthorize("hasAuthority('system:dict:query')")
+	@SaCheckPermission("system:dict:query")
 	@GetMapping("type/info/{id}")
 	public SysDictTypeDo dictTypeInfo(@PathVariable("id") Long id) {
 		return sysDictTypeService.getVoById(id);
@@ -94,7 +94,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/10/12
 	 */
-	@PreAuthorize("hasAuthority('system:dict:add')")
+	@SaCheckPermission("system:dict:add")
 	@PostMapping("type")
 	public boolean saveDictType(@RequestBody @Validated(AddGroup.class) SysDictTypeDo sysDictTypeDo) {
 		return sysDictTypeService.saveVo(sysDictTypeDo);
@@ -108,7 +108,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/10/12
 	 */
-	@PreAuthorize("hasAuthority('system:dict:edit')")
+	@SaCheckPermission("system:dict:edit")
 	@PutMapping("type")
 	public boolean updateDictType(@RequestBody @Validated SysDictTypeDo sysDictTypeDo) {
 		return sysDictTypeService.updateVoById(sysDictTypeDo);
@@ -121,7 +121,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/10/12
 	 */
-	@PreAuthorize("hasAuthority('system:dict:remove')")
+	@SaCheckPermission("system:dict:remove")
 	@DeleteMapping("type")
 	public boolean deleteDictType(@RequestBody List<Long> ids) {
 		return sysDictTypeService.deleteByIds(ids);
@@ -135,7 +135,7 @@ public class SysDictControllr {
 	 * @return 分页
 	 * @since 2024/10/13
 	 */
-	@PreAuthorize("hasAuthority('system:dict:list')")
+	@SaCheckPermission("system:dict:list")
 	@GetMapping("/data/page")
 	public PageInfo<SysDictDataDo> dataPage(SysDictDataDo sysDictDataDo) {
 
@@ -155,7 +155,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/10/13
 	 */
-	@PreAuthorize("hasAuthority('system:dict:add')")
+	@SaCheckPermission("system:dict:add")
 	@PostMapping("data")
 	public Boolean dataSave(@RequestBody @Validated(AddGroup.class) SysDictDataDo sysDictDataDo) {
 		return sysDictDataService.saveVo(sysDictDataDo);
@@ -168,7 +168,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/11/12
 	 */
-	@PreAuthorize("hasAuthority('system:dict:edit')")
+	@SaCheckPermission("system:dict:edit")
 	@PutMapping("data")
 	public Boolean dataUpdate(@RequestBody @Validated(UpdateGroup.class) SysDictDataDo sysDictDataDo) {
 		return sysDictDataService.updateVoById(sysDictDataDo);
@@ -182,7 +182,7 @@ public class SysDictControllr {
 	 * @return 是否成功
 	 * @since 2024/10/13
 	 */
-	@PreAuthorize("hasAuthority('system:dict:remove')")
+	@SaCheckPermission("system:dict:remove")
 	@DeleteMapping("data")
 	public Boolean dataDelete(@RequestBody List<Long> ids) {
 		return sysDictDataService.deleteByIds(ids);
@@ -195,7 +195,7 @@ public class SysDictControllr {
 	 * @return 字典项
 	 * @since 2024/10/13
 	 */
-	@PreAuthorize("hasAuthority('system:dict:query')")
+	@SaCheckPermission("system:dict:query")
 	@GetMapping("data/{id}")
 	public SysDictDataDo getDictData(@PathVariable("id") Long id) {
 		return sysDictDataService.getVoById(id);

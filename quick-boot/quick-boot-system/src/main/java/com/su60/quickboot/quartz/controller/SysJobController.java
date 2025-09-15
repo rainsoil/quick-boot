@@ -11,7 +11,7 @@ import com.su60.quickboot.quartz.service.ISysJobService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +40,7 @@ public class SysJobController {
 	 * @return 分页结果
 	 * @since 2024/11/07
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:list')")
+	@SaCheckPermission("quartz:sysjob:list")
 	@GetMapping("list")
 	public PageInfo<SysJobDo> page(SysJobDo sysJobDo) {
 
@@ -69,7 +69,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/07
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:add')")
+	@SaCheckPermission("quartz:sysjob:add")
 	@PostMapping()
 	public Boolean save(@RequestBody @Validated(AddGroup.class) SysJobDo sysJobDo) {
 		return sysJobService.saveVo(sysJobDo);
@@ -83,7 +83,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/06/29
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:edit')")
+	@SaCheckPermission("quartz:sysjob:edit")
 	@PutMapping
 	public Boolean updateById(@RequestBody @Validated(UpdateGroup.class) SysJobDo sysJobDo) {
 		return sysJobService.updateVoById(sysJobDo);
@@ -97,7 +97,7 @@ public class SysJobController {
 	 * @return 任务信息
 	 * @since 2024/11/07
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:query')")
+	@SaCheckPermission("quartz:sysjob:query")
 	@GetMapping("/{id}")
 	public SysJobDo getById(@PathVariable("id") Long id) {
 		return sysJobService.getVoById(id);
@@ -111,7 +111,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/07
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:remove')")
+	@SaCheckPermission("quartz:sysjob:remove")
 	@DeleteMapping()
 	public Boolean deleteByIds(@RequestBody List<Long> ids) {
 		return sysJobService.deleteByIds(ids);
@@ -126,7 +126,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/13
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:edit')")
+	@SaCheckPermission("quartz:sysjob:edit")
 	@GetMapping("changeStatus/{id}/{status}")
 	public Boolean changeStatus(@PathVariable("id") Long id, @PathVariable("status") String status) {
 		return sysJobService.changeStatus(id, status);
@@ -139,7 +139,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/13
 	 */
-	@PreAuthorize("hasAuthority('quartz:sysjob:edit')")
+	@SaCheckPermission("quartz:sysjob:edit")
 	@GetMapping("/run/{id}")
 	public Boolean run(@PathVariable("id") Long id) {
 

@@ -5,7 +5,7 @@ import cn.t200.quickboot.common.core.PageRequest;
 import cn.t200.quickboot.data.mybatisplus.PageVoHandler;
 import cn.t200.quickboot.common.validation.AddGroup;
 import cn.t200.quickboot.common.validation.UpdateGroup;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import ${packag}.dos.${className}Do;
 import ${packag}.entity.${className}Entity;
 import ${packag}.service.I${className}Service;
@@ -42,7 +42,7 @@ import java.util.List;
     * @since  ${date}
     */
 <#if  tableEntity.verifyPermission == 'Y' >
-    @PreAuthorize("hasAuthority('${moduleName!}:${className ?lower_case}:list')")
+    @SaCheckPermission("${moduleName!}:${className ?lower_case}:list")
 </#if>
     @GetMapping("list")
     public PageInfo<${className}Do> page(${className}Do ${className?uncap_first}Do) {
@@ -74,7 +74,7 @@ import java.util.List;
                     * @since  ${date}
                     */
         <#if  tableEntity.verifyPermission == 'Y' >
-                    @PreAuthorize("hasAuthority('${moduleName!}:${className ?lower_case}:add')")
+                    @SaCheckPermission("${moduleName!}:${className ?lower_case}:add")
         </#if>
                     @PostMapping()
                     public Boolean save(@RequestBody @Validated(AddGroup.class) ${className}Do ${className?uncap_first}Do) {
@@ -90,7 +90,7 @@ import java.util.List;
                     * @since 2024/06/29
                     */
         <#if  tableEntity.verifyPermission == 'Y' >
-                    @PreAuthorize("hasAuthority('${moduleName!}:${className ?lower_case}:edit')")
+                    @SaCheckPermission("${moduleName!}:${className ?lower_case}:edit")
         </#if>
                     @PutMapping
                     public Boolean updateById(@RequestBody @Validated(UpdateGroup.class) ${className}Do ${className?uncap_first}Do) {
@@ -106,7 +106,7 @@ import java.util.List;
                     * @since  ${date}
                     */
         <#if  tableEntity.verifyPermission == 'Y' >
-                    @PreAuthorize("hasAuthority('${moduleName!}:${className ?lower_case}:query')")
+                    @SaCheckPermission("${moduleName!}:${className ?lower_case}:query")
         </#if>
                     @GetMapping("/{id}")
                     public ${className}Do getById(@PathVariable("id") Long id) {
@@ -122,7 +122,7 @@ import java.util.List;
                     * @since  ${date}
                     */
         <#if  tableEntity.verifyPermission == 'Y' >
-                    @PreAuthorize("hasAuthority('${moduleName!}:${className ?lower_case}:remove')")
+                    @SaCheckPermission("${moduleName!}:${className ?lower_case}:remove")
         </#if>
                     @DeleteMapping()
                     public Boolean deleteByIds(@RequestBody List<Long> ids) {

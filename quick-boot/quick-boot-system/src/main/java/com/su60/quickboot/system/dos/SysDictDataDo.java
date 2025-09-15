@@ -1,11 +1,9 @@
 package com.su60.quickboot.system.dos;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.su60.quickboot.common.validation.AddGroup;
 import com.su60.quickboot.common.validation.UpdateGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

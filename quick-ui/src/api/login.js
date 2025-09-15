@@ -12,8 +12,7 @@ export function login(username, password, code, uuid) {
         url: '/login',
         headers: {
             isToken: false,
-            repeatSubmit: false,
-            Authorization: 'd2ViOndlYg=='
+            repeatSubmit: false
         },
         method: 'post',
         params: data

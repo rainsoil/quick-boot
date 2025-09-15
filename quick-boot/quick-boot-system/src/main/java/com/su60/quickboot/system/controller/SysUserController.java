@@ -12,7 +12,7 @@ import com.su60.quickboot.system.service.ISysUserService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +44,7 @@ public class SysUserController {
 	 * @return 分页信息
 	 * @since 2024/10/14
 	 */
-	@PreAuthorize("hasAuthority('system:user:list')")
+	@SaCheckPermission("system:user:list")
 	@GetMapping("page")
 	public PageInfo<SysUserDo> page(SysUserDo sysUserDo) {
 
@@ -96,7 +96,7 @@ public class SysUserController {
 	 * @return 是否成功
 	 * @since 2024/10/14
 	 */
-	@PreAuthorize("hasAuthority('system:user:add')")
+	@SaCheckPermission("system:user:add")
 	@PostMapping()
 	public Boolean save(@RequestBody @Validated(AddGroup.class) SysUserDo sysUserDo) {
 
@@ -110,7 +110,7 @@ public class SysUserController {
 	 * @return 是否成功
 	 * @since 2024/06/29
 	 */
-	@PreAuthorize("hasAuthority('system:user:edit')")
+	@SaCheckPermission("system:user:edit")
 	@PutMapping
 	public Boolean updateById(@RequestBody @Validated(UpdateGroup.class) SysUserDo sysUserDo) {
 		return sysUserService.updateUser(sysUserDo);
@@ -124,7 +124,7 @@ public class SysUserController {
 	 * @return 用户信息
 	 * @since 2024/10/31
 	 */
-	@PreAuthorize("hasAuthority('system:user:query')")
+	@SaCheckPermission("system:user:query")
 	@GetMapping("/{id}")
 	public SysUserDo getById(@PathVariable("id") Long id) {
 		return sysUserService.getVoById(id);
@@ -138,7 +138,7 @@ public class SysUserController {
 	 * @return 是否成功
 	 * @since 2024/10/31
 	 */
-	@PreAuthorize("hasAuthority('system:user:remove')")
+	@SaCheckPermission("system:user:remove")
 	@DeleteMapping()
 	public Boolean deleteByIds(@RequestBody List<Long> ids) {
 		return sysUserService.deleteByIds(ids);

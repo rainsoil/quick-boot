@@ -1,4 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.su60.quickboot.security.config.SpringSecurityConfiguration
-
-

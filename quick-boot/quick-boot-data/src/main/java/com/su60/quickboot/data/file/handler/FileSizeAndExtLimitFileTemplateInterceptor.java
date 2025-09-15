@@ -30,7 +30,9 @@ public class FileSizeAndExtLimitFileTemplateInterceptor implements FileTemplateI
 	public void preUploadHandler(byte[] bytes, FileInfoVo fileInfoVo) {
 		String path = fileInfoVo.getPath();
 		// 分类
-		FileProperties.FileClassify fileClassify = fileProperties.getFileClassifies().stream().filter(a -> a.getClassify().equals(path)).findFirst().orElse(fileProperties.getDefaultClassify());
+		FileProperties.FileClassify fileClassify = fileProperties.getFileClassifies()
+				.stream()
+				.filter(a -> a.getClassify().equals(path)).findFirst().orElse(fileProperties.getDefaultClassify());
 		// 后缀限制
 		if (!ArrayUtil.contains(fileClassify.getLimitExt().split(","), fileInfoVo.getExt())) {
 			throw new FileExtLimitException("当前文件后缀为:" + fileInfoVo.getExt() + ",不符合规格");
@@ -38,7 +40,7 @@ public class FileSizeAndExtLimitFileTemplateInterceptor implements FileTemplateI
 		// 文件大小限制
 //		fileInfoVo.getSize() 转kb
 		if (fileClassify.getLimitSize() * 1024 < fileInfoVo.getSize()) {
-			throw new FileSizeLimitException("当前文件大小为:" + (fileInfoVo.getSize()/1024) + "KB,不符合");
+			throw new FileSizeLimitException("当前文件大小为:" + (fileInfoVo.getSize() / 1024) + "KB,不符合");
 		}
 
 	}

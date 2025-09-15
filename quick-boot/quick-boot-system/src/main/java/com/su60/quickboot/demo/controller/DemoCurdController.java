@@ -16,7 +16,7 @@ import com.su60.quickboot.system.dos.SysMenuDo;
 import com.su60.quickboot.system.service.ISysMenuService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -71,7 +71,7 @@ public class DemoCurdController {
 	 * @param request     请求
 	 * @return 页面信息<演示crud dos>
 	 */
-	@PreAuthorize("hasAuthority('demo:crud:list')")
+	@SaCheckPermission("demo:crud:list")
 	@GetMapping("list")
 	public PageInfo<DemoCrudDos> page(DemoCrudDos demoCrudDos, HttpServletRequest request) {
 		PageRequest<DemoCrudDos> page = PageUtils.getPage(demoCrudDos, request);
@@ -111,7 +111,7 @@ public class DemoCurdController {
 	 * @param id 身份证件
 	 * @return 测试实体类
 	 */
-	@PreAuthorize("hasAuthority('demo:crud:query')")
+	@SaCheckPermission("demo:crud:query")
 	@GetMapping("/{id}")
 	public DemoCrudDos getById(@PathVariable("id") Long id) {
 		return LIST.stream().filter(item -> item.getId().equals(id)).findFirst().orElse(null);
@@ -173,7 +173,7 @@ public class DemoCurdController {
 	 * @return 是否成功
 	 * @since 2024/11/20
 	 */
-	@PreAuthorize("hasAuthority('demo:crud:add')")
+	@SaCheckPermission("demo:crud:add")
 	@PostMapping()
 	public Boolean save(@RequestBody DemoCrudDos demoCrudDos) {
 		//取出来list中最大的id
@@ -190,7 +190,7 @@ public class DemoCurdController {
 	 * @return 是否成功
 	 * @since 2024/11/23
 	 */
-	@PreAuthorize("hasAuthority('demo:crud:edit')")
+	@SaCheckPermission("demo:crud:edit")
 	@PutMapping
 	public Boolean update(@RequestBody DemoCrudDos demoCrudDos) {
 		Integer index = findIndex(demoCrudDos.getId());
@@ -208,7 +208,7 @@ public class DemoCurdController {
 	 * @return 是否成功
 	 * @since 2024/11/23
 	 */
-	@PreAuthorize("hasAuthority('demo:crud:remove')")
+	@SaCheckPermission("demo:crud:remove")
 	@DeleteMapping
 	public Boolean delete(@RequestBody List<Long> ids) {
 		for (Long id : ids) {

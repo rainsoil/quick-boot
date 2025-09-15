@@ -1,1 +1,1 @@
-com.su60.quickboot.security.config.SpringSecurityConfiguration
+com.su60.quickboot.security.config.SaTokenAutoConfiguration

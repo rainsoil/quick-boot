@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+
 /**
  * 登录用户
  *
@@ -39,6 +40,9 @@ public class LoginUserController {
 	@GetMapping("getInfo")
 	public SysUserInfoVo getInfo() {
 		LoginUser user = LoginUserUtils.getUser();
+		if (user == null) {
+			throw new RuntimeException("用户未登录");
+		}
 		SysUserDo sysUserDo = sysUserService.getVoById(user.getId());
 		sysUserDo.setPassword(null);
 		return new SysUserInfoVo()
@@ -56,6 +60,10 @@ public class LoginUserController {
 	 */
 	@GetMapping("getRouters")
 	public List<RouterVo> getRouters() {
-		return sysMenuService.getRouters(LoginUserUtils.getUser().getId());
+		LoginUser user = LoginUserUtils.getUser();
+		if (user == null) {
+			throw new RuntimeException("用户未登录");
+		}
+		return sysMenuService.getRouters(user.getId());
 	}
 }

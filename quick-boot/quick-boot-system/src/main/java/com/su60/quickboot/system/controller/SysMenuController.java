@@ -11,7 +11,7 @@ import com.su60.quickboot.system.dos.SysMenuDo;
 import com.su60.quickboot.system.dos.TreeSelect;
 import com.su60.quickboot.system.service.ISysMenuService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,7 +73,7 @@ public class SysMenuController {
 	 * @return 菜单列表
 	 * @since 2024/11/6
 	 */
-	@PreAuthorize("hasAuthority('system:menu:list')")
+	@SaCheckPermission("system:menu:list")
 	@GetMapping("list")
 	public List<SysMenuDo> list(SysMenuDo sysMenuDo) {
 		return sysMenuService.listByUserId(LoginUserUtils.getUser().getId(), sysMenuDo);
@@ -86,7 +86,7 @@ public class SysMenuController {
 	 * @return 菜单信息
 	 * @since 2024/11/6
 	 */
-	@PreAuthorize("hasAuthority('system:menu:query')")
+	@SaCheckPermission("system:menu:query")
 	@GetMapping("/{id}")
 	public SysMenuDo info(@PathVariable("id") Long id) {
 
@@ -101,7 +101,7 @@ public class SysMenuController {
 	 * @return 是否成功
 	 * @since 2024/11/6
 	 */
-	@PreAuthorize("hasAuthority('system:menu:add')")
+	@SaCheckPermission("system:menu:add")
 	@PostMapping("")
 	public Boolean save(@RequestBody @Validated(AddGroup.class) SysMenuDo sysMenuDo) {
 
@@ -115,7 +115,7 @@ public class SysMenuController {
 	 * @return 是否成功
 	 * @since 2024/11/6
 	 */
-	@PreAuthorize("hasAuthority('system:menu:edit')")
+	@SaCheckPermission("system:menu:edit")
 	@PutMapping
 	public Boolean update(@RequestBody @Validated(UpdateGroup.class) SysMenuDo sysMenuDo) {
 
@@ -130,7 +130,7 @@ public class SysMenuController {
 	 * @return 是否成功
 	 * @since 2024/11/6
 	 */
-	@PreAuthorize("hasAuthority('system:menu:remove')")
+	@SaCheckPermission("system:menu:remove")
 	@DeleteMapping("/{id}")
 	public Boolean delete(@PathVariable("id") Long id) {
 		return sysMenuService.deleteById(id);

@@ -13,7 +13,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,7 +45,7 @@ public class GenTableController {
 	 * @return 分页信息
 	 * @since 2024/10/15
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:list')")
+	@SaCheckPermission("generator:gen:list")
 	@GetMapping("list")
 	public PageInfo<GenTableDo> page(GenTableDo genTableDo) {
 
@@ -66,7 +66,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/15
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:add')")
+	@SaCheckPermission("generator:gen:add")
 	@PostMapping("save")
 	public Boolean save(@RequestBody @Validated(AddGroup.class) GenTableDo genTableDo) {
 		return genTableService.saveVo(genTableDo);
@@ -80,7 +80,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/06/29
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:edit')")
+	@SaCheckPermission("generator:gen:edit")
 	@PutMapping
 	public Boolean updateById(@RequestBody @Validated(UpdateGroup.class) GenTableDo genTableDo) {
 		return genTableService.updateVoById(genTableDo);
@@ -94,7 +94,7 @@ public class GenTableController {
 	 * @return 代码生成信息
 	 * @since 2024/10/15
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:query')")
+	@SaCheckPermission("generator:gen:query")
 	@GetMapping("/{id}")
 	public GenTableDo getById(@PathVariable("id") Long id) {
 		return genTableService.getVoById(id);
@@ -108,7 +108,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/15
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:remove')")
+	@SaCheckPermission("generator:gen:remove")
 	@DeleteMapping()
 	public Boolean deleteByIds(@RequestBody List<Long> ids) {
 		return genTableService.deleteByIds(ids);
@@ -122,7 +122,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/23
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:import')")
+	@SaCheckPermission("generator:gen:import")
 	@PostMapping("createTableSave")
 	public Boolean createTableSave(@RequestBody Map<String, Object> map) {
 		String content = MapUtil.getStr(map, "content");
@@ -138,7 +138,7 @@ public class GenTableController {
 	 * @return 分页信息
 	 * @since 2024/10/24
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:import')")
+	@SaCheckPermission("generator:gen:import")
 	@GetMapping("dbTables")
 	public PageInfo<GenTableDo> dbTables(GenTableDo tableDo) {
 		return genTableService.dbTables(tableDo);
@@ -152,7 +152,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/24
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:import')")
+	@SaCheckPermission("generator:gen:import")
 	@PostMapping("importTable")
 	public Boolean importTable(@RequestBody List<String> tableNames) {
 		genTableService.save(tableNames);
@@ -167,7 +167,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/27
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:edit')")
+	@SaCheckPermission("generator:gen:edit")
 	@GetMapping("tableSyn/{tableId}")
 	public Boolean tableSyn(@PathVariable("tableId") Long tableId) {
 		genTableService.tableSyn(tableId);
@@ -182,7 +182,7 @@ public class GenTableController {
 	 * @return 是否成功
 	 * @since 2024/10/27
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:code')")
+	@SaCheckPermission("generator:gen:code")
 	@GetMapping("generator")
 	public Boolean generator(String tableIds, HttpServletResponse response) throws IOException {
 		genTableService.generator(Arrays.stream(tableIds.split(",")).map(Long::valueOf).toList(), response, "1");
@@ -209,7 +209,7 @@ public class GenTableController {
 	 * @return 预览信息
 	 * @since 2024/10/30
 	 */
-	@PreAuthorize("hasAuthority('generator:gen:preview')")
+	@SaCheckPermission("generator:gen:preview")
 	@GetMapping("preview/{tableId}")
 	public List<GenTablePreviewVo> preview(@PathVariable("tableId") Long tableId) {
 		return genTableService.preview(tableId);

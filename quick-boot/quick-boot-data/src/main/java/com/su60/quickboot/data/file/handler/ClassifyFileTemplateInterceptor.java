@@ -1,6 +1,5 @@
 package com.su60.quickboot.data.file.handler;
 
-import cn.hutool.core.io.FileUtil;
 import cn.hutool.crypto.digest.MD5;
 import com.su60.quickboot.data.file.FileInfoVo;
 import com.su60.quickboot.data.file.FileProperties;

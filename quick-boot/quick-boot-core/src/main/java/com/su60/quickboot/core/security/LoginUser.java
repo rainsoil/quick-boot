@@ -1,17 +1,9 @@
 package com.su60.quickboot.core.security;
 
-import cn.hutool.core.collection.CollectionUtil;
-import com.su60.quickboot.security.user.UserDetails;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 登录用户
@@ -19,146 +11,145 @@ import java.util.stream.Collectors;
  * @author luyanan
  * @since 2024/06/30
  **/
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class LoginUser extends UserDetails {
-
+public class LoginUser {
 
 	/**
 	 * id
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private Long id;
-
 
 	/**
 	 * 创建时间
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private Date createTime;
-
 
 	/**
 	 * 用户名
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String username;
-
 
 	/**
 	 * 昵称
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String nickname;
-
 
 	/**
 	 * 性别
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String gender;
-
 
 	/**
 	 * 头像
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String avatar;
-
 
 	/**
 	 * 状态(USER_STATUS)
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String status;
-
 
 	/**
 	 * 密码
 	 *
 	 * @since 2024/06/29
 	 */
-
 	private String password;
-
 
 	/**
 	 * 角色编码集合
 	 *
 	 * @since 2024/07/05
 	 */
-
 	private List<String> roles;
-
 
 	/**
 	 * 路由id集合
 	 *
 	 * @since 2024/07/20
 	 */
-
 	private List<Long> roleIds;
-
 
 	/**
 	 * 权限标识集合
 	 *
 	 * @since 2024/07/05
 	 */
-
 	private List<String> perms;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		if (CollectionUtil.isEmpty(this.perms)) {
-			return new ArrayList<>();
-		}
-		return this.perms.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-	}
+	private String clientId;
 
-	@Override
+	/**
+	 * 获取密码
+	 *
+	 * @return 密码
+	 * @since 2024/12/19
+	 */
 	public String getPassword() {
 		return this.password;
 	}
 
-	@Override
+	/**
+	 * 获取用户名
+	 *
+	 * @return 用户名
+	 * @since 2024/12/19
+	 */
 	public String getUsername() {
 		return this.username;
 	}
 
-	@Override
+	/**
+	 * 账户是否未过期
+	 *
+	 * @return 是否未过期
+	 * @since 2024/12/19
+	 */
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
-	@Override
+	/**
+	 * 账户是否未锁定
+	 *
+	 * @return 是否未锁定
+	 * @since 2024/12/19
+	 */
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
-	@Override
+	/**
+	 * 凭证是否未过期
+	 *
+	 * @return 是否未过期
+	 * @since 2024/12/19
+	 */
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
-	@Override
+	/**
+	 * 账户是否启用
+	 *
+	 * @return 是否启用
+	 * @since 2024/12/19
+	 */
 	public boolean isEnabled() {
-		return this.status.equals("0");
+		return "0".equals(this.status);
 	}
-
-
 }

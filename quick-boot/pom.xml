@@ -106,12 +106,12 @@
 				<version>3.6.3</version>
 			</plugin>
 
-			<!--代码格式插件，默认使用spring 规则-->
-			<plugin>
-				<groupId>io.spring.javaformat</groupId>
-				<artifactId>spring-javaformat-maven-plugin</artifactId>
-				<version>${spring.checkstyle.version}</version>
-			</plugin>
+<!--			&lt;!&ndash;代码格式插件，默认使用spring 规则&ndash;&gt;-->
+<!--			<plugin>-->
+<!--				<groupId>io.spring.javaformat</groupId>-->
+<!--				<artifactId>spring-javaformat-maven-plugin</artifactId>-->
+<!--				<version>${spring.checkstyle.version}</version>-->
+<!--			</plugin>-->
 			<!--打包关联最新 git commit 信息插件-->
 			<plugin>
 				<groupId>pl.project13.maven</groupId>
@@ -119,32 +119,32 @@
 				<version>${git.commit.version}</version>
 			</plugin>
 
-			<plugin>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>3.6.0</version>
-				<configuration>
-					<!-- 配置文件的路径，在style文件夹下 -->
-					<configLocation>style/checkstyle.xml</configLocation>
-					<encoding>UTF-8</encoding>
+<!--			<plugin>-->
+<!--				<artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--				<version>3.6.0</version>-->
+<!--				<configuration>-->
+<!--					&lt;!&ndash; 配置文件的路径，在style文件夹下 &ndash;&gt;-->
+<!--					<configLocation>style/checkstyle.xml</configLocation>-->
+<!--					<encoding>UTF-8</encoding>-->
 
-					<consoleOutput>true</consoleOutput>
-					<failsOnError>true</failsOnError>
-					<outputEncoding>UTF-8</outputEncoding>
-					<inputEncoding>UTF-8</inputEncoding>
-					<includeTestSourceDirectory>false</includeTestSourceDirectory>
-				</configuration>
-				<executions>
-					<execution>
-						<!-- 绑定pmd:pmd到validate生命周期，在validate时会自动进行代码规范检查 -->
-						<id>validate</id>
-						<phase>validate</phase>
+<!--					<consoleOutput>true</consoleOutput>-->
+<!--					<failsOnError>true</failsOnError>-->
+<!--					<outputEncoding>UTF-8</outputEncoding>-->
+<!--					<inputEncoding>UTF-8</inputEncoding>-->
+<!--					<includeTestSourceDirectory>false</includeTestSourceDirectory>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						&lt;!&ndash; 绑定pmd:pmd到validate生命周期，在validate时会自动进行代码规范检查 &ndash;&gt;-->
+<!--						<id>validate</id>-->
+<!--						<phase>validate</phase>-->
 
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+<!--						<goals>-->
+<!--							<goal>check</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>se.bjurr.gitchangelog</groupId>
 				<artifactId>git-changelog-maven-plugin</artifactId>

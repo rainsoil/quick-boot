@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -42,7 +41,6 @@ public class LoginFilter extends OncePerRequestFilter {
 	 */
 
 	private static final String CAPTCHA_CODE_PARAM = "code";
-	private static final AntPathRequestMatcher LOGIN_PATH_REQUEST_MATCHER = new AntPathRequestMatcher("/login", "POST");
 
 
 	private final CaptchaService captchaService;
@@ -53,7 +51,7 @@ public class LoginFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
 
-		if (LOGIN_PATH_REQUEST_MATCHER.matches(request)) {
+		if ("/login".equals(request.getRequestURI()) && "POST".equals(request.getMethod())) {
 
 			String key = request.getParameter(CAPTCHA_KEY_PARAM);
 			String code = request.getParameter(CAPTCHA_CODE_PARAM);

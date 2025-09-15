@@ -48,6 +48,11 @@
 			<artifactId>quick-boot-core</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.su60.quickboot.data</groupId>
+			<artifactId>quick-boot-data</artifactId>
+			<version>${parent.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>

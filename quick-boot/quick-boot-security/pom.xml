@@ -19,20 +19,35 @@
 
 
 	<dependencies>
-		<!--JWT工具依赖-->
+		<!-- Sa-Token 权限认证，在线文档：https://sa-token.cc -->
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.0</version>
+			<groupId>cn.dev33</groupId>
+			<artifactId>sa-token-spring-boot3-starter</artifactId>
+			<version>1.37.0</version>
 		</dependency>
+		
+		<!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） - 基于JWT时不需要 -->
+		<!--
+		<dependency>
+			<groupId>cn.dev33</groupId>
+			<artifactId>sa-token-redis-jackson</artifactId>
+			<version>1.37.0</version>
+		</dependency>
+		-->
+		
+		<!-- Sa-Token 插件：权限认证与角色认证 (可选，如果需要更多功能) -->
+		<!--
+		<dependency>
+			<groupId>cn.dev33</groupId>
+			<artifactId>sa-token-spring-boot3-plugin</artifactId>
+			<version>1.37.0</version>
+		</dependency>
+		-->
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>2.0.34</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
 		<dependency>
@@ -40,6 +55,7 @@
 			<artifactId>quick-boot-common</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>jakarta.servlet</groupId>
 			<artifactId>jakarta.servlet-api</artifactId>

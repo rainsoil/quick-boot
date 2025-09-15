@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.util.StrUtil;
 import com.su60.quickboot.common.bean.BeanConvertUtils;
 import com.su60.quickboot.common.exception.WarningException;
+import com.su60.quickboot.security.password.PasswordEncoder;
 import com.su60.quickboot.system.entity.SysUserEntity;
 import com.su60.quickboot.system.dos.SysUserDo;
 import com.su60.quickboot.system.entity.SysUserRoleEntity;
@@ -15,7 +16,6 @@ import com.su60.quickboot.data.mybatisplus.BaseServiceImpl2;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -34,9 +34,7 @@ import java.util.stream.Collectors;
  */
 @RequiredArgsConstructor
 @Service
-
 public class SysUserServiceImpl extends BaseServiceImpl2<SysUserMapper, SysUserEntity, SysUserDo> implements ISysUserService {
-	private final PasswordEncoder passwordEncoder;
 
 	@Autowired
 	@Lazy
@@ -44,6 +42,8 @@ public class SysUserServiceImpl extends BaseServiceImpl2<SysUserMapper, SysUserE
 
 	@Autowired
 	private ISysUserRoleService sysUserRoleService;
+	
+	private final PasswordEncoder passwordEncoder;
 
 	@Override
 	public SysUserDo findByUserName(String username) {

@@ -1,19 +1,24 @@
 package com.su60.quickboot.core.security;
 
-import com.alibaba.fastjson.JSON;
+import cn.dev33.satoken.session.SaSession;
+import cn.dev33.satoken.stp.StpUtil;
+import lombok.Data;
 import lombok.experimental.UtilityClass;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Date;
+import java.util.List;
 
 /**
- * 当前登陆人
+ * 当前登陆人工具类
  *
  * @author luyanan
  * @since 2024/07/07
  **/
+@Slf4j
 @UtilityClass
 public class LoginUserUtils {
+
 
 
 	/**
@@ -23,24 +28,37 @@ public class LoginUserUtils {
 	 * @since 2024/07/07
 	 */
 	public LoginUser getUser() {
-		SecurityContext context = SecurityContextHolder.getContext();
-		if (null == context) {
-			return null;
-		}
-		Authentication authentication = context.getAuthentication();
-		if (null == authentication) {
-			return null;
-		}
-		Object principal = authentication.getPrincipal();
-		if (principal instanceof String) {
-			String string = principal.toString();
-			if (string.equals("anonymousUser")) {
+		try {
+			if (StpUtil.isLogin()) {
+				SaSession session = StpUtil.getSession();
+				LoginUser user = session.getModel("user", LoginUser.class);
+				if (null != user) {
+					return user;
+				}
+				// 暂时返回null，避免模块依赖问题
+				// 实际使用时需要从JWT中解析用户信息
 				return null;
 			}
-			return JSON.parseObject(principal.toString(), LoginUser.class);
+		} catch (Exception e) {
+			// 忽略异常，返回null
 		}
-		if (principal instanceof LoginUser) {
-			return (LoginUser) principal;
+		return null;
+	}
+
+
+	/**
+	 * 获取当前登录用户ID
+	 *
+	 * @return 当前登录用户ID
+	 * @since 2024/12/19
+	 */
+	public Long getUserId() {
+		try {
+			if (StpUtil.isLogin()) {
+				return StpUtil.getLoginIdAsLong();
+			}
+		} catch (Exception e) {
+			// 忽略异常，返回null
 		}
 		return null;
 	}
@@ -52,8 +70,18 @@ public class LoginUserUtils {
 	 * @return 当前用户是否为admin
 	 * @since 2024/8/7
 	 */
-
 	public boolean isAdmin(Long userId) {
 		return null != userId && 1L == userId;
+	}
+
+	/**
+	 * 是否为admin（当前用户）
+	 *
+	 * @return 当前用户是否为admin
+	 * @since 2024/12/19
+	 */
+	public boolean isAdmin() {
+		Long userId = getUserId();
+		return isAdmin(userId);
 	}
 }

@@ -5,7 +5,7 @@ import cn.t200.quickboot.common.core.PageRequest;
 import cn.t200.quickboot.data.mybatisplus.PageVoHandler;
 import cn.t200.quickboot.common.validation.AddGroup;
 import cn.t200.quickboot.common.validation.UpdateGroup;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import ${package}.dos.${className}Do;
 import ${package}.entity.${className}Entity;
 import ${package}.service.I${className}Service;
@@ -41,7 +41,7 @@ import java.util.List;
     * @return
     * @since  ${date}
     */
-    @PreAuthorize("hasAuthority('${moduleName}:${className ?lower_case}:page')")
+    @SaCheckPermission("${moduleName}:${className ?lower_case}:page")
     @GetMapping("list")
     public PageInfo<${className}Do> page(${className}Do ${className?uncap_first}Do) {
 
@@ -62,7 +62,7 @@ import java.util.List;
                     * @return
                     * @since  ${date}
                     */
-                    @PreAuthorize("hasAuthority('${moduleName}:${className ?lower_case}:save')")
+                    @SaCheckPermission("${moduleName}:${className ?lower_case}:save")
                     @PostMapping("save")
                     public Boolean save(@RequestBody @Validated(AddGroup.class) ${className}Do ${className?uncap_first}Do) {
                     return ${className?uncap_first}Service.saveVo(${className?uncap_first}Do);
@@ -76,7 +76,7 @@ import java.util.List;
                     * @return
                     * @since 2024/06/29
                     */
-                    @PreAuthorize("hasAuthority('${moduleName}:${className ?lower_case}:edit')")
+                    @SaCheckPermission("${moduleName}:${className ?lower_case}:edit")
                     @PutMapping
                     public Boolean updateById(@RequestBody @Validated(UpdateGroup.class) ${className}Do ${className?uncap_first}Do) {
                     return ${className?uncap_first}Service.updateVoById(${className?uncap_first}Do);
@@ -90,7 +90,7 @@ import java.util.List;
                     * @return
                     * @since  ${date}
                     */
-                    @PreAuthorize("hasAuthority('${moduleName}:${className ?lower_case}:info')")
+                    @SaCheckPermission("${moduleName}:${className ?lower_case}:info")
                     @GetMapping("/{id}")
                     public ${className}Do getById(@PathVariable("id") Long id) {
                     return ${className?uncap_first}Service.getVoById(id);
@@ -104,7 +104,7 @@ import java.util.List;
                     * @return
                     * @since  ${date}
                     */
-                    @PreAuthorize("hasAuthority('${moduleName}:${className ?lower_case}:remove')")
+                    @SaCheckPermission("${moduleName}:${className ?lower_case}:remove")
         @DeleteMapping()
                     public Boolean deleteByIds(List<Long> ids) {
                     return ${className?uncap_first}Service.deleteByIds(ids);

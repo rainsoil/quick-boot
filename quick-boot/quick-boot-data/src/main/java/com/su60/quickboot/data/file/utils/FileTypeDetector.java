@@ -88,7 +88,8 @@ public class FileTypeDetector {
 		SIGNATURE_MAP.put(new byte[]{(byte) 0x4F, (byte) 0x67, (byte) 0x67, (byte) 0x53}, "audio/ogg"); // OGG
 
 		// 视频文件
-		SIGNATURE_MAP.put(new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x18, (byte) 0x66, (byte) 0x74, (byte) 0x79, (byte) 0x70, (byte) 0x6D, (byte) 0x70, (byte) 0x34, (byte) 0x32}, "video/mp4"); // MP4
+		SIGNATURE_MAP.put(new byte[]{(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x18, (byte) 0x66,
+				(byte) 0x74, (byte) 0x79, (byte) 0x70, (byte) 0x6D, (byte) 0x70, (byte) 0x34, (byte) 0x32}, "video/mp4"); // MP4
 		SIGNATURE_MAP.put(new byte[]{(byte) 0x52, (byte) 0x49, (byte) 0x46, (byte) 0x46}, "video/x-msvideo"); // AVI
 		SIGNATURE_MAP.put(new byte[]{(byte) 0x6D, (byte) 0x6F, (byte) 0x6F, (byte) 0x76}, "video/quicktime"); // MOV
 		SIGNATURE_MAP.put(new byte[]{(byte) 0x1A, (byte) 0x45, (byte) 0xDF, (byte) 0xA3}, "video/x-matroska"); // MKV

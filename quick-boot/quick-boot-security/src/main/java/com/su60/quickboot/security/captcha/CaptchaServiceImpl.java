@@ -5,7 +5,6 @@ import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.captcha.generator.MathGenerator;
 import cn.hutool.core.util.IdUtil;
-import com.su60.quickboot.security.config.SpringSecurityProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.Cache;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class CaptchaServiceImpl implements CaptchaService {
 
-	private final SpringSecurityProperties securityProperties;
-
 	private final CacheManager cacheManager;
 
 	/**
@@ -38,15 +35,12 @@ public class CaptchaServiceImpl implements CaptchaService {
 
 	@Override
 	public CaptchaVo create() {
-		SpringSecurityProperties.CaptchaProperties captchaProperties = securityProperties.getCaptcha();
-		if (null == captchaProperties) {
-			throw new NullPointerException("验证码配置不能为空");
-		}
-		CaptchaTypeEnum captchaType = captchaProperties.getType();
-		Integer height = captchaProperties.getHeight();
-		Integer width = captchaProperties.getWidth();
-		Integer codeCount = captchaProperties.getCodeCount();
-		Integer lineCount = captchaProperties.getLineCount();
+		// 使用默认配置
+		CaptchaTypeEnum captchaType = CaptchaTypeEnum.LINE;
+		Integer height = 40;
+		Integer width = 120;
+		Integer codeCount = 4;
+		Integer lineCount = 5;
 		AbstractCaptcha captcha = null;
 		if (CaptchaTypeEnum.CIRCLE == captchaType) {
 			captcha = CaptchaUtil.createCircleCaptcha(width, height);
@@ -69,7 +63,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 		String key = IdUtil.fastSimpleUUID();
 		log.debug("生成验证码,key:{},code:{}", key, code);
 
-		cacheManager.getCache(KEY + "#" + (captchaProperties.getExpireTime() * 60)).put(key, code);
+		cacheManager.getCache(KEY + "#" + (5 * 60)).put(key, code); // 默认5分钟过期
 		return new CaptchaVo()
 				.setUuid(key)
 				.setCaptchaEnabled(true)
@@ -80,11 +74,7 @@ public class CaptchaServiceImpl implements CaptchaService {
 	@Override
 	public boolean check(String key, String code) {
 		CodeGenerator codeGenerator = new MathGenerator();
-		SpringSecurityProperties.CaptchaProperties captchaProperties = securityProperties.getCaptcha();
-		if (null == captchaProperties) {
-			throw new NullPointerException("验证码配置不能为空");
-		}
-		Cache cache = cacheManager.getCache(KEY + "#" + (captchaProperties.getExpireTime() * 60));
+		Cache cache = cacheManager.getCache(KEY + "#" + (5 * 60)); // 默认5分钟过期
 		Cache.ValueWrapper valueWrapper = cache.get(key);
 		if (null == valueWrapper || null == valueWrapper.get()) {
 			return false;

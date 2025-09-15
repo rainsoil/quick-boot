@@ -15,7 +15,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +44,7 @@ public class SysRoleController {
 	 * @return 分页结果
 	 * @since 2024/8/16
 	 */
-	@PreAuthorize("hasAuthority('system:role:list')")
+	@SaCheckPermission("system:role:list")
 	@GetMapping("list")
 	public PageInfo<SysRoleDo> page(SysRoleDo sysRoleDo, HttpServletRequest request) {
 
@@ -68,7 +68,7 @@ public class SysRoleController {
 	 * @param sysRoleDo 角色信息
 	 * @since 2024/8/17
 	 */
-	@PreAuthorize("hasAuthority('system:role:export')")
+	@SaCheckPermission("system:role:export")
 	@PostMapping("export")
 	public void export(HttpServletResponse response, SysRoleDo sysRoleDo) throws IOException {
 		List<SysRoleEntity> list = sysRoleService.list(BeanConvertUtils.convertTo(sysRoleDo, SysRoleEntity.class));
@@ -83,7 +83,7 @@ public class SysRoleController {
 	 * @return 是否成功
 	 * @since 2024/8/21
 	 */
-	@PreAuthorize("hasAuthority('system:role:add')")
+	@SaCheckPermission("system:role:add")
 	@PostMapping()
 	public boolean save(@RequestBody @Validated(AddGroup.class) SysRoleDo sysRoleDo) {
 		return sysRoleService.saveRole(sysRoleDo);
@@ -97,7 +97,7 @@ public class SysRoleController {
 	 * @return 是否成功
 	 * @since 2024/10/10
 	 */
-	@PreAuthorize("hasAuthority('system:role:edit')")
+	@SaCheckPermission("system:role:edit")
 	@PutMapping
 	public boolean update(@RequestBody @Validated(UpdateGroup.class) SysRoleDo sysRoleDo) {
 		return sysRoleService.updateRole(sysRoleDo);
@@ -110,7 +110,7 @@ public class SysRoleController {
 	 * @return 角色信息
 	 * @since 2024/08/24
 	 */
-	@PreAuthorize("hasAuthority('system:role:query')")
+	@SaCheckPermission("system:role:query")
 	@GetMapping("/{id}")
 	public SysRoleDo info(@PathVariable("id") Long id) {
 		return sysRoleService.getVoById(id);
@@ -123,7 +123,7 @@ public class SysRoleController {
 	 * @return 是否成功
 	 * @since 2024/08/24
 	 */
-	@PreAuthorize("hasAuthority('system:role:remove')")
+	@SaCheckPermission("system:role:remove")
 	@DeleteMapping
 	public boolean delete(@RequestBody List<Long> ids) {
 

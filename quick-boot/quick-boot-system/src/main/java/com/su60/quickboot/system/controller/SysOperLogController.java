@@ -12,7 +12,7 @@ import com.su60.quickboot.system.service.ISysOperLogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +43,7 @@ public class SysOperLogController {
 	 * @return 分页结果
 	 * @since 2024/11/15
 	 */
-	@PreAuthorize("hasAuthority('system:operlog:list')")
+	@SaCheckPermission("system:operlog:list")
 	@GetMapping("list")
 	public PageInfo<SysOperLogDo> page(SysOperLogDo sysOperLogDo) {
 
@@ -99,7 +99,7 @@ public class SysOperLogController {
 	 * @return 操作日志记录
 	 * @since 2024/11/15
 	 */
-	@PreAuthorize("hasAuthority('system:operlog:query')")
+	@SaCheckPermission("system:operlog:query")
 	@GetMapping("/{id}")
 	public SysOperLogDo getById(@PathVariable("id") Long id) {
 		return sysOperLogService.getVoById(id);

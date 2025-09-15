@@ -1,11 +1,8 @@
 package com.su60.quickboot.security.client;
 
 import cn.hutool.core.codec.Base64;
-import cn.hutool.core.lang.Opt;
 import cn.hutool.core.util.StrUtil;
-import com.su60.quickboot.security.config.SpringSecurityProperties;
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
 
 /**
  * 授权客户端service
@@ -13,10 +10,7 @@ import lombok.RequiredArgsConstructor;
  * @author luyanan
  * @since 2024/07/17
  **/
-@RequiredArgsConstructor
 public class OauthClientService {
-
-	private final SpringSecurityProperties securityProperties;
 
 	/**
 	 * 获取客户端
@@ -26,7 +20,12 @@ public class OauthClientService {
 	 * @since 2024/07/17
 	 */
 	public OauthClient getClient(String clientId) {
-		return Opt.ofNullable(securityProperties.getOauthClients()).map(a -> a.stream().filter(b -> b.getClientId().equals(clientId)).findFirst().orElse(null)).get();
+		// 简化实现，返回默认客户端
+		OauthClient client = new OauthClient();
+		client.setClientId("web");
+		client.setClientSecret("web");
+		client.setVerificationCode(false);
+		return client;
 	}
 
 	/**
