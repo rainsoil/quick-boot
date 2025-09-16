@@ -3,10 +3,10 @@ package com.su60.quickboot.common.validation;
 import lombok.experimental.UtilityClass;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
-import javax.validation.Validation;
-import javax.validation.Validator;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
 import java.util.Locale;
 import java.util.Set;
 

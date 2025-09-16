@@ -30,8 +30,6 @@ sa-token:
   # 配置一些接口不需要登录校验
   ignore-urls:
     - /login
-    - /logout
-    - /getInfo
     - /captchaImage
     - /system/dict/**
     - /favicon.ico
@@ -43,26 +41,20 @@ sa-token:
     - /doc.html
     - /swagger-resources/**
     - /static/**
-    - /css/**
-    - /js/**
-    - /images/**
-    - /fonts/**
-    - /test/**
-    - /demo/**
-    - /public/**
-    - /open/**
-    - /health/**
-    - /info/**
-    - /metrics/**
-    - /env/**
-    - /beans/**
-    - /configprops/**
-    - /mappings/**
-    - /httptrace/**
-    - /threaddump/**
-    - /heapdump/**
+
 
 spring:
+  datasource:
+    hikari:
+      pool-name: QuickBootHikariCP
+      minimum-idle: 5
+      maximum-pool-size: 30
+      idle-timeout: 600000
+      max-lifetime: 1700000
+      connection-timeout: 30000
+      validation-timeout: 5000
+      keepalive-time: 300000
+      auto-commit: true
   security:
     enable: true
     token:

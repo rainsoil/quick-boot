@@ -1,6 +1,6 @@
 package com.su60.quickboot.common.validation;
 
-import javax.validation.groups.Default;
+import jakarta.validation.groups.Default;
 
 /**
  * 修改数据的时候的分组

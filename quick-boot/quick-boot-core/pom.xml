@@ -22,8 +22,6 @@
 		<dependency>
 			<groupId>com.su60.quickboot.data</groupId>
 			<artifactId>quick-boot-data</artifactId>
-			<version>${project.version}</version>
 		</dependency>
-
 	</dependencies>
 </project>
