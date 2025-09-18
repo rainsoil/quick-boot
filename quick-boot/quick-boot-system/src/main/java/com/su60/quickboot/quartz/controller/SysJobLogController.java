@@ -9,6 +9,7 @@ import com.su60.quickboot.quartz.service.ISysJobLogService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,7 +35,7 @@ public class SysJobLogController {
 	 * @return 分页结果
 	 * @since 2024/11/14
 	 */
-//	@PreAuthorize("hasAuthority('quartz:sysjoblog:page')")
+	@SaCheckPermission("quartz:sysjoblog:list")
 	@GetMapping("list")
 	public PageInfo<SysJobLogDo> page(SysJobLogDo sysJobLogDo) {
 
@@ -62,7 +63,7 @@ public class SysJobLogController {
 	 * @return 定时任务调度日志表
 	 * @since 2024/11/14
 	 */
-//	@PreAuthorize("hasAuthority('quartz:sysjoblog:info')")
+	@SaCheckPermission("quartz:sysjoblog:query")
 	@GetMapping("/{id}")
 	public SysJobLogDo getById(@PathVariable("id") Long id) {
 		return sysJobLogService.getVoById(id);
@@ -75,6 +76,7 @@ public class SysJobLogController {
 	 * @return 是否成功
 	 * @since 2024/11/14
 	 */
+	@SaCheckPermission("quartz:sysjoblog:remove")
 	@DeleteMapping("clean")
 	public Boolean clean(Long jobId) {
 

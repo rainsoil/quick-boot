@@ -1,5 +1,7 @@
 package com.su60.quickboot.web.exception;
 
+import cn.dev33.satoken.exception.NotLoginException;
+import cn.dev33.satoken.exception.NotPermissionException;
 import com.su60.quickboot.common.core.R;
 import com.su60.quickboot.common.exception.ErrorException;
 import com.su60.quickboot.common.exception.GlobalMsgCode;
@@ -75,6 +77,32 @@ public class GlobalExceptionHandler {
 		return R.failed(code, msg);
 	}
 
+	/**
+	 * 未权限
+	 * @since 2025/9/18
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler(NotPermissionException.class)
+	@ResponseStatus(HttpStatus.OK)
+	public R notPermissionException(NotPermissionException exception) {
+		log.warn("全局参数异常信息 ex={}", exception.getLocalizedMessage());
+		return R.failed(GlobalMsgCode.FORBIDDEN, "未授权");
+	}
+
+
+	/**
+	 * 未登录
+	 * @since 2025/9/18
+	 * @param exception
+	 * @return
+	 */
+	@ExceptionHandler(NotLoginException.class)
+	@ResponseStatus(HttpStatus.OK)
+	public R notNotLoginException(NotLoginException exception) {
+		log.warn("全局参数异常信息 ex={}", exception.getLocalizedMessage());
+		return R.failed(GlobalMsgCode.UNAUTHORIZED, "未授权");
+	}
 
 	/**
 	 * 自定义异常-错误异常

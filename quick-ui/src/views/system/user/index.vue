@@ -16,29 +16,35 @@
     >
       <!-- 操作列插槽 -->
       <template #table-operate="scope">
-        <c7-button 
-          type="primary" 
-          link 
-          icon="Edit" 
-          @click="handleEdit(scope.row)"
-        >
-          修改
-        </c7-button>
-        <el-dropdown trigger="click" @command="(command) => handleDropdownCommand(command, scope.row)">
-          <c7-button type="info" link icon="MoreFilled">
-            更多
-          </c7-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="delete" icon="Delete">
-                删除
-              </el-dropdown-item>
-              <el-dropdown-item command="resetPwd" icon="Key">
-                重置密码
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <C7ButtonGroup>
+          <C7Button 
+            type="primary" 
+            link 
+            icon="Edit" 
+            @click="handleEdit(scope.row)"
+            v-hasPermi="['system:user:edit']"
+          >
+            修改
+          </C7Button>
+          <C7Button 
+            type="danger" 
+            link 
+            icon="Delete" 
+            @click="handleDelete(scope.row.userId)"
+            v-hasPermi="['system:user:remove']"
+          >
+            删除
+          </C7Button>
+          <C7Button 
+            type="warning" 
+            link 
+            icon="Key" 
+            @click="handleResetPwd(scope.row)"
+            v-hasPermi="['system:user:resetPwd']"
+          >
+            重置密码
+          </C7Button>
+        </C7ButtonGroup>
       </template>
     </c7-json-table>
 
@@ -53,11 +59,12 @@
 
 
 <script setup>
-import { C7JsonTable, C7Button } from "@/components/c7";
+import { C7JsonTable, C7Button, C7ButtonGroup } from "@/components/c7";
 import { ref, getCurrentInstance, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import AddOrUpdate from "./add-or-update.vue";
 import { listUser, delUser, resetUserPwd } from '@/api/system/user.js';
+import useUserStore from '@/store/modules/user';
 
 // 获取当前实例和字典数据
 const { proxy } = getCurrentInstance();
@@ -70,15 +77,19 @@ const tableRef = ref();
 const addOrUpdateRef = ref();
 const addKey = ref(0);
 
+// 调试权限信息
+console.log('用户权限列表:', useUserStore().permissions);
+console.log('检查权限 system:user:edit111:', proxy.checkPermission('system:user:edit111'));
+
 // 表格配置
 const tableProps = ref({
   selection: true,
-  showAdd: true,
-  showEdit: true,
-  showDelete: true,
+  showAdd: proxy.checkPermission('system:user:add'), // 直接使用权限控制
+  showEdit: proxy.checkPermission('system:user:edit'),
+  showDelete: proxy.checkPermission('system:user:remove'),
   showRefresh: true,
-  showExport: true,
-  showImport: true,
+  showExport: proxy.checkPermission('system:user:export'),
+  showImport: proxy.checkPermission('system:user:import'),
   border: true,
   stripe: true,
   height: 'auto'

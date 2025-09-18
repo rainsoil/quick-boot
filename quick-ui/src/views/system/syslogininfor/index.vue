@@ -21,6 +21,7 @@
           link
           icon="View"
           @click="handleView(scope.row)"
+          v-hasPermi="['system:logininfor:query']"
         >
           查看
         </C7Button>
@@ -38,10 +39,13 @@
 
 
 <script setup lang="ts">
-import { reactive, ref, nextTick } from "vue";
+import { reactive, ref, nextTick, getCurrentInstance } from "vue";
 import { C7JsonTable, C7Button } from '@/components/c7';
 import AddOrUpdate from "./add-or-update.vue";
 import { listLogininfor } from '@/api/system/logininfor.js';
+
+// 获取当前实例和权限检查函数
+const { proxy } = getCurrentInstance();
 
 // 表格引用
 const tableRef = ref();
@@ -129,8 +133,13 @@ const tableProps = ref({
   selection: false,
   showAdd: false,
   showEdit: false,
-  showDelete: false,
-  showRefresh: true
+  showDelete: proxy.checkPermission('system:logininfor:remove'),
+  showRefresh: true,
+  showExport: proxy.checkPermission('system:logininfor:export'),
+  showImport: false,
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 
 // 事件处理函数

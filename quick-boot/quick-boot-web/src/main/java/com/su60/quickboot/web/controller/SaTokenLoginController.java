@@ -2,6 +2,7 @@ package com.su60.quickboot.web.controller;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.su60.quickboot.common.core.R;
+import com.su60.quickboot.common.captcha.CaptchaService;
 import com.su60.quickboot.core.security.LoginUserUtils;
 import com.su60.quickboot.web.service.SaTokenLoginService;
 import lombok.RequiredArgsConstructor;
@@ -24,22 +25,36 @@ import java.util.Map;
 public class SaTokenLoginController {
 
 	private final SaTokenLoginService saTokenLoginService;
+	private final CaptchaService captchaService;
 
 	/**
 	 * 用户登录
 	 *
 	 * @param username 用户名
 	 * @param password 密码
+	 * @param code 验证码
+	 * @param uuid 验证码唯一标识
 	 * @return 登录结果
 	 */
 	@PostMapping("/login")
 	public R<Map<String, Object>> login(@RequestParam String username,
-										@RequestParam String password) {
+										@RequestParam String password,
+										@RequestParam(required = false) String code,
+										@RequestParam(required = false) String uuid) {
 		try {
-			// 执行登录
+			// 1. 验证码校验
+			if (code != null && uuid != null) {
+				boolean captchaValid = captchaService.check(uuid, code);
+				if (!captchaValid) {
+					log.warn("验证码校验失败: username={}, code={}, uuid={}", username, code, uuid);
+					return R.failed("验证码错误");
+				}
+			}
+
+			// 2. 执行登录
 			String token = saTokenLoginService.login(username, password);
 
-			// 构建返回结果
+			// 3. 构建返回结果
 			Map<String, Object> result = new HashMap<>();
 			result.put("access_token", token);
 			result.put("tokenTimeout", StpUtil.getTokenTimeout());
@@ -60,7 +75,9 @@ public class SaTokenLoginController {
 	public R<Map<String, Object>> loginJson(@RequestBody Map<String, String> loginRequest) {
 		String username = loginRequest.get("username");
 		String password = loginRequest.get("password");
-		return login(username, password);
+		String code = loginRequest.get("code");
+		String uuid = loginRequest.get("uuid");
+		return login(username, password, code, uuid);
 	}
 
 	/**
@@ -73,7 +90,9 @@ public class SaTokenLoginController {
 	public R<Map<String, Object>> auth(@RequestBody Map<String, String> loginRequest) {
 		String username = loginRequest.get("username");
 		String password = loginRequest.get("password");
-		return login(username, password);
+		String code = loginRequest.get("code");
+		String uuid = loginRequest.get("uuid");
+		return login(username, password, code, uuid);
 	}
 
 	/**

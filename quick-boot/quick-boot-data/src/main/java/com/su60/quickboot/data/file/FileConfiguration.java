@@ -1,6 +1,7 @@
 package com.su60.quickboot.data.file;
 
 import com.su60.quickboot.data.file.strategy.LocalFileTemplateStorage;
+import com.su60.quickboot.data.file.strategy.MinioFileTemplateStorage;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -59,6 +60,12 @@ public class FileConfiguration {
 	@ConditionalOnProperty(prefix = "file", name = "type", havingValue = "local")
 	public FileTemplate fileTemplate(FileProperties fileProperties) {
 		return new LocalFileTemplateStorage(fileProperties);
+	}
+
+	@Bean
+	@ConditionalOnProperty(prefix = "file", name = "type", havingValue = "minio")
+	public FileTemplate minioFileTemplate(FileProperties fileProperties) {
+		return new MinioFileTemplateStorage(fileProperties);
 	}
 
 

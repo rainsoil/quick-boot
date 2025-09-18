@@ -23,6 +23,7 @@
             type="primary" 
             icon="Edit"
             @click="handleEdit(scope.row)" 
+            v-hasPermi="['system:dict:edit']"
           >
             编辑
           </C7Button>
@@ -31,6 +32,7 @@
             type="danger" 
             icon="Delete"
             @click="handleDelete(scope.row.dictCode)" 
+            v-hasPermi="['system:dict:remove']"
           >
             删除
           </C7Button>

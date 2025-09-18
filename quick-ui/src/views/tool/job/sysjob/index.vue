@@ -2,112 +2,112 @@
   <div class="app-container">
     <!-- 表格 -->
     <C7JsonTable
-      ref="tableRef"
-      :listFunction="getDataList"
-      :searchColumns="searchColumns"
-      :tableColumns="tableColumns"
-      :tableProps="tableProps"
-      rowsKey="data.records"
-      totalKey="data.total"
-      @selection-change="handleSelectionChange"
-      @addBtnHandle="handleAdd"
-      @editBtnHandle="handleEdit"
-      @deleteBtnHandle="handleBatchDelete"
+        ref="tableRef"
+        :listFunction="getDataList"
+        :searchColumns="searchColumns"
+        :tableColumns="tableColumns"
+        :tableProps="tableProps"
+        rowsKey="data.records"
+        totalKey="data.total"
+        @selection-change="handleSelectionChange"
+        @addBtnHandle="handleAdd"
+        @editBtnHandle="handleEdit"
+        @deleteBtnHandle="handleBatchDelete"
     >
       <template #operate>
         <C7Button
-          type="primary"
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['quartz:sysjob:add']"
+            type="primary"
+            icon="Plus"
+            @click="handleAdd"
+            v-hasPermi="['quartz:sysjob:add']"
         >
           新增
         </C7Button>
         <C7Button
-          type="success"
-          icon="Edit"
-          :disabled="selectedIds.length !== 1"
-          @click="handleEdit"
-          v-hasPermi="['quartz:sysjob:edit']"
+            type="success"
+            icon="Edit"
+            :disabled="selectedIds.length !== 1"
+            @click="handleEdit"
+            v-hasPermi="['quartz:sysjob:edit']"
         >
           修改
         </C7Button>
         <C7Button
-          type="danger"
-          icon="Delete"
-          :disabled="selectedIds.length === 0"
-          @click="handleBatchDelete"
-          v-hasPermi="['quartz:sysjob:remove']"
+            type="danger"
+            icon="Delete"
+            :disabled="selectedIds.length === 0"
+            @click="handleBatchDelete"
+            v-hasPermi="['quartz:sysjob:remove']"
         >
           删除
         </C7Button>
         <C7Button
-          type="primary"
-          plain
-          icon="View"
-          @click="sysJobLogHandler()"
-          v-hasPermi="['quartz:sysjob:list']"
+            type="primary"
+            plain
+            icon="View"
+            @click="sysJobLogHandler()"
+            v-hasPermi="['quartz:sysjob:list']"
         >
           调度日志
         </C7Button>
       </template>
-      
+
       <template #status="{ row }">
         <el-switch
-          v-model="row.status"
-          active-value="0"
-          inactive-value="1"
-          @change="handleStatusChange(row)"
+            v-model="row.status"
+            active-value="0"
+            inactive-value="1"
+            @change="handleStatusChange(row)"
         />
       </template>
-      
+
       <template #rowOperate="{ row }">
-        <C7ButtonGroup>
+        <C7ButtonGroup mode='inline'>
           <C7Button
-            link
-            type="primary"
-            icon="Edit"
-            @click="addOrUpdateHandle(row.id)"
-            v-hasPermi="['quartz:sysjob:edit']"
+              link
+              type="primary"
+              icon="Edit"
+              @click="addOrUpdateHandle(row.id)"
+              v-hasPermi="['quartz:sysjob:edit']"
           >
             修改
           </C7Button>
           <C7Button
-            link
-            type="danger"
-            icon="Delete"
-            @click="handleSingleDelete(row.id)"
-            v-hasPermi="['quartz:sysjob:remove']"
+              link
+              type="danger"
+              icon="Delete"
+              @click="handleSingleDelete(row.id)"
+              v-hasPermi="['quartz:sysjob:remove']"
           >
             删除
           </C7Button>
           <C7Button
-            link
-            type="info"
-            icon="View"
-            @click="addOrUpdateHandle(row.id,'2')"
-            v-hasPermi="['quartz:sysjob:query']"
+              link
+              type="info"
+              icon="View"
+              @click="addOrUpdateHandle(row.id,'2')"
+              v-hasPermi="['quartz:sysjob:query']"
           >
             任务详细
           </C7Button>
           <C7Button
-            link
-            type="success"
-            icon="CaretRight"
-            :clickFunction="() => runHandle(row.id)"
-            :confirm="true"
-            confirmMessage="确认要立即执行一次任务吗？"
-            successMessage="立即执行成功"
-            v-hasPermi="['quartz:sysjob:edit']"
+              link
+              type="success"
+              icon="CaretRight"
+              :clickFunction="() => runHandle(row.id)"
+              :confirm="true"
+              confirmMessage="确认要立即执行一次任务吗？"
+              successMessage="立即执行成功"
+              v-hasPermi="['quartz:sysjob:run']"
           >
             执行一次
           </C7Button>
           <C7Button
-            link
-            type="warning"
-            icon="Operation"
-            @click="sysJobLogHandler(row.id)"
-            v-hasPermi="['quartz:sysjob:list']"
+              link
+              type="warning"
+              icon="Operation"
+              @click="sysJobLogHandler(row.id)"
+              v-hasPermi="['quartz:sysjoblog:list']"
           >
             调度日志
           </C7Button>
@@ -125,19 +125,19 @@
 
 
 <script setup>
-import { getCurrentInstance, nextTick, reactive, ref, computed } from "vue";
-import { 
-  C7JsonTable, 
-  C7Button, 
-  C7Select, 
-  C7DictTag, 
-  C7ButtonGroup 
+import {getCurrentInstance, nextTick, reactive, ref, computed} from "vue";
+import {
+  C7JsonTable,
+  C7Button,
+  C7Select,
+  C7DictTag,
+  C7ButtonGroup
 } from "@/components/c7";
 import AddOrUpdate from "./add-or-update.vue";
 import sysJobLog from '../sysjoblog/index.vue'
 import baseService from "@/service/baseService.js";
 
-const { proxy } = getCurrentInstance();
+const {proxy} = getCurrentInstance();
 
 // 获取字典数据
 const dictData = proxy.useDict("sys_job_group", "sys_job_status", "sys_yes_no");
@@ -148,32 +148,53 @@ const selectedIds = ref([]);
 
 // 搜索列配置 - 使用计算属性确保字典数据正确传递
 const searchColumns = computed(() => [
-  { label: "任务名称", prop: "jobName", type: "input", placeholder: "请输入任务名称" },
-  { label: "任务组名", prop: "jobGroup", type: "select", dataList: dictData.sys_job_group?.value || [], placeholder: "请选择任务组名" },
-  { label: "状态", prop: "status", type: "select", dataList: dictData.sys_job_status?.value || [], placeholder: "请选择状态" }
+  {label: "任务名称", prop: "jobName", type: "input", placeholder: "请输入任务名称"},
+  {
+    label: "任务组名",
+    prop: "jobGroup",
+    type: "select",
+    dataList: dictData.sys_job_group?.value || [],
+    placeholder: "请选择任务组名"
+  },
+  {
+    label: "状态",
+    prop: "status",
+    type: "select",
+    dataList: dictData.sys_job_status?.value || [],
+    placeholder: "请选择状态"
+  }
 ]);
 
 // 表格列配置 - 使用计算属性确保字典数据正确传递
 const tableColumns = computed(() => [
-  { label: "任务名称", prop: "jobName"},
-  { label: "任务组名", prop: "jobGroup", columnType: "tag", dictList: dictData.sys_job_group?.value || [] },
-  { label: "调用对象", prop: "invokeTarget", showOverflowTooltip: true },
-  { label: "参数", prop: "params",  showOverflowTooltip: true },
-  { label: "cron执行表达式", prop: "cronExpression", width: 180, showOverflowTooltip: true },
-  { label: "是否并发执行", prop: "concurrent", columnType: "tag", dictList: dictData.sys_yes_no?.value || [], width: 120 },
-  { label: "状态", prop: "status", slotName: "status", width: 100 },
-  { label: "操作", prop: "operate", slotName: "rowOperate", width: 250, fixed: "right" }
+  {label: "任务名称", prop: "jobName"},
+  {label: "任务组名", prop: "jobGroup", columnType: "tag", dictList: dictData.sys_job_group?.value || []},
+  {label: "调用对象", prop: "invokeTarget", showOverflowTooltip: true},
+  {label: "参数", prop: "params", showOverflowTooltip: true},
+  {label: "cron执行表达式", prop: "cronExpression", width: 180, showOverflowTooltip: true},
+  {
+    label: "是否并发执行",
+    prop: "concurrent",
+    columnType: "tag",
+    dictList: dictData.sys_yes_no?.value || [],
+    width: 120
+  },
+  {label: "状态", prop: "status", slotName: "status", width: 100},
+  {label: "操作", prop: "operate", slotName: "rowOperate", width: 250, fixed: "right"}
 ]);
 
 // 表格属性配置
 const tableProps = ref({
   selection: true,
-  showAdd: true,
-  showEdit: true,
-  showDelete: true,
+  showAdd: proxy.checkPermission('quartz:sysjob:add'),
+  showEdit: proxy.checkPermission('quartz:sysjob:edit'),
+  showDelete: proxy.checkPermission('quartz:sysjob:remove'),
   showRefresh: true,
-  showExport: false,
-  showImport: false
+  showExport: proxy.checkPermission('quartz:sysjob:export'),
+  showImport: proxy.checkPermission('quartz:sysjob:import'),
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 
 // 获取任务列表
@@ -183,7 +204,7 @@ const getDataList = async (params) => {
     return response;
   } catch (error) {
     console.error('获取任务列表失败:', error);
-    return { rows: [], total: 0 };
+    return {rows: [], total: 0};
   }
 };
 // 弹窗相关
@@ -220,13 +241,13 @@ const handleBatchDelete = () => {
     proxy.$message.warning('请选择要删除的数据');
     return;
   }
-  
+
   proxy.$confirm('确认要删除选中的任务吗？', "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     type: "warning"
   }).then(() => {
-    baseService.delete("/quartz/sysjob", { ids: selectedIds.value }).then(() => {
+    baseService.delete("/quartz/sysjob", {ids: selectedIds.value}).then(() => {
       proxy.$message.success('删除成功');
       refreshDataList();
     });
@@ -268,7 +289,7 @@ const handleStatusChange = (row) => {
   }
   const status = row.status;
   const msg = status === '0' ? '启用' : '暂停';
-  
+
   proxy.$confirm(`确认要${msg}任务"${row.jobName}"吗？`, "警告", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
@@ -285,15 +306,13 @@ const handleStatusChange = (row) => {
 // 立即执行
 const runHandle = (id) => {
   return baseService.get(`/quartz/sysjob/run/${id}`).then((response) => {
-    return { code: 200, msg: '执行成功', data: response };
-  }).catch((error) => {
-    proxy.$message.error('执行失败');
-    throw error;
-  });
+    return {code: 200, msg: '执行成功', data: response};
+  })
 };
 
 // 日志处理
 const sysJobLogHandler = (jobId) => {
+
   nextTick(() => {
     sysJobLogRef.value.init(jobId);
   });

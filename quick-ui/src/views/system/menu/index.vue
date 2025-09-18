@@ -21,51 +21,80 @@
         v-loading="loading"
         style="width: 100%"
       >
-        <el-table-column prop="menuName" label="菜单名称" width="160"></el-table-column>
-        <el-table-column prop="icon" label="图标" align="center" width="100">
+        <el-table-column prop="menuName" label="菜单名称" width="200"></el-table-column>
+        <el-table-column prop="menuType" label="菜单类型" align="center" width="80">
+          <template #default="scope">
+            <el-tag v-if="scope.row.menuType === 'M'" type="info">目录</el-tag>
+            <el-tag v-else-if="scope.row.menuType === 'C'" type="success">菜单</el-tag>
+            <el-tag v-else-if="scope.row.menuType === 'F'" type="warning">按钮</el-tag>
+            <el-tag v-else type="info">{{ scope.row.menuType }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="icon" label="图标" align="center" width="60">
           <template #default="scope">
             <svg-icon :icon-class="scope.row.icon" />
           </template>
         </el-table-column>
         <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
-        <el-table-column prop="perms" label="权限标识" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="buttonPerms" label="按钮权限标识" show-overflow-tooltip></el-table-column>
+        <el-table-column prop="apiPerms" label="接口权限标识" show-overflow-tooltip>
+          <template #default="scope">
+            <div v-if="scope.row.apiPerms" class="api-perms-display">
+              <el-tag 
+                v-for="(perm, index) in scope.row.apiPerms.split(',').filter(item => item.trim())" 
+                :key="index"
+                size="small"
+                type="primary"
+                style="margin-right: 4px; margin-bottom: 2px;"
+              >
+                {{ perm.trim() }}
+              </el-tag>
+            </div>
+            <span v-else class="text-gray-400">-</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="component" label="组件路径" show-overflow-tooltip></el-table-column>
         <el-table-column prop="status" label="状态" width="80">
           <template #default="scope">
             <dict-tag :options="sys_normal_disable" :value="scope.row.status"/>
           </template>
         </el-table-column>
-        <el-table-column label="创建时间" align="center" prop="createTime" width="160">
+        <el-table-column label="创建时间" align="center" prop="createTime" width="160px">
           <template #default="scope">
             <span>{{ parseTime(scope.row.createTime) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="200px">
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180px">
           <template #default="scope">
-            <c7-button
-              type="primary"
-              link
-              icon="Edit"
-              @click="handleEdit(scope.row)"
-            >
-              修改
-            </c7-button>
-            <c7-button
-              type="success"
-              link
-              icon="Plus"
-              @click="handleAdd(scope.row)"
-            >
-              新增
-            </c7-button>
-            <c7-button
-              type="danger"
-              link
-              icon="Delete"
-              @click="handleDelete(scope.row)"
-            >
-              删除
-            </c7-button>
+            <C7ButtonGroup  mode = 'inline'>
+              <C7Button
+                type="primary"
+                link
+                icon="Edit"
+                @click="handleEdit(scope.row)"
+                v-hasPermi="['system:menu:edit']"
+              >
+                修改
+              </C7Button>
+              <C7Button
+                type="success"
+                link
+                icon="Plus"
+                @click="handleAdd(scope.row)"
+                v-hasPermi="['system:menu:add']"
+              >
+                新增
+              </C7Button>
+              <C7Button
+                type="danger"
+                link
+                icon="Delete"
+                @click="handleDelete(scope.row)"
+                v-hasPermi="['system:menu:remove']"
+              >
+                删除
+              </C7Button>
+            </C7ButtonGroup>
           </template>
         </el-table-column>
       </el-table>
@@ -73,7 +102,7 @@
 
       <!-- 添加或修改菜单对话框 -->
       <el-dialog :title="title" v-model="open" width="680px" append-to-body>
-         <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
+         <el-form ref="menuRef" :model="form" :rules="rules" label-width="120px">
             <el-row>
                <el-col :span="24">
                   <el-form-item label="上级菜单">
@@ -184,17 +213,57 @@
                      <el-input v-model="form.component" placeholder="请输入组件路径" />
                   </el-form-item>
                </el-col>
-               <el-col :span="12" v-if="form.menuType != 'M'">
+               <el-col :span="24" v-if="form.menuType != 'M'">
                   <el-form-item>
-                     <el-input v-model="form.perms" placeholder="请输入权限标识" maxlength="100" />
+                     <el-input v-model="form.buttonPerms" placeholder="请输入按钮权限标识" maxlength="100" />
                      <template #label>
                         <span>
-                           <el-tooltip content="控制器中定义的权限字符，如：@PreAuthorize(`@ss.hasPermi('system:user:list')`)" placement="top">
+                           <el-tooltip content="按钮权限标识，用于前端按钮权限控制，如：user:add, user:edit" placement="top">
                               <el-icon><question-filled /></el-icon>
                            </el-tooltip>
-                           权限字符
+                           按钮权限标识
                         </span>
                      </template>
+                  </el-form-item>
+               </el-col>
+               <el-col :span="24" v-if="form.menuType != 'M'">
+                  <el-form-item>
+                    <div class="api-perms-container">
+                      <div 
+                        v-for="(item, index) in form.apiPermsList" 
+                        :key="index" 
+                        class="api-perm-item"
+                      >
+                        <el-input 
+                          v-model="form.apiPermsList[index]" 
+                          placeholder="请输入接口权限标识"
+                          style="flex: 1; margin-right: 8px;"
+                        />
+                        <el-button 
+                          type="danger" 
+                          icon="Delete" 
+                          circle 
+                          size="small"
+                          @click="removeApiPerm(index)"
+                        />
+                      </div>
+                      <el-button 
+                        type="primary" 
+                        icon="Plus" 
+                        @click="addApiPerm"
+                        style="width: 100%; margin-top: 8px;"
+                      >
+                        添加接口权限
+                      </el-button>
+                    </div>
+                    <template #label>
+                      <span>
+                        <el-tooltip content="接口权限标识，用于后端接口权限控制" placement="top">
+                          <el-icon><question-filled /></el-icon>
+                        </el-tooltip>
+                        接口权限标识
+                      </span>
+                    </template>
                   </el-form-item>
                </el-col>
                <el-col :span="12" v-if="form.menuType == 'C'">
@@ -278,7 +347,7 @@
 
 <script setup name="Menu">
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
-import { C7Button } from '@/components/c7';
+import { C7Button, C7ButtonGroup } from '@/components/c7';
 import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
 
@@ -388,7 +457,10 @@ function reset() {
     isFrame: "1",
     isCache: "0",
     visible: "0",
-    status: "0"
+    status: "0",
+    buttonPerms: undefined,
+    apiPerms: undefined,
+    apiPermsList: []
   };
   proxy.resetForm("menuRef");
 }
@@ -401,6 +473,19 @@ function showSelectIcon() {
 /** 选择图标 */
 function selected(name) {
   form.value.icon = name;
+}
+
+/** 添加接口权限 */
+function addApiPerm() {
+  if (!form.value.apiPermsList) {
+    form.value.apiPermsList = [];
+  }
+  form.value.apiPermsList.push('');
+}
+
+/** 删除接口权限 */
+function removeApiPerm(index) {
+  form.value.apiPermsList.splice(index, 1);
 }
 
 /** 搜索按钮操作 */
@@ -442,6 +527,12 @@ async function handleUpdate(row) {
   await getTreeselect();
   getMenu(row.id).then(response => {
     form.value = response.data;
+    // 处理接口权限列表
+    if (form.value.apiPerms) {
+      form.value.apiPermsList = form.value.apiPerms.split(',').filter(item => item.trim());
+    } else {
+      form.value.apiPermsList = [];
+    }
     open.value = true;
     title.value = "修改菜单";
   });
@@ -451,6 +542,13 @@ async function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["menuRef"].validate(valid => {
     if (valid) {
+      // 处理接口权限列表，转换为逗号分隔的字符串
+      if (form.value.apiPermsList && form.value.apiPermsList.length > 0) {
+        form.value.apiPerms = form.value.apiPermsList.filter(item => item.trim()).join(',');
+      } else {
+        form.value.apiPerms = '';
+      }
+      
       if (form.value.id != undefined) {
         updateMenu(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
@@ -471,3 +569,29 @@ function submitForm() {
 
 getList();
 </script>
+
+<style scoped>
+.api-perms-container {
+  width: 100%;
+}
+
+.api-perm-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.api-perm-item:last-of-type {
+  margin-bottom: 0;
+}
+
+.api-perms-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.text-gray-400 {
+  color: #9ca3af;
+}
+</style>

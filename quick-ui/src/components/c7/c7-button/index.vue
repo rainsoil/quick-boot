@@ -1,3 +1,4 @@
+
 <template>
   <el-button 
     v-bind="$attrs" 
@@ -100,6 +101,10 @@ const props = defineProps({
     type: String,
     default: 'small',
     validator: (value) => ['large', 'default', 'small'].includes(value)
+  },
+  showErrorToast: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -211,14 +216,17 @@ const handleClick = debounce(async () => {
       emit('errorCallback', error)
     }
     
-    let errorMsg = '操作失败'
-    if (props.errorMessageType === 'res' && error.response) {
-      errorMsg = error.response.data?.msg || errorMsg
-    } else if (props.errorMessage) {
-      errorMsg = props.errorMessage
+    // 只有在 showErrorToast 为 true 时才显示错误提示
+    if (props.showErrorToast) {
+      let errorMsg = '操作失败'
+      if (props.errorMessageType === 'res' && error.response) {
+        errorMsg = error.response.data?.msg || errorMsg
+      } else if (props.errorMessage) {
+        errorMsg = props.errorMessage
+      }
+      
+      ElMessage.error(errorMsg)
     }
-    
-    ElMessage.error(errorMsg)
   } finally {
     loading.value = false
   }

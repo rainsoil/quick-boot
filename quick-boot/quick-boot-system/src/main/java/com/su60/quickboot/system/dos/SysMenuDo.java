@@ -1,5 +1,6 @@
 package com.su60.quickboot.system.dos;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.su60.quickboot.common.validation.AddGroup;
 import com.su60.quickboot.common.validation.UpdateGroup;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -136,11 +137,18 @@ public class SysMenuDo implements Serializable {
 
 
 	/**
-	 * 权限标识
+	 * 按钮权限标识
 	 *
 	 * @since 2024/08/07
 	 */
-	private String perms;
+	private String buttonPerms;
+
+	/**
+	 * 接口权限标识
+	 * @since 2025/9/17
+	 */
+
+	private String apiPerms;
 
 
 	/**

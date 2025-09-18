@@ -138,6 +138,7 @@ public class SysRoleController {
 	 * @return 选中的菜单id
 	 * @since 2024/08/24
 	 */
+	@SaCheckPermission("system:role:query")
 	@GetMapping("checkedKeys/{roleId}")
 	public List<Long> checkedKeys(@PathVariable("roleId") Long roleId) {
 		return sysRoleService.checkedKeys(roleId);
@@ -151,6 +152,7 @@ public class SysRoleController {
 	 * @return 角色列表
 	 * @since 2024/11/12
 	 */
+	@SaCheckPermission("system:role:list")
 	@GetMapping("lists")
 	public List<SysRoleDo> listAll(SysRoleDo sysRoleDo) {
 

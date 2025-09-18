@@ -26,11 +26,16 @@
           <template #table-operate="scope">
             <!-- 使用 c7-button-group 和 c7-button 组件 -->
             <c7-button-group :maxVisible="1" mode="auto" trigger="click" >
-              <c7-button btnType="edit" @click="handleEdit(scope.row)" />
+              <c7-button 
+                btnType="edit" 
+                @click="handleEdit(scope.row)" 
+                v-hasPermi="['system:dict:edit']"
+              />
               <c7-button 
                 type="success" 
                 icon="Plus" 
                 @click="toData(scope.row)"
+                v-hasPermi="['system:dict:list']"
               >
                 字典项
               </c7-button>
@@ -39,11 +44,13 @@
                 :confirm="true"
                 :confirmMessage="`确定删除字典类型${scope.row.dictType}吗？`"
                 @click="handleDelete(scope.row.id)" 
+                v-hasPermi="['system:dict:remove']"
               />
               <c7-button 
                 type="warning" 
                 icon="View" 
                 @click="handleView(scope.row)"
+                v-hasPermi="['system:dict:query']"
               >
                 查看
               </c7-button>
@@ -51,6 +58,7 @@
                 type="info" 
                 icon="CopyDocument" 
                 @click="handleCopy(scope.row)"
+                v-hasPermi="['system:dict:add']"
               >
                 复制
               </c7-button>
@@ -149,13 +157,19 @@ const tableColumns = ref([
   }
 ]);
 
+
 // 表格配置
 const tableProps = ref({
   selection: true,
-  showAdd: true,
-  showEdit: true,
-  showDelete: true,
-  showRefresh: true
+  showAdd: proxy.checkPermission('system:dict:add'),
+  showEdit: proxy.checkPermission('system:dict:edit'),
+  showDelete: proxy.checkPermission('system:dict:remove'),
+  showRefresh: true,
+  showExport: proxy.checkPermission('system:dict:export'),
+  showImport: proxy.checkPermission('system:dict:import'),
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 
 // 事件处理函数

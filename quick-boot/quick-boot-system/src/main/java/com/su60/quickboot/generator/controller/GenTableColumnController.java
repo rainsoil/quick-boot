@@ -8,6 +8,7 @@ import com.su60.quickboot.generator.service.IGenTableColumnService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,7 +36,7 @@ public class GenTableColumnController {
 	 * @return 分页信息
 	 * @since 2024/10/24
 	 */
-//	@PreAuthorize("hasAuthority('generator:gentablecolumn:page')")
+	@SaCheckPermission("generator:gentablecolumn:list")
 	@GetMapping("list")
 	public PageInfo<GenTableColumnDo> page(GenTableColumnDo genTableColumnDo) {
 
@@ -56,6 +57,7 @@ public class GenTableColumnController {
 	 * @return 是否成功
 	 * @since 2024/10/27
 	 */
+	@SaCheckPermission("generator:gentablecolumn:edit")
 	@PostMapping("updateBatch")
 	public Boolean updateBatch(@RequestBody List<GenTableColumnDo> genTableColumnDos) {
 		genTableColumnService.updateBatch(genTableColumnDos);

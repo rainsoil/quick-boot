@@ -23,8 +23,8 @@ public class SysOperLogServiceImpl extends BaseServiceImpl2<SysOperLogMapper, Sy
 
 	@Async
 	@Override
-	public Boolean saveVo(SysOperLogDo sysOperLogDo) {
-		return super.saveVo(sysOperLogDo);
+	public void saveLog(SysOperLogDo sysOperLogDo) {
+		super.saveVo(sysOperLogDo);
 	}
 }
 

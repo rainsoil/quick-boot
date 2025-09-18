@@ -61,17 +61,16 @@ public abstract class AbstractFileTemplate implements FileTemplate {
 	@Override
 	public Map<String, String> addHost(List<String> filePaths) {
 		if (CollectionUtil.isEmpty(filePaths)) {
-			return new HashMap<>(0);
+			return new HashMap<String, String>(0);
 		}
-		Map<String, String> res = new HashMap<>();
-		filePaths.forEach(a -> {
-			if (StrUtil.isNotBlank(a)) {
-				Map<String, String> filePathMap = addHost(filePaths);
-				if (CollectionUtil.isNotEmpty(filePathMap)) {
-					res.putAll(filePathMap);
-				}
+		Map<String, String> res = new HashMap<>(filePaths.size());
+		for (String p : filePaths) {
+			if (StrUtil.isBlank(p)) {
+				continue;
 			}
-		});
+			String withHost = addHost(p);
+			res.put(p, withHost);
+		}
 		return res;
 	}
 

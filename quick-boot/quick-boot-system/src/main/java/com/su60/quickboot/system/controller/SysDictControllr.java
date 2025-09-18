@@ -42,6 +42,7 @@ public class SysDictControllr {
 	 * @return 字典项目列表
 	 * @since 2024/8/18
 	 */
+	@SaCheckPermission("system:dict:list")
 	@GetMapping("type/{dictType}")
 	public List<SysDictDataDo> dictType(@PathVariable("dictType") String dictType) {
 		return sysDictDataService.listByDictType(dictType);
@@ -208,6 +209,7 @@ public class SysDictControllr {
 	 * @return 字典项列表
 	 * @since 2024/10/26
 	 */
+	@SaCheckPermission("system:dict:list")
 	@GetMapping("types")
 	public List<DictVo> types() {
 		return sysDictTypeService.listAll().stream().map(item -> new DictVo()

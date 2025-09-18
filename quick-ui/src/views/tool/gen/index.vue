@@ -184,12 +184,15 @@ const tableColumns = ref([
 // 表格属性配置
 const tableProps = ref({
   selection: true,
-  showAdd: true,
-  showEdit: true,
-  showDelete: true,
+  showAdd: proxy.checkPermission('generator:gen:import'),
+  showEdit: proxy.checkPermission('generator:gen:edit'),
+  showDelete: proxy.checkPermission('generator:gen:remove'),
   showRefresh: true,
-  showExport: false,
-  showImport: false
+  showExport: proxy.checkPermission('generator:gen:export'),
+  showImport: proxy.checkPermission('generator:gen:import'),
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 // 获取数据列表
 const getDataList = async (params) => {

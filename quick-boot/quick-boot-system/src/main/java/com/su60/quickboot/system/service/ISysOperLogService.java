@@ -14,5 +14,11 @@ import com.su60.quickboot.data.mybatisplus.IBaseService2;
  */
 
 public interface ISysOperLogService extends IBaseService2<SysOperLogEntity, SysOperLogDo> {
-
+	/**
+	 * 保存日志
+	 * @since 2025/9/17 
+	 * @param sysOperLogDo 日志
+	 * @return
+	 */
+	void saveLog(SysOperLogDo sysOperLogDo);
 }

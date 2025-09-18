@@ -21,6 +21,7 @@
             type="danger"
             icon="Delete"
             @click="clearHandler()"
+            v-hasPermi="['quartz:sysjoblog:remove']"
           >
             清空
           </C7Button>
@@ -32,7 +33,7 @@
             type="primary"
             icon="View"
             @click="addOrUpdateHandle(row.id)"
-            v-hasPermi="['quartz:sysjoblog:info']"
+            v-hasPermi="['quartz:sysjoblog:query']"
           >
             查看
           </C7Button>
@@ -85,10 +86,13 @@ const tableProps = ref({
   selection: false,
   showAdd: false,
   showEdit: false,
-  showDelete: false,
+  showDelete: proxy.checkPermission('quartz:sysjoblog:remove'),
   showRefresh: true,
-  showExport: false,
-  showImport: false
+  showExport: proxy.checkPermission('quartz:sysjoblog:export'),
+  showImport: false,
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 
 // 获取任务日志列表

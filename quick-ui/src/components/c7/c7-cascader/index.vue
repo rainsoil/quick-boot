@@ -104,49 +104,87 @@ const props2 = {
 }
 // 用于向父组件更新绑定值
 const emit = defineEmits(['update:modelValue']);
-// 组件挂载后自动加载数据（仅在非远程且 autoLoad=true 时）
-onMounted(() => {
-
-  // if (!props.lazy) {
-  //   fetchAndUpdate('')
-
-
-  // } else {
+// 组件挂载后自动加载数据
+onMounted(async () => {
+  // 先加载数据（只加载一次）
+  if (fetchAndUpdate && !dataLoaded.value) {
+    await fetchAndUpdate('')
+    dataLoaded.value = true;
+  }
+  // 数据加载完成后进行反显
   loadOptions(props.modelValue);
-  // }
 })
 
-const  loadOptions = async  (value) => {
-  if (fetchAndUpdate) {
-    await  fetchAndUpdate('')
-    if (loading.value){
-      console.log("options", options.value, options)
-    }
+// 监听 modelValue 变化，用于外部更新时的反显
+watch(() => props.modelValue, (newValue, oldValue) => {
+  // 只有当值真正发生变化时才进行反显
+  if (newValue !== undefined && newValue !== null && newValue !== oldValue) {
+    console.log("modelValue 变化，触发反显:", oldValue, "->", newValue);
+    loadOptions(newValue);
   }
-  if (!loading.value){
-    if (props.resultType === 1) {
+}, { immediate: false })
+
+const loadOptions = async (value) => {
+  // 等待数据加载完成
+  if (loading.value || !dataLoaded.value) {
+    console.log("数据未加载完成，等待中...", "loading:", loading.value, "dataLoaded:", dataLoaded.value)
+    return;
+  }
+  
+  console.log("开始反显，value:", value, "resultType:", props.resultType, "options:", options.value)
+  
+  if (props.resultType === 1) {
+    // resultType = 1：绑定值为原生数组
+    if (Array.isArray(value)) {
       selectedValue.value = value;
-    } else if (props.resultType === 2 && typeof value === 'string') {
-      selectedValue.value = value.split(',')
-    } else if (props.resultType === 3 && typeof value === 'string') {
-      // 绑定为 数组的最后一个元素,分为两种情况  非懒加载模式下,需要根据绑定的值 遍历出来所有节点 获取整个父级节点数据, 懒加载模式下 需要调用函数获取
+    } else if (value !== null && value !== undefined) {
+      // 如果不是数组但有值，尝试转换为数组
+      selectedValue.value = [value];
+    } else {
+      selectedValue.value = [];
+    }
+  } else if (props.resultType === 2) {
+    // resultType = 2：绑定值为逗号分隔字符串
+    if (typeof value === 'string' && value.trim()) {
+      selectedValue.value = value.split(',').map(item => item.trim()).filter(item => item);
+    } else {
+      selectedValue.value = [];
+    }
+  } else if (props.resultType === 3) {
+    // resultType = 3：绑定值为数组的最后一个元素
+    if (value !== null && value !== undefined && value !== '') {
       if (!props.lazy) {
+        // 非懒加载模式：在已加载的数据中查找路径
         const path = findPath(options.value, value);
-        console.log("path", path, value, options.value)
+        console.log("非懒加载模式 - 查找路径:", path, "目标值:", value, "数据:", options.value)
         if (path.length) {
           selectedValue.value = path;
+        } else {
+          console.warn("未找到路径，目标值:", value)
+          selectedValue.value = [];
         }
       } else {
-        console.log("懒加载", props.lazy)
-        props.parentNodeFetchFunction(value).then(res => {
-          selectedValue.value = jsonGet(res, props.resultKey, [])
-          console.log("value", selectedValue.value, res, props.resultKey, jsonGet(res, props.resultKey, []))
-        });
+        // 懒加载模式：调用函数获取父级路径
+        console.log("懒加载模式 - 获取父级路径，目标值:", value)
+        if (props.parentNodeFetchFunction) {
+          try {
+            const res = await props.parentNodeFetchFunction(value);
+            const path = jsonGet(res, props.resultKey, []);
+            console.log("懒加载模式 - 获取到路径:", path, "响应:", res)
+            selectedValue.value = path;
+          } catch (error) {
+            console.error("懒加载模式 - 获取父级路径失败:", error)
+            selectedValue.value = [];
+          }
+        } else {
+          console.warn("懒加载模式但未提供 parentNodeFetchFunction")
+          selectedValue.value = [];
+        }
       }
+    } else {
+      selectedValue.value = [];
     }
   }
-
-
 }
 
 //
@@ -193,14 +231,27 @@ const  loadOptions = async  (value) => {
 //   }
 // })
 const selectedValue = ref([]);
+// 数据加载状态标志
+const dataLoaded = ref(false);
 watch(selectedValue, (value) => {
   console.log(value, props.resultType, props.resultType === 3)
   let payload = value
-  if (props.resultType === 2) {
-    payload = value.join(',')
+  
+  if (props.resultType === 1) {
+    // resultType = 1：绑定值为原生数组，直接使用
+    payload = Array.isArray(value) ? value : []
+  } else if (props.resultType === 2) {
+    // resultType = 2：绑定值为逗号分隔字符串
+    if (Array.isArray(value) && value.length > 0) {
+      payload = value.join(',')
+    } else {
+      payload = ''
+    }
   } else if (props.resultType === 3) {
-    payload = (value && value.length ? value[value.length - 1] : '')
+    // resultType = 3：绑定值为数组的最后一个元素
+    payload = (value && Array.isArray(value) && value.length ? value[value.length - 1] : '')
   }
+  
   /**
    * 结果类型：
    * 1：绑定值为原生数组（如：[1,2,3]）

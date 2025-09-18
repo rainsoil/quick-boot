@@ -1,5 +1,6 @@
+
 <template>
-  <div class="c7-button-group" :class="groupClasses">
+  <div class="c7-button-group" :class="groupClasses" :style="groupStyle">
     <!-- 显示可见的按钮 -->
     <template v-for="(button, index) in visibleButtons" :key="`visible-${index}`">
       <component :is="button" :size="size" />
@@ -62,9 +63,12 @@ const props = defineProps({
   
   // 按钮间距
   spacing: {
-    type: String,
-    default: 'normal', // tight, normal, loose
-    validator: (value) => ['tight', 'normal', 'loose'].includes(value)
+    type: [String, Number],
+    default: 'loose', // 'tight'(0px), 'normal'(1px), 'loose'(2px) 或具体数值(px)
+    validator: (value) => {
+      if (typeof value === 'number') return value >= 0
+      return ['tight', 'normal', 'loose'].includes(value)
+    }
   },
   
   // 按钮大小
@@ -131,6 +135,22 @@ const triggerType = computed(() => {
   return props.trigger
 })
 
+// 计算实际间距值
+const actualSpacing = computed(() => {
+  if (typeof props.spacing === 'number') {
+    return `${props.spacing}px`
+  }
+  
+  // 预设间距值
+  const spacingMap = {
+    tight: '0px',
+    normal: '1px', 
+    loose: '2px'
+  }
+  
+  return spacingMap[props.spacing] || '0px'
+})
+
 // 处理下拉菜单命令
 const handleDropdownCommand = (command) => {
   // 这个函数主要用于处理下拉菜单的命令，实际按钮点击通过 triggerButtonAction 处理
@@ -148,12 +168,18 @@ const triggerButtonAction = (buttonVnode) => {
 const groupClasses = computed(() => {
   return [
     `c7-button-group--${props.mode}`,
-    `c7-button-group--spacing-${props.spacing}`,
     `c7-button-group--size-${props.size}`,
     {
       'c7-button-group--responsive': props.responsive
     }
   ]
+})
+
+// 动态样式
+const groupStyle = computed(() => {
+  return {
+    gap: actualSpacing.value
+  }
 })
 </script>
 
@@ -162,20 +188,7 @@ const groupClasses = computed(() => {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-}
-
-/* 间距配置 */
-.c7-button-group--spacing-tight {
-  gap: 4px;
-}
-
-.c7-button-group--spacing-normal {
-  gap: 8px;
-}
-
-.c7-button-group--spacing-loose {
-  gap: 12px;
+  /* gap 通过 :style 动态设置 */
 }
 
 /* 大小配置 */
@@ -233,7 +246,7 @@ const groupClasses = computed(() => {
 .c7-button-group--inline {
   display: flex;
   align-items: center;
-  gap: 8px;
+  /* gap 通过 :style 动态设置 */
 }
 
 /* 下拉模式 */
@@ -245,12 +258,26 @@ const groupClasses = computed(() => {
 .c7-button-group--auto {
   display: flex;
   align-items: center;
-  gap: 8px;
+  /* gap 通过 :style 动态设置 */
 }
 
 /* 按钮组内按钮样式统一 */
 .c7-button-group :deep(.c7-button) {
-  margin: 0;
+  margin: 0 !important;
+}
+
+.c7-button-group :deep(.el-button) {
+  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.c7-button-group :deep(.el-button + .el-button) {
+  margin-left: 0 !important;
+}
+
+.c7-button-group :deep(.c7-button + .c7-button) {
+  margin-left: 0 !important;
 }
 
 /* 下拉菜单样式优化 */

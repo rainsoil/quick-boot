@@ -44,9 +44,9 @@ import TreeSelect from '@/components/TreeSelect'
 import DictTag from '@/components/DictTag'
 
 import formLayout from '@/components/form-layout/index.vue'
-
+// 检查是否包含权限
+import { checkPermission } from './directive/permission/permissionUtils'
 // 全局注入
-import {getRequest, deleteRequest, postRequest, openNewTab} from "./service/provideSerivce";
 
 const app = createApp(App)
 
@@ -60,6 +60,7 @@ app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel
 app.config.globalProperties.selectDictLabels = selectDictLabels
+app.config.globalProperties.checkPermission = checkPermission
 
 // 全局组件挂载
 app.component('DictTag', DictTag)
@@ -74,45 +75,18 @@ app.component('formLayout', formLayout)
 const pinia = createPinia();
 app.use(pinia); // 注册 Pinia
 
-window.$postRequest = postRequest
-app.config.globalProperties.$getRequest = getRequest;
-app.config.globalProperties.$deleteRequest = deleteRequest
 
-const c7Config = {
-    dictUrl: '/system/dict/type'
-}
-app.provide("c7Config", c7Config);
-app.config.globalProperties.$getRequest = getRequest;
-app.config.globalProperties.$postRequest = postRequest;
-app.config.globalProperties.$deleteRequest = deleteRequest
-app.config.globalProperties.$openNewTab = openNewTab
-if (typeof window !== 'undefined') {
-    // 在浏览器中运行的代码
-    window.$getRequest = getRequest;
-    window.$postRequest = postRequest;
-    window.$deleteRequest = deleteRequest
-    window.$openNewTab = openNewTab
-}
+
 
 app.use(router)
 app.use(store)
 app.use(plugins)
+app.use(directive)  // 注册自定义指令
 app.use(elementIcons)
 app.use(C7Components)
 app.component('svg-icon', SvgIcon)
 
 
-// const requestFn = ref(getRequest);
-//
-// app.provide("getRequest",requestFn)
-// app.provide("getDictByType",getDictByType)
-// app.provide("deleteRequest",deleteRequest)
-//
-// let servicePath = '../../service/provideSerivce.js';
-// app.provide("servicePath", servicePath)
-//
-// app.provide("getRequest", getRequest);
-// directive(app)
 
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {

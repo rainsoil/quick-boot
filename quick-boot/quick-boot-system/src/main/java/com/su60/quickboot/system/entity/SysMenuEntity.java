@@ -142,12 +142,20 @@ public class SysMenuEntity implements Serializable {
 
 
 	/**
-	 * 权限标识
+	 * 按钮权限标识
 	 *
 	 * @since 2024/08/07
 	 */
-	@TableField("perms")
-	private String perms;
+	@TableField("button_perms")
+	private String buttonPerms;
+
+	/**
+	 * 接口权限标识
+	 * @since 2025/9/17
+	 */
+
+	@TableField("api_perms")
+	private String apiPerms;
 
 
 	/**

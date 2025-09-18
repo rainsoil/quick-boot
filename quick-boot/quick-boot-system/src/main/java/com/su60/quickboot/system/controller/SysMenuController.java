@@ -42,6 +42,7 @@ public class SysMenuController {
 	 * @return 菜单下拉树列表
 	 * @since 2024/8/20
 	 */
+	@SaCheckPermission("system:menu:list")
 	@GetMapping("treeselect")
 	public List<TreeSelect> treeselect(SysMenuDo sysMenuDo) {
 		return sysMenuService.treeselect(sysMenuDo, LoginUserUtils.getUser().getId());
@@ -54,6 +55,7 @@ public class SysMenuController {
 	 * @return 菜单树列表
 	 * @since 2024/10/10
 	 */
+	@SaCheckPermission("system:role:query")
 	@GetMapping("roleMenuTreeselect/{roleId}")
 	public Map<String, Object> roleMenuTreeselect(@PathVariable("roleId") Long roleId) {
 
@@ -144,6 +146,7 @@ public class SysMenuController {
 	 * @return 树形结果
 	 * @since 2024/11/19
 	 */
+	@SaCheckPermission("system:menu:list")
 	@PostMapping("tree")
 	public List<Tree<Long>> tree(@RequestParam(value = "id", required = false) Long value) {
 
@@ -177,6 +180,7 @@ public class SysMenuController {
 	 * @return 父级id集合
 	 * @since 2024/11/19
 	 */
+	@SaCheckPermission("system:menu:query")
 	@GetMapping("tree/parent/{id}")
 	public List<Long> findParent(@PathVariable("id") Long id) {
 

@@ -49,7 +49,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl2<SysMenuMapper, SysMenuE
 		return sysMenuDos
 				.stream()
 //				.filter(a -> StrUtil.isNotBlank(a.getPerms()) && a.getMenuType().equals(SysMenuEnums.MENU_TYPE_BUTTON.getValue()) )
-				.map(SysMenuDo::getPerms)
+				.map(SysMenuDo::getApiPerms)
 				.filter(StrUtil::isNotBlank)
 				.distinct()
 				.collect(Collectors.toList());

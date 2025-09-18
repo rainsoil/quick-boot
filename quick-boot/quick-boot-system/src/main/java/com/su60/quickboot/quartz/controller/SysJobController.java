@@ -126,7 +126,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/13
 	 */
-	@SaCheckPermission("quartz:sysjob:edit")
+	@SaCheckPermission("quartz:sysjob:changeStatus")
 	@GetMapping("changeStatus/{id}/{status}")
 	public Boolean changeStatus(@PathVariable("id") Long id, @PathVariable("status") String status) {
 		return sysJobService.changeStatus(id, status);
@@ -139,7 +139,7 @@ public class SysJobController {
 	 * @return 是否成功
 	 * @since 2024/11/13
 	 */
-	@SaCheckPermission("quartz:sysjob:edit")
+	@SaCheckPermission("quartz:sysjob:run")
 	@GetMapping("/run/{id}")
 	public Boolean run(@PathVariable("id") Long id) {
 

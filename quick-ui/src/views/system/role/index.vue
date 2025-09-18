@@ -16,26 +16,26 @@
     >
       <!-- 操作列插槽 -->
       <template #table-operate="scope">
-        <c7-button
-          type="primary"
-          link
-          icon="Edit"
-          @click="handleEdit(scope.row)"
-        >
-          修改
-        </c7-button>
-        <el-dropdown trigger="click" @command="(command) => handleDropdownCommand(command, scope.row)">
-          <c7-button type="info" link icon="MoreFilled">
-            更多
-          </c7-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="delete" icon="Delete">
-                删除
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <C7ButtonGroup>
+          <C7Button 
+            type="primary" 
+            link 
+            icon="Edit" 
+            @click="handleEdit(scope.row)"
+            v-hasPermi="['system:role:edit']"
+          >
+            修改
+          </C7Button>
+          <C7Button 
+            type="danger" 
+            link 
+            icon="Delete" 
+            @click="handleDelete(scope.row.roleId)"
+            v-hasPermi="['system:role:remove']"
+          >
+            删除
+          </C7Button>
+        </C7ButtonGroup>
       </template>
     </c7-json-table>
 
@@ -54,7 +54,7 @@ import { ref, getCurrentInstance, nextTick } from "vue";
 import { ElMessage, ElMessageBox } from 'element-plus';
 import AddOrUpdate from "./add-or-update.vue";
 import { listRole, delRole } from '@/api/system/role.js';
-import { C7JsonTable, C7Button } from '@/components/c7';
+import { C7JsonTable, C7Button, C7ButtonGroup } from '@/components/c7';
 
 // 获取当前实例和字典数据
 const { proxy } = getCurrentInstance();
@@ -123,10 +123,15 @@ const tableColumns = ref([
 // 表格配置
 const tableProps = ref({
   selection: true,
-  showAdd: true,
-  showEdit: true,
-  showDelete: true,
-  showRefresh: true
+  showAdd: proxy.checkPermission('system:role:add'),
+  showEdit: proxy.checkPermission('system:role:edit'),
+  showDelete: proxy.checkPermission('system:role:remove'),
+  showRefresh: true,
+  showExport: proxy.checkPermission('system:role:export'),
+  showImport: proxy.checkPermission('system:role:import'),
+  border: true,
+  stripe: true,
+  height: 'auto'
 });
 
 // 事件处理函数
