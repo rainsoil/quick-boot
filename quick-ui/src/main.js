@@ -1,6 +1,7 @@
 import {createApp} from 'vue'
 
 import Cookies from 'js-cookie'
+import { appConfig } from '@/config/env'
 
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -94,5 +95,11 @@ app.use(ElementPlus, {
     // 支持 large、default、small
     size: Cookies.get('size') || 'default'
 })
+
+// 更新加载提示文字
+const loadingElement = document.getElementById('loading-text')
+if (loadingElement) {
+  loadingElement.textContent = appConfig.loadingText
+}
 
 app.mount('#app')

@@ -1,8 +1,10 @@
+import { appConfig } from '@/config/env'
+
 export default {
   /**
    * 网页标题
    */
-  title: import.meta.env.VITE_APP_TITLE,
+  title: appConfig.title,
   /**
    * 侧边栏主题 深色主题theme-dark，浅色主题theme-light
    */

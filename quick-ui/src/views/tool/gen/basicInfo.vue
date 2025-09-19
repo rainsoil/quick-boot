@@ -62,8 +62,8 @@
 
       <el-col :span="12">
         <el-form-item label="上级菜单" prop="parentId">
-          <c7-cascader :fetchData="getMenuTree" v-model="dataForm.parentId" result-type="3"
-                       :checkStrictly="true"></c7-cascader>
+          <c7-cascader :fetchData="getMenuTree" v-model="dataForm.parentId" :resultType="3"
+                       :checkStrictly="true" :parentNodeFetchFunction="getMenuTree"></c7-cascader>
           <!--          <q-dict-select v-model="dataForm.parentId" type="cascader" dic-url="/system/menu/tree" check-strictly="true">-->
           <!--          </q-dict-select>-->
         </el-form-item>
@@ -74,7 +74,6 @@
 
     <div class="dialog-footer">
       <el-button type="primary" @click="submit">确 定</el-button>
-
     </div>
 
 
@@ -100,7 +99,7 @@ const dataForm = ref({
   genType: "",
   genPath: "",
   verifyPermission: "0",
-  parentId: "0"
+  parentId: 0  // 修改为数字类型，表示根菜单
 })
 const {proxy} = getCurrentInstance();
 const dictData = proxy.useDict("sys_yes_no");
@@ -154,6 +153,12 @@ const init = (tableId) => {
   if (tableId) {
     getInfo(tableId)
   }
+}
+
+// 测试反显功能
+const testParentId = () => {
+  dataForm.value.parentId = 1;
+  console.log('设置 parentId = 1，应该触发反显');
 }
 defineExpose({
   init

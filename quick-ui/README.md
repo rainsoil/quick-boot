@@ -1,8 +1,63 @@
 <p align="center">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.8.8</h1>
+<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">Quick Boot v1.0.0</h1>
 <h4 align="center">基于SpringBoot+Vue3前后端分离的Java快速开发框架</h4>
+
+## 🚀 环境配置
+
+本项目支持通过环境变量统一管理应用标题、版权信息等配置。
+
+### 快速设置
+
+```bash
+# 创建环境变量配置文件
+npm run setup:env
+```
+
+### 手动配置
+
+在项目根目录创建三个环境配置文件：
+
+```bash
+# .env.development (开发环境)
+VITE_APP_TITLE=Quick Boot 管理系统
+VITE_APP_LOGIN_TITLE=Quick Boot 后台管理系统
+VITE_APP_COPYRIGHT=Copyright © 2024 Quick Boot All Rights Reserved.
+VITE_APP_LOADING_TEXT=正在加载系统资源，请耐心等待
+VITE_APP_BASE_API=/dev-api
+VITE_APP_ENV=development
+VITE_APP_VERSION=1.0.0
+VITE_APP_DESCRIPTION=基于 Spring Boot + Vue 3 的快速开发平台
+```
+
+```bash
+# .env.production (生产环境)
+VITE_APP_TITLE=Quick Boot 管理系统
+VITE_APP_LOGIN_TITLE=Quick Boot 后台管理系统
+VITE_APP_COPYRIGHT=Copyright © 2024 Quick Boot All Rights Reserved.
+VITE_APP_LOADING_TEXT=正在加载系统资源，请耐心等待
+VITE_APP_BASE_API=/prod-api
+VITE_APP_ENV=production
+VITE_APP_VERSION=1.0.0
+VITE_APP_DESCRIPTION=基于 Spring Boot + Vue 3 的快速开发平台
+```
+
+```bash
+# .env.staging (预发布环境)
+VITE_APP_TITLE=Quick Boot 管理系统 (预发布)
+VITE_APP_LOGIN_TITLE=Quick Boot 后台管理系统 (预发布)
+VITE_APP_COPYRIGHT=Copyright © 2024 Quick Boot All Rights Reserved.
+VITE_APP_LOADING_TEXT=正在加载系统资源，请耐心等待
+VITE_APP_BASE_API=/staging-api
+VITE_APP_ENV=staging
+VITE_APP_VERSION=1.0.0
+VITE_APP_DESCRIPTION=基于 Spring Boot + Vue 3 的快速开发平台
+```
+
+详细配置说明请查看 [CONFIG.md](./CONFIG.md) 文件。
+
+---
 <p align="center">
 	<a href="https://gitee.com/y_project/RuoYi-Vue/stargazers"><img src="https://gitee.com/y_project/RuoYi-Vue/badge/star.svg?theme=dark"></a>
 	<a href="https://gitee.com/y_project/RuoYi-Vue"><img src="https://img.shields.io/badge/RuoYi-v3.8.8-brightgreen.svg"></a>

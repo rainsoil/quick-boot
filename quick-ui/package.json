@@ -13,7 +13,8 @@
     "deploy": "zsh scripts/gh-pages.sh",
     "docs:dev": "pnpm -C docs dev",
     "docs1:dev": "vitepress dev docs1",
-    "docs:build": "pnpm -C docs build"
+    "docs:build": "pnpm -C docs build",
+    "setup:env": "node setup-env.js"
   },
   "repository": {
     "type": "git",
